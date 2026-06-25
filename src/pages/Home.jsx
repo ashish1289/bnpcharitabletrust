@@ -4,7 +4,7 @@ import Hero from "../sections/Hero";
 import InspirationSection from "../sections/InspirationSection";
 import Programs from "../sections/Programs";
 import Mission from "../sections/Mission";
-import Impact from "../components/Impact";
+// import Impact from "../components/Impact";
 
 const Home = () => {
   return (
@@ -12,9 +12,9 @@ const Home = () => {
       <Hero />
       <InspirationSection />
       <Programs />
-      <Impact/>
-      <Mission/>
-     </Layout>
+      {/* <Impact/> */}
+      <Mission />
+    </Layout>
   );
 };
 

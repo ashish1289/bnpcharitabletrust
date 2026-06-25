@@ -14,13 +14,16 @@ import Home from "./pages/Home";
 import About from "./pages/About";
 import "./App.css";
 import MissionPage from "./pages/MissionPage";
-import Awards from "./pages/Awards";
+// import Awards from "./pages/Awards";
 import BoardOfTrustees from "./pages/BoardOfTrustees";
+import MeetOurTrustees from "./pages/MeetOurTrustees";
+import GoverningBody from "./pages/GoverningBody";
 import Privacy from "./pages/Privacy";
 import Contact from "./pages/Contact";
-import Donate from "./pages/Donate";
-import Blog from "./pages/Blog";
+// import Donate from "./pages/Donate";
+// import Blog from "./pages/Blog";
 import BlogDetail from "./pages/BlogDetail";
+import MediaPage from "./pages/MediaPage";
 
 function App() {
   return (
@@ -29,12 +32,15 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
         <Route path="/mission" element={<MissionPage />} />
-        <Route path="/awards" element={<Awards />} />
+        {/* <Route path="/awards" element={<Awards />} /> */}
         <Route path="/board-of-trustees" element={<BoardOfTrustees />} />
+        <Route path="/about/trustees" element={<MeetOurTrustees />} />
+        <Route path="/about/governing-body" element={<GoverningBody />} />
         <Route path="/privacy" element={<Privacy />} />
         <Route path="/contact" element={<Contact />} />
-        <Route path="/donate" element={<Donate />} />
-        <Route path="/blog" element={<Blog />} />
+        <Route path="/media" element={<MediaPage />} />
+        {/* <Route path="/donate" element={<Donate />} /> */}
+        {/* <Route path="/blog" element={<Blog />} /> */}
         <Route path="/blog/:id" element={<BlogDetail />} />
       </Routes>
     </BrowserRouter>

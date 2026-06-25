@@ -61,7 +61,7 @@
 //             >
 //               Empowering underprivileged <span className="font-bold">communities through education, healthcare,</span>and social support—one step, one smile, one life at a time.
 //               <span className="font-bold"> one smile, one life at a time </span>
-             
+
 //             </motion.p>
 
 //             <motion.a

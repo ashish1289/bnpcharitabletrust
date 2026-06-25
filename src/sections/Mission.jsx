@@ -7,26 +7,23 @@ import { motion, useInView } from "framer-motion";
 // And add to your CSS: body { font-family: 'Poppins', system-ui, ... } and for headline use 'Gloria Hallelujah' as shown.
 
 const HeadingSplit = ({ text, letterDelay = 0.03, className = "" }) => {
-  // Splits into letters and preserves spaces
   const letters = useMemo(() => text.split(""), [text]);
 
   return (
     <h2
-      aria-hidden="true"
-      className={`overflow-hidden inline-block ${className}`}
-      style={{ lineHeight: 1.02 }}
+      className={`inline-block ${className}`}
+      style={{ lineHeight: 1.15 }}
     >
       {letters.map((char, i) => {
-        // keep spaces as non-breaking spaces
         const displayChar = char === " " ? "\u00A0" : char;
         return (
           <motion.span
             key={i}
             style={{ display: "inline-block", whiteSpace: "pre" }}
-            initial={{ opacity: 0, y: 24, rotate: -1.5 }}
-            whileInView={{ opacity: 1, y: 0, rotate: 0 }}
-            transition={{ duration: 0.45, delay: i * letterDelay, ease: "easeOut" }}
-            viewport={{ once: true, amount: 0.6 }}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: i * letterDelay, ease: "easeOut" }}
+            viewport={{ once: true, amount: 0.2 }}
           >
             {displayChar}
           </motion.span>
@@ -174,7 +171,7 @@ export default function Mission() {
               {/* Heading with splittext letters — uses Gloria Hallelujah */}
               <div style={{ fontFamily: "'Gloria Hallelujah', cursive" }}>
                 <HeadingSplit
-                  text={"Our Mission — Ignite Hope"}
+                  text={"Our Mission"}
                   letterDelay={0.03}
                   className="text-4xl md:text-5xl font-extrabold tracking-tight text-[#0A4C8B]"
                 />

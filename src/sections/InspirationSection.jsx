@@ -16,13 +16,13 @@ const InspirationSection = () => {
         </div> */}
 
         {/* CHILDREN IMAGE */}
-<div className="w-full">
-  <img
-    src="/hero.png"
-    alt="Happy Children"
-    className="w-full h-auto object-cover"
-  />
-</div>
+        <div className="w-full">
+          <img
+            src="/hero.png"
+            alt="Happy Children"
+            className="w-full h-auto object-cover"
+          />
+        </div>
 
         {/* MOTIVATIONAL TEXT */}
         <motion.div
@@ -33,7 +33,7 @@ const InspirationSection = () => {
           className="text-center max-w-3xl mt-10 md:mt-1 px-6"
         >
           <h2 className="sm:text-3xl md:text-4xl font-bold text-gray-900 leading-snug">
-            “Every smile we create, every life we touch,  
+            “Every smile we create, every life we touch,
             brings us one step closer to a brighter world.”
           </h2>
 
