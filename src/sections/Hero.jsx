@@ -239,6 +239,7 @@
 
 import React, { useMemo } from "react";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 
 // SplitText Animation Component
 const SplitText = ({ text, delayStep = 0.03, className }) => {
@@ -316,15 +317,20 @@ const Hero = () => {
               them most.
             </motion.p>
 
-            <motion.button
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.45 }}
               viewport={{ once: true }}
-              className="mt-6 px-6 py-3 bg-white text-[#0A4C8B] rounded-xl text-lg font-semibold shadow-md hover:bg-gray-200 transition cursor-pointer"
+              className="mt-6"
             >
-              Support Our Mission
-            </motion.button>
+              <Link
+                to="/scholarship/apply"
+                className="inline-flex items-center rounded-xl bg-white px-6 py-3 text-lg font-semibold text-[#0A4C8B] shadow-md transition hover:bg-gray-200"
+              >
+                Apply for Scholarship
+              </Link>
+            </motion.div>
           </div>
 
           {/* RIGHT IMAGE CARD */}

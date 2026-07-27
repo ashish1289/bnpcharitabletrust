@@ -24,6 +24,9 @@ import Contact from "./pages/Contact";
 // import Blog from "./pages/Blog";
 import BlogDetail from "./pages/BlogDetail";
 import MediaPage from "./pages/MediaPage";
+import ScholarshipApply from "./pages/ScholarshipApply";
+import ScholarshipAdminPage from "./pages/admin/ScholarshipAdminPage";
+import AdminLoginPage from "./pages/admin/AdminLoginPage";
 
 function App() {
   return (
@@ -42,6 +45,9 @@ function App() {
         {/* <Route path="/donate" element={<Donate />} /> */}
         {/* <Route path="/blog" element={<Blog />} /> */}
         <Route path="/blog/:id" element={<BlogDetail />} />
+        <Route path="/scholarship/apply" element={<ScholarshipApply />} />
+        <Route path="/admin/login" element={<AdminLoginPage />} />
+        <Route path="/admin/scholarships" element={<ScholarshipAdminPage />} />
       </Routes>
     </BrowserRouter>
   );

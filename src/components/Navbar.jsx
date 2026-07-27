@@ -12,6 +12,7 @@ const navLinks = [
   { name: "Mission", href: "/mission" },
   { name: "Media", href: "/media" },
   { name: "Contact", href: "/contact" },
+  { name: "Login", href: "/admin/login", button: true },
 ];
 
 const Navbar = () => {
@@ -122,7 +123,9 @@ const Navbar = () => {
             <motion.div key={link.name} whileHover={{ y: -2 }} transition={{ type: "spring", stiffness: 300 }}>
               <Link
                 to={link.href}
-                className={`font-medium text-sm tracking-wide transition-colors ${location.pathname === link.href ? "text-[#0A4C8B]" : "text-[#4A5568] hover:text-[#0A4C8B]"}`}
+                className={link.button
+                  ? "inline-flex items-center rounded-full bg-[#0F72CE] px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-[#0A4C8B]"
+                  : `font-medium text-sm tracking-wide transition-colors ${location.pathname === link.href ? "text-[#0A4C8B]" : "text-[#4A5568] hover:text-[#0A4C8B]"}`}
               >
                 {link.name}
               </Link>
@@ -198,7 +201,9 @@ const Navbar = () => {
                 <Link
                   key={link.name}
                   to={link.href}
-                  className="py-3 px-2 text-[#4A5568] hover:text-[#0F72CE] text-base font-medium hover:bg-gray-50 rounded-xl transition"
+                  className={link.button
+                    ? "inline-flex items-center justify-center rounded-full bg-[#0F72CE] px-4 py-3 text-base font-semibold text-white shadow-sm transition hover:bg-[#0A4C8B]"
+                    : "py-3 px-2 text-[#4A5568] hover:text-[#0F72CE] text-base font-medium hover:bg-gray-50 rounded-xl transition"}
                 >
                   {link.name}
                 </Link>
