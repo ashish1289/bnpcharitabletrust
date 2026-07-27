@@ -30,3 +30,4 @@ server/logs/
 *.njsproj
 *.sln
 *.sw?
+server/
