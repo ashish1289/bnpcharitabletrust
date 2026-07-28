@@ -26,6 +26,10 @@ const ScholarshipAdminPanel = () => {
     const checkAdmin = async () => {
       try {
         const data = await api.getCurrentUser();
+        if (data.user.role !== 'admin') {
+          window.location.href = '/scholarship-info';
+          return;
+        }
         setAdmin(data.user);
         fetchApplications();
       } catch {
@@ -119,7 +123,7 @@ const ScholarshipAdminPanel = () => {
                 <tr>
                   <th className="p-4 font-semibold text-gray-600">Name</th>
                   <th className="p-4 font-semibold text-gray-600">Status</th>
-                  <th className="p-4 font-semibold text-gray-600 hidden md:table-cell">Date</th>
+                  <th className="p-4 font-semibold text-gray-600">Action</th>
                 </tr>
               </thead>
               <tbody className="divide-y">
@@ -144,8 +148,13 @@ const ScholarshipAdminPanel = () => {
                         {app.status}
                       </span>
                     </td>
-                    <td className="p-4 text-xs text-gray-500 hidden md:table-cell">
-                      {new Date(app.createdAt).toLocaleDateString()}
+                    <td className="p-4">
+                      <button 
+                        onClick={(e) => { e.stopPropagation(); setSelectedApp(app); }}
+                        className="flex items-center gap-2 px-4 py-2 bg-[#0F72CE] text-white rounded-lg text-xs font-semibold hover:bg-[#0A4C8B] transition"
+                      >
+                        <Eye size={14} /> View
+                      </button>
                     </td>
                   </tr>
                 ))}

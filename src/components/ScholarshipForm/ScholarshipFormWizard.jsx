@@ -89,6 +89,16 @@ const ScholarshipFormWizard = ({ authUser }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    // Validate all steps before submitting
+    const incompleteSteps = steps.filter(step => !isStepComplete(step.id));
+    if (incompleteSteps.length > 0) {
+      setMessage(`Please completely fill out all required fields. Missing in: ${incompleteSteps.map(s => s.title).join(', ')}`);
+      // Automatically jump to the first incomplete step
+      setCurrentStep(incompleteSteps[0].id);
+      return;
+    }
+
     setIsSubmitting(true);
     setMessage('');
 

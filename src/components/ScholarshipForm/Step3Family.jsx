@@ -73,9 +73,11 @@ const Step3Family = ({ data, setFormData, onDocChange }) => {
         
         <div>
           <Input label="29. Total annual family income from all sources:" name="totalAnnualFamilyIncome" value={data.totalAnnualFamilyIncome} onChange={handleChange} required />
-          <div className="mb-4">
-            <label className="block text-xs text-gray-500 mb-1">Attach Family Income Document (PDF/Image)</label>
-            <input type="file" name="familyIncomeCertificate" onChange={onDocChange} accept=".pdf,image/*" className="text-sm" />
+          <div className="mb-4 bg-blue-50 border border-blue-200 p-4 rounded-xl">
+            <label className="block text-sm font-bold text-[#0F72CE] mb-2">Attach Family Income Document (PDF/Image) *</label>
+            <input type="file" name="familyIncomeCertificate" onChange={onDocChange} accept=".pdf,image/*" 
+              className="text-sm file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-[#0F72CE] file:text-white hover:file:bg-[#0A4C8B] transition" />
+            {documents?.familyIncomeCertificate && <p className="text-xs text-green-600 mt-2 font-semibold">✓ {documents.familyIncomeCertificate.name} selected</p>}
           </div>
         </div>
 

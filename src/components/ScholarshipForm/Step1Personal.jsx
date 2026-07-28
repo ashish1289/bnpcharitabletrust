@@ -24,15 +24,28 @@ const Step1Personal = ({ data, setFormData, onDocChange, documents }) => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6">
         <Input label="1. Full name:" name="fullName" value={data.fullName} onChange={handleChange} required />
         <Input label="2. Date of birth:" name="dateOfBirth" type="date" value={data.dateOfBirth} onChange={handleChange} required />
-        <Input label="3. Gender:" name="gender" value={data.gender} onChange={handleChange} required />
+        <div className="mb-4">
+          <label className="block text-sm font-semibold text-gray-700 mb-1">
+            3. Gender: <span className="text-red-500">*</span>
+          </label>
+          <select name="gender" value={data.gender} onChange={handleChange} required
+            className="w-full rounded-xl border border-gray-300 p-3 focus:border-[#0F72CE] focus:ring-1 focus:ring-[#0F72CE] outline-none bg-white">
+            <option value="">Select Gender</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Others">Others</option>
+          </select>
+        </div>
         <Input label="4. Mobile number:" name="mobileNumber" value={data.mobileNumber} onChange={handleChange} required />
         <Input label="5. Email address:" name="emailAddress" type="email" value={data.emailAddress} onChange={handleChange} required />
         
         <div>
           <Input label="6. Aadhaar or identity-document number:" name="aadhaarNumber" value={data.aadhaarNumber} onChange={handleChange} required />
-          <div className="mb-4">
-            <label className="block text-xs text-gray-500 mb-1">Attach Aadhaar Copy (PDF/Image)</label>
-            <input type="file" name="aadhaarCard" onChange={onDocChange} accept=".pdf,image/*" className="text-sm" />
+          <div className="mb-4 bg-blue-50 border border-blue-200 p-4 rounded-xl">
+            <label className="block text-sm font-bold text-[#0F72CE] mb-2">Attach Aadhaar Copy (PDF/Image) *</label>
+            <input type="file" name="aadhaarCard" onChange={onDocChange} accept=".pdf,image/*" 
+              className="text-sm file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-[#0F72CE] file:text-white hover:file:bg-[#0A4C8B] transition" />
+            {documents?.aadhaarCard && <p className="text-xs text-green-600 mt-2 font-semibold">✓ {documents.aadhaarCard.name} selected</p>}
           </div>
         </div>
 
