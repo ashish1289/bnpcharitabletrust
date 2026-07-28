@@ -28,6 +28,7 @@ import ScholarshipApply from "./pages/ScholarshipApply";
 import ScholarshipAdminPage from "./pages/admin/ScholarshipAdminPage";
 import AdminLoginPage from "./pages/admin/AdminLoginPage";
 import StudentProfile from "./pages/StudentProfile";
+import ScholarshipInfo from "./pages/ScholarshipInfo";
 
 function App() {
   return (
@@ -47,6 +48,7 @@ function App() {
         {/* <Route path="/blog" element={<Blog />} /> */}
         <Route path="/blog/:id" element={<BlogDetail />} />
         <Route path="/scholarship/apply" element={<ScholarshipApply />} />
+        <Route path="/scholarship-info" element={<ScholarshipInfo />} />
         <Route path="/admin/login" element={<AdminLoginPage />} />
         <Route path="/admin/scholarships" element={<ScholarshipAdminPage />} />
         <Route path="/profile" element={<StudentProfile />} />

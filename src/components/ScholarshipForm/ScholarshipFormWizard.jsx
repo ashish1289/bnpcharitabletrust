@@ -60,6 +60,33 @@ const ScholarshipFormWizard = ({ authUser }) => {
     setDocuments({ ...documents, [e.target.name]: e.target.files[0] });
   };
 
+  const isStepComplete = (stepId) => {
+    const pd = formData.personalDetails;
+    const ed = formData.educationalRecord;
+    const fd = formData.familyDetails;
+    const oa = formData.otherAssistance;
+    const ps = formData.personalStatement;
+    const ref = formData.references;
+    const dec = formData.declarations;
+
+    switch (stepId) {
+      case 1:
+        return !!(pd.fullName && pd.dateOfBirth && pd.gender && pd.mobileNumber && pd.emailAddress && pd.aadhaarNumber && pd.permanentAddress && pd.districtAndState);
+      case 2:
+        return !!(ed.courseName && ed.institutionNameAddress && ed.courseDuration && ed.presentYearSemester && ed.totalAnnualCourseFee && ed.scholarshipAmountRequested);
+      case 3:
+        return !!(fd.totalFamilyMembers && fd.totalAnnualFamilyIncome);
+      case 4:
+        return !!(oa.appliedAnotherScholarship && oa.receivingAnotherScholarship);
+      case 5:
+        return !!(ps.whyCourseInstitution && ps.financialDifficulties && ps.howScholarshipHelps);
+      case 6:
+        return !!(ref.reference1.name && ref.reference1.mobile && dec.applicantSignature && dec.applicantName && dec.applicantDate && dec.applicantPlace);
+      default:
+        return false;
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -100,14 +127,37 @@ const ScholarshipFormWizard = ({ authUser }) => {
     <div className="bg-white rounded-3xl shadow-xl overflow-hidden border">
       {/* Stepper Header */}
       <div className="bg-gray-50 border-b p-6 flex flex-wrap gap-4 items-center justify-between">
-        {steps.map(step => (
-          <div key={step.id} className={`flex items-center gap-2 ${currentStep === step.id ? 'text-[#0F72CE] font-bold' : 'text-gray-400'}`}>
-            <span className={`w-8 h-8 flex items-center justify-center rounded-full text-sm ${currentStep === step.id ? 'bg-[#0F72CE] text-white' : currentStep > step.id ? 'bg-green-500 text-white' : 'bg-gray-200'}`}>
-              {currentStep > step.id ? '✓' : step.id}
-            </span>
-            <span className="hidden md:inline">{step.title}</span>
-          </div>
-        ))}
+        {steps.map(step => {
+          const isActive = currentStep === step.id;
+          const isComplete = isStepComplete(step.id);
+          
+          let circleClass = 'bg-gray-200 text-gray-500';
+          let textClass = 'text-gray-400';
+          let icon = step.id;
+
+          if (isActive) {
+            circleClass = 'bg-[#0F72CE] text-white shadow-md shadow-blue-500/30';
+            textClass = 'text-[#0F72CE] font-bold';
+          } else if (isComplete) {
+            circleClass = 'bg-green-500 text-white shadow-md shadow-green-500/20';
+            textClass = 'text-green-600 font-semibold';
+            icon = '✓';
+          } else {
+            // Not active, not complete -> red (incomplete)
+            circleClass = 'bg-red-500 text-white shadow-md shadow-red-500/20';
+            textClass = 'text-red-500 font-medium';
+            icon = '!';
+          }
+
+          return (
+            <div key={step.id} className={`flex items-center gap-2 ${textClass} transition-colors cursor-pointer`} onClick={() => setCurrentStep(step.id)}>
+              <span className={`w-8 h-8 flex items-center justify-center rounded-full text-sm font-bold transition-all ${circleClass}`}>
+                {icon}
+              </span>
+              <span className="hidden md:inline">{step.title}</span>
+            </div>
+          );
+        })}
       </div>
 
       <div className="p-8">

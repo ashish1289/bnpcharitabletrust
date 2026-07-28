@@ -56,8 +56,8 @@ const AdminLoginPage = () => {
       };
 
       saveSession(studentUser);
-      setMessage('Student account created. Redirecting to the scholarship form...');
-      navigate('/scholarship/apply', { replace: true });
+      setMessage('Student account created. Redirecting to the scholarship info portal...');
+      navigate('/scholarship-info', { replace: true });
       setLoading(false);
       return;
     }
@@ -73,7 +73,7 @@ const AdminLoginPage = () => {
       if (user.role === 'admin') {
         navigate('/admin/scholarships', { replace: true });
       } else {
-        navigate('/scholarship/apply', { replace: true });
+        navigate('/scholarship-info', { replace: true });
       }
     } catch (error) {
       setMessage(error.message || 'Login failed. Please check your admin credentials.');
