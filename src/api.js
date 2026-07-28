@@ -26,6 +26,7 @@ const request = async (path, options = {}) => {
 
 const api = {
   login: (body) => request('/auth/login', { method: 'POST', body }),
+  register: (body) => request('/auth/register', { method: 'POST', body }),
   logout: () => request('/auth/logout', { method: 'POST' }),
   getCurrentUser: () => request('/auth/me'),
   getApplications: () => request('/scholarships'),

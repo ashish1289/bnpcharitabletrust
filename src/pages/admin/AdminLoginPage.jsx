@@ -48,17 +48,20 @@ const AdminLoginPage = () => {
     }
 
     if (mode === 'signup') {
-      const studentUser = {
-        id: Date.now(),
-        name: form.name,
-        email: form.email,
-        role: 'student',
-      };
-
-      saveSession(studentUser);
-      setMessage('Student account created. Redirecting to the scholarship info portal...');
-      navigate('/scholarship-info', { replace: true });
-      setLoading(false);
+      try {
+        const data = await api.register(form);
+        const user = {
+          ...data.user,
+          role: data.user?.role || 'viewer',
+        };
+        saveSession(user);
+        setMessage('Account created. Redirecting to the scholarship info portal...');
+        navigate('/scholarship-info', { replace: true });
+      } catch (error) {
+        setMessage(error.message || 'Signup failed.');
+      } finally {
+        setLoading(false);
+      }
       return;
     }
 
