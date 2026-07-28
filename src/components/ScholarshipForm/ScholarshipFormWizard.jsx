@@ -1,0 +1,156 @@
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'motion/react'; // Ensure correct import for framer-motion v12
+import Step1Personal from './Step1Personal';
+import Step2Education from './Step2Education';
+import Step3Family from './Step3Family';
+import Step4Assistance from './Step4Assistance';
+import Step5Statement from './Step5Statement';
+import Step6References from './Step6References';
+import api from '../../api';
+
+const initialData = {
+  personalDetails: { fullName: '', dateOfBirth: '', gender: '', mobileNumber: '', emailAddress: '', aadhaarNumber: '', permanentAddress: '', correspondenceAddress: '', districtAndState: '', ruralUrbanArea: '', preferredLanguage: '', disability: '', specialCategory: '' },
+  educationalRecord: {
+    pastEducation: [{ examination: 'Class 10', schoolCollege: '', boardUniversity: '', year: '', marksCgpa: '', percentage: '' }],
+    courseName: '', institutionNameAddress: '', courseDuration: '', presentYearSemester: '', admissionStatus: '', totalAnnualCourseFee: '', amountAlreadyPaid: '', outstandingAmount: '', expectedExpenditure: '', scholarshipAmountRequested: ''
+  },
+  familyDetails: {
+    familyMembers: [{ name: '', age: '', relationship: '', education: '', occupation: '', annualIncome: '' }],
+    fatherOccupation: '', motherOccupation: '', totalFamilyMembers: '', earningMembers: '', dependants: '', totalAnnualFamilyIncome: '', incomeSources: '', agriculturalLand: '', houseOwnership: '', majorAssets: '', liabilities: '', hardships: '', firstGenStudent: '', siblingsStudying: ''
+  },
+  otherAssistance: { appliedAnotherScholarship: '', receivingAnotherScholarship: '', scholarshipNameSponsor: '', amountReceivedExpected: '', expensesCovered: '', supportFromNGO: '', academicAchievements: '', otherAchievements: '', volunteeringActivities: '', skillCourses: '', partTimeWork: '', awardsRecognitions: '' },
+  personalStatement: { whyCourseInstitution: '', plansAfterCourse: '', financialDifficulties: '', howScholarshipHelps: '', challengeFaced: '', whyConsiderYou: '', anythingElse: '' },
+  references: {
+    reference1: { name: '', designation: '', institution: '', relationship: '', mobile: '', email: '' },
+    reference2: { name: '', designation: '', institution: '', relationship: '', mobile: '', email: '' }
+  },
+  declarations: { applicantSignature: '', applicantName: '', applicantDate: '', applicantPlace: '', parentSignature: '', parentName: '', parentRelationship: '', parentDate: '' },
+};
+
+const steps = [
+  { id: 1, title: 'Personal Details' },
+  { id: 2, title: 'Educational Record' },
+  { id: 3, title: 'Family Details' },
+  { id: 4, title: 'Other Assistance' },
+  { id: 5, title: 'Personal Statement' },
+  { id: 6, title: 'References & Declarations' },
+];
+
+const ScholarshipFormWizard = ({ authUser }) => {
+  const [currentStep, setCurrentStep] = useState(1);
+  const [formData, setFormData] = useState(initialData);
+  const [documents, setDocuments] = useState({ tuitionFeeReceipt: null, familyIncomeCertificate: null, aadhaarCard: null });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [message, setMessage] = useState('');
+
+  // Hydrate email if authUser exists
+  React.useEffect(() => {
+    if (authUser?.email && !formData.personalDetails.emailAddress) {
+      setFormData(prev => ({
+        ...prev,
+        personalDetails: { ...prev.personalDetails, emailAddress: authUser.email, fullName: authUser.name || '' }
+      }));
+    }
+  }, [authUser]);
+
+  const handleNext = () => setCurrentStep(prev => Math.min(prev + 1, steps.length));
+  const handlePrev = () => setCurrentStep(prev => Math.max(prev - 1, 1));
+
+  const handleDocumentChange = (e) => {
+    setDocuments({ ...documents, [e.target.name]: e.target.files[0] });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setMessage('');
+
+    try {
+      // Use FormData to send files and JSON payload
+      const payload = new FormData();
+      payload.append('applicationData', JSON.stringify(formData));
+      
+      if (documents.tuitionFeeReceipt) payload.append('tuitionFeeReceipt', documents.tuitionFeeReceipt);
+      if (documents.familyIncomeCertificate) payload.append('familyIncomeCertificate', documents.familyIncomeCertificate);
+      if (documents.aadhaarCard) payload.append('aadhaarCard', documents.aadhaarCard);
+
+      // We will need to update api.js to support FormData or write a direct fetch call here
+      // For now, let's assume api.submitScholarship supports FormData
+      await api.submitScholarship(payload);
+      
+      setMessage('Application submitted successfully!');
+      setCurrentStep(7); // Show success screen
+    } catch (error) {
+      setMessage(error.message);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  if (currentStep === 7) {
+    return (
+      <div className="text-center py-16">
+        <h2 className="text-3xl font-bold text-green-600 mb-4">Success!</h2>
+        <p className="text-gray-700">{message}</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="bg-white rounded-3xl shadow-xl overflow-hidden border">
+      {/* Stepper Header */}
+      <div className="bg-gray-50 border-b p-6 flex flex-wrap gap-4 items-center justify-between">
+        {steps.map(step => (
+          <div key={step.id} className={`flex items-center gap-2 ${currentStep === step.id ? 'text-[#0F72CE] font-bold' : 'text-gray-400'}`}>
+            <span className={`w-8 h-8 flex items-center justify-center rounded-full text-sm ${currentStep === step.id ? 'bg-[#0F72CE] text-white' : currentStep > step.id ? 'bg-green-500 text-white' : 'bg-gray-200'}`}>
+              {currentStep > step.id ? '✓' : step.id}
+            </span>
+            <span className="hidden md:inline">{step.title}</span>
+          </div>
+        ))}
+      </div>
+
+      <div className="p-8">
+        {message && <div className="mb-6 p-4 bg-red-50 text-red-700 rounded-xl">{message}</div>}
+        
+        <form onSubmit={(e) => { e.preventDefault(); if (currentStep === 6) handleSubmit(e); }}>
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={currentStep}
+              initial={{ x: 20, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              exit={{ x: -20, opacity: 0 }}
+              transition={{ duration: 0.2 }}
+            >
+              {currentStep === 1 && <Step1Personal data={formData.personalDetails} setFormData={setFormData} onDocChange={handleDocumentChange} documents={documents} />}
+              {currentStep === 2 && <Step2Education data={formData.educationalRecord} setFormData={setFormData} onDocChange={handleDocumentChange} documents={documents} />}
+              {currentStep === 3 && <Step3Family data={formData.familyDetails} setFormData={setFormData} onDocChange={handleDocumentChange} documents={documents} />}
+              {currentStep === 4 && <Step4Assistance data={formData.otherAssistance} setFormData={setFormData} />}
+              {currentStep === 5 && <Step5Statement data={formData.personalStatement} setFormData={setFormData} />}
+              {currentStep === 6 && <Step6References data={formData.references} declarations={formData.declarations} setFormData={setFormData} />}
+            </motion.div>
+          </AnimatePresence>
+
+          {/* Navigation Buttons */}
+          <div className="mt-8 pt-6 border-t flex justify-between">
+            <button type="button" onClick={handlePrev} disabled={currentStep === 1 || isSubmitting} className="px-6 py-2 rounded-full border hover:bg-gray-50 disabled:opacity-50">
+              Back
+            </button>
+            
+            {currentStep < 6 ? (
+              <button type="button" onClick={handleNext} className="px-6 py-2 rounded-full bg-[#0F72CE] text-white font-semibold hover:bg-[#0A4C8B]">
+                Next Step
+              </button>
+            ) : (
+              <button type="submit" onClick={handleSubmit} disabled={isSubmitting} className="px-8 py-2 rounded-full bg-green-600 text-white font-semibold hover:bg-green-700 disabled:opacity-50">
+                {isSubmitting ? 'Submitting...' : 'Submit Application'}
+              </button>
+            )}
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+};
+
+export default ScholarshipFormWizard;

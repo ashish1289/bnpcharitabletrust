@@ -12,7 +12,6 @@ const navLinks = [
   { name: "Mission", href: "/mission" },
   { name: "Media", href: "/media" },
   { name: "Contact", href: "/contact" },
-  { name: "Login", href: "/admin/login", button: true },
 ];
 
 const Navbar = () => {
@@ -38,6 +37,25 @@ const Navbar = () => {
   }, [location]);
 
   const isAboutActive = location.pathname.startsWith("/about");
+
+  const [authUser, setAuthUser] = useState(() => {
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem("bnpAuthUser");
+      return saved ? JSON.parse(saved) : null;
+    }
+    return null;
+  });
+
+  useEffect(() => {
+    const handleStorageChange = () => {
+      const saved = localStorage.getItem("bnpAuthUser");
+      setAuthUser(saved ? JSON.parse(saved) : null);
+    };
+    window.addEventListener("storage", handleStorageChange);
+    return () => window.removeEventListener("storage", handleStorageChange);
+  }, []);
+
+  const profileHref = authUser?.role === "admin" ? "/admin/scholarships" : "/profile";
 
   return (
     <nav className="fixed top-0 left-0 w-full z-50 bg-gradient-to-r from-[#F8FBFF]/97 to-[#EFF6FF]/97 backdrop-blur-xl border-b border-[#E2E8F0] shadow-[0_2px_10px_rgba(0,0,0,0.06)] transition-all duration-300">
@@ -123,14 +141,29 @@ const Navbar = () => {
             <motion.div key={link.name} whileHover={{ y: -2 }} transition={{ type: "spring", stiffness: 300 }}>
               <Link
                 to={link.href}
-                className={link.button
-                  ? "inline-flex items-center rounded-full bg-[#0F72CE] px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-[#0A4C8B]"
-                  : `font-medium text-sm tracking-wide transition-colors ${location.pathname === link.href ? "text-[#0A4C8B]" : "text-[#4A5568] hover:text-[#0A4C8B]"}`}
+                className={`font-medium text-sm tracking-wide transition-colors ${location.pathname === link.href ? "text-[#0A4C8B]" : "text-[#4A5568] hover:text-[#0A4C8B]"}`}
               >
                 {link.name}
               </Link>
             </motion.div>
           ))}
+
+          {authUser ? (
+            <motion.div whileHover={{ scale: 1.05 }}>
+              <Link to={profileHref} className="flex items-center gap-2 bg-[#0F72CE] text-white px-4 py-2 rounded-full font-semibold text-sm hover:bg-[#0A4C8B] transition">
+                <div className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center">
+                  <span className="text-xs uppercase">{authUser.name?.charAt(0) || 'U'}</span>
+                </div>
+                Profile
+              </Link>
+            </motion.div>
+          ) : (
+            <motion.div whileHover={{ y: -2 }} transition={{ type: "spring", stiffness: 300 }}>
+              <Link to="/admin/login" className="inline-flex items-center rounded-full bg-[#0F72CE] px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-[#0A4C8B]">
+                Login
+              </Link>
+            </motion.div>
+          )}
         </div>
 
         {/* Mobile Menu Button */}
@@ -201,13 +234,24 @@ const Navbar = () => {
                 <Link
                   key={link.name}
                   to={link.href}
-                  className={link.button
-                    ? "inline-flex items-center justify-center rounded-full bg-[#0F72CE] px-4 py-3 text-base font-semibold text-white shadow-sm transition hover:bg-[#0A4C8B]"
-                    : "py-3 px-2 text-[#4A5568] hover:text-[#0F72CE] text-base font-medium hover:bg-gray-50 rounded-xl transition"}
+                  className="py-3 px-2 text-[#4A5568] hover:text-[#0F72CE] text-base font-medium hover:bg-gray-50 rounded-xl transition"
                 >
                   {link.name}
                 </Link>
               ))}
+
+              {authUser ? (
+                <Link to={profileHref} className="flex items-center gap-3 py-3 px-2 text-[#0F72CE] font-semibold hover:bg-gray-50 rounded-xl transition">
+                  <div className="w-8 h-8 rounded-full bg-[#0F72CE]/10 flex items-center justify-center">
+                    <span className="text-sm uppercase">{authUser.name?.charAt(0) || 'U'}</span>
+                  </div>
+                  Go to Profile
+                </Link>
+              ) : (
+                <Link to="/admin/login" className="inline-flex items-center justify-center rounded-full bg-[#0F72CE] px-4 py-3 text-base font-semibold text-white shadow-sm transition hover:bg-[#0A4C8B] mt-2">
+                  Login
+                </Link>
+              )}
             </div>
           </motion.div>
         )}

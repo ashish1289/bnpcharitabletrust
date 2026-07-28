@@ -1,0 +1,56 @@
+import React from 'react';
+
+const Input = ({ label, name, value, onChange, type = "text", required = false }) => (
+  <div className="mb-4">
+    <label className="block text-sm font-semibold text-gray-700 mb-1">
+      {label} {required && <span className="text-red-500">*</span>}
+    </label>
+    <input type={type} name={name} value={value} onChange={onChange} required={required}
+      className="w-full rounded-xl border border-gray-300 p-3 focus:border-[#0F72CE] focus:ring-1 focus:ring-[#0F72CE] outline-none" />
+  </div>
+);
+
+const Step1Personal = ({ data, setFormData, onDocChange, documents }) => {
+  const handleChange = (e) => {
+    setFormData(prev => ({
+      ...prev,
+      personalDetails: { ...prev.personalDetails, [e.target.name]: e.target.value }
+    }));
+  };
+
+  return (
+    <div>
+      <h2 className="text-2xl font-bold text-gray-800 mb-6">A. Applicant’s Personal Details</h2>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6">
+        <Input label="1. Full name:" name="fullName" value={data.fullName} onChange={handleChange} required />
+        <Input label="2. Date of birth:" name="dateOfBirth" type="date" value={data.dateOfBirth} onChange={handleChange} required />
+        <Input label="3. Gender:" name="gender" value={data.gender} onChange={handleChange} required />
+        <Input label="4. Mobile number:" name="mobileNumber" value={data.mobileNumber} onChange={handleChange} required />
+        <Input label="5. Email address:" name="emailAddress" type="email" value={data.emailAddress} onChange={handleChange} required />
+        
+        <div>
+          <Input label="6. Aadhaar or identity-document number:" name="aadhaarNumber" value={data.aadhaarNumber} onChange={handleChange} required />
+          <div className="mb-4">
+            <label className="block text-xs text-gray-500 mb-1">Attach Aadhaar Copy (PDF/Image)</label>
+            <input type="file" name="aadhaarCard" onChange={onDocChange} accept=".pdf,image/*" className="text-sm" />
+          </div>
+        </div>
+
+        <div className="md:col-span-2">
+          <Input label="7. Complete permanent address with PIN code:" name="permanentAddress" value={data.permanentAddress} onChange={handleChange} required />
+        </div>
+        <div className="md:col-span-2">
+          <Input label="8. Current correspondence address:" name="correspondenceAddress" value={data.correspondenceAddress} onChange={handleChange} />
+        </div>
+        
+        <Input label="9. District and state:" name="districtAndState" value={data.districtAndState} onChange={handleChange} required />
+        <Input label="10. Rural/urban area:" name="ruralUrbanArea" value={data.ruralUrbanArea} onChange={handleChange} />
+        <Input label="11. Preferred language for communication:" name="preferredLanguage" value={data.preferredLanguage} onChange={handleChange} />
+        <Input label="12. Disability, if any:" name="disability" value={data.disability} onChange={handleChange} />
+        <Input label="13. Category requiring special consideration, if applicable:" name="specialCategory" value={data.specialCategory} onChange={handleChange} />
+      </div>
+    </div>
+  );
+};
+
+export default Step1Personal;
