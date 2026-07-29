@@ -8,7 +8,7 @@ const Input = ({ label, name, value, onChange, type = "text", required = false }
   </div>
 );
 
-const Step3Family = ({ data, setFormData, onDocChange }) => {
+const Step3Family = ({ data, setFormData, onDocChange, documents }) => {
   const handleChange = (e) => {
     setFormData(prev => ({
       ...prev,
