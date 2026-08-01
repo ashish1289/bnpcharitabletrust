@@ -8,6 +8,21 @@ const Input = ({ label, name, value, onChange, type = "text", required = false }
   </div>
 );
 
+const Select = ({ label, name, value, onChange, options, required = false }) => (
+  <div className="mb-4">
+    <label className="block text-sm font-semibold text-gray-700 mb-1">
+      {label} {required && <span className="text-red-500">*</span>}
+    </label>
+    <select name={name} value={value} onChange={onChange} required={required}
+      className="w-full rounded-xl border border-gray-300 p-3 focus:border-[#0F72CE] focus:ring-1 focus:ring-[#0F72CE] outline-none bg-white">
+      <option value="">Select an option</option>
+      {options.map((opt, i) => (
+        <option key={i} value={opt}>{opt}</option>
+      ))}
+    </select>
+  </div>
+);
+
 const Step2Education = ({ data, setFormData, onDocChange, documents }) => {
   const handleChange = (e) => {
     setFormData(prev => ({
@@ -73,7 +88,7 @@ const Step2Education = ({ data, setFormData, onDocChange, documents }) => {
         
         <Input label="16. Course duration:" name="courseDuration" value={data.courseDuration} onChange={handleChange} required />
         <Input label="17. Present year or semester:" name="presentYearSemester" value={data.presentYearSemester} onChange={handleChange} required />
-        <Input label="18. Admission status: Confirmed/Provisional/Awaiting allotment" name="admissionStatus" value={data.admissionStatus} onChange={handleChange} required />
+        <Select label="18. Admission status:" name="admissionStatus" value={data.admissionStatus} onChange={handleChange} required options={['Confirmed', 'Provisional', 'Awaiting allotment']} />
         
         <div>
           <Input label="19. Total annual course fee:" name="totalAnnualCourseFee" value={data.totalAnnualCourseFee} onChange={handleChange} required />

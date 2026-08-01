@@ -109,7 +109,7 @@ const ContactSection = () => {
                 <div>
                   <p className="text-lg font-bold text-[#0F72CE]">Registered Office</p>
                   <p className="text-lg leading-relaxed">
-                    N2/29, Block N2, Irc Village, Nayapalli, Bhubaneswar, Odisha 751015 , India
+                    N2/25, Block N2, Irc Village, Nayapalli, Bhubaneswar, Odisha 751015 , India
                   </p>
                 </div>
               </div>

@@ -38,7 +38,7 @@ const ScholarshipPromoSection = () => {
           >
             <motion.div variants={itemVariants} className="inline-flex items-center gap-2 px-4 py-2 bg-blue-100/80 border border-blue-200 text-blue-800 rounded-full font-medium text-sm shadow-sm">
               <Star className="w-4 h-4 text-blue-600 fill-blue-600" />
-              <span>Empowering Future Leaders</span>
+              <span>Supporting Dreams. Building Futures.</span>
             </motion.div>
             
             <motion.h2 variants={itemVariants} className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-gray-900 leading-tight">
@@ -49,7 +49,9 @@ const ScholarshipPromoSection = () => {
             </motion.h2>
             
             <motion.p variants={itemVariants} className="text-lg md:text-xl text-gray-600 leading-relaxed font-light">
-              We believe that financial constraints should never stand in the way of true potential. Our scholarship program is dedicated to identifying and supporting meritorious students, helping them achieve their academic dreams and shape a brighter tomorrow.
+              Education has the power to transform lives, and no deserving student should be held back by financial challenges. Through the BNP Sikshya Sahayog Scholarship, BNP Charitable Trust provides financial assistance to meritorious and underprivileged students pursuing Engineering, Medical, Nursing, Diploma, Graduation, and Post-Graduation courses across Odisha.
+              <br /><br />
+              Our scholarship program is designed to recognize academic excellence, encourage higher education, and empower talented students to pursue their aspirations with confidence and dignity.
             </motion.p>
             
             <motion.div variants={itemVariants} className="pt-6 flex flex-col sm:flex-row gap-4 w-full sm:w-auto">

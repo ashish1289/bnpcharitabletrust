@@ -1,6 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { Mail, Phone, MapPin, Facebook, Instagram, Linkedin } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
@@ -42,9 +43,21 @@ const Footer = () => {
         >
           <h3 className="text-lg font-semibold mb-4 text-[#5CC9FF]">Quick Links</h3>
           <ul className="space-y-3 text-gray-300 text-sm">
-            {["Home", "About Us", "Our Mission", "Programs", "Donate"].map((item, idx) => (
-              <li key={idx} className="hover:text-white transition cursor-pointer">
-                {item}
+            {[
+              { name: "Home", path: "/" },
+              { name: "About Us", path: "/about" },
+              { name: "Our Mission", path: "/mission" },
+              { name: "Contact Us", path: "/contact" },
+              { name: "Media", path: "/media" }
+            ].map((item, idx) => (
+              <li key={idx}>
+                <Link
+                  to={item.path}
+                  onClick={() => window.scrollTo(0, 0)}
+                  className="hover:text-white transition cursor-pointer inline-block"
+                >
+                  {item.name}
+                </Link>
               </li>
             ))}
           </ul>
@@ -69,7 +82,7 @@ const Footer = () => {
               <MapPin size={18} className="mt-1 shrink-0" />
               <div>
                 <span className="block font-semibold text-[#5CC9FF]">Registered Office:</span>
-                N2/29, Block N2, Irc Village, Nayapalli, Bhubaneswar, Odisha 751015 , India
+                N2/25, Block N2, Irc Village, Nayapalli, Bhubaneswar, Odisha 751015 , India
               </div>
             </li>
             <li className="flex items-start gap-2">
@@ -109,8 +122,10 @@ const Footer = () => {
       </div>
 
       {/* BOTTOM BAR */}
-      <div className="mt-14 border-t border-white/10 pt-6 text-center text-gray-400 text-sm">
-        © {new Date().getFullYear()} BNP Charitable Trust — All Rights Reserved.
+      <div className="mt-14 border-t border-white/10 pt-6 text-center text-gray-400 text-sm flex flex-col sm:flex-row justify-center items-center gap-2">
+        <span>© {new Date().getFullYear()} BNP Charitable Trust — All Rights Reserved.</span>
+        <span className="hidden sm:inline">|</span>
+        <span>Developed by <span className="text-[#5CC9FF] font-semibold">ttrackepay</span></span>
       </div>
     </footer>
   );

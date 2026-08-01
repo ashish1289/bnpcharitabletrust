@@ -16,6 +16,21 @@ const Textarea = ({ label, name, value, onChange, required = false }) => (
   </div>
 );
 
+const Select = ({ label, name, value, onChange, options, required = false }) => (
+  <div className="mb-4">
+    <label className="block text-sm font-semibold text-gray-700 mb-1">
+      {label} {required && <span className="text-red-500">*</span>}
+    </label>
+    <select name={name} value={value} onChange={onChange} required={required}
+      className="w-full rounded-xl border border-gray-300 p-3 focus:border-[#0F72CE] focus:ring-1 focus:ring-[#0F72CE] outline-none bg-white">
+      <option value="">Select an option</option>
+      {options.map((opt, i) => (
+        <option key={i} value={opt}>{opt}</option>
+      ))}
+    </select>
+  </div>
+);
+
 const Step4Assistance = ({ data, setFormData }) => {
   const handleChange = (e) => {
     setFormData(prev => ({
@@ -28,15 +43,15 @@ const Step4Assistance = ({ data, setFormData }) => {
     <div>
       <h2 className="text-2xl font-bold text-gray-800 mb-6">D. Other Financial Assistance</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 mb-8">
-        <Input label="38. Have you applied for another scholarship?" name="appliedAnotherScholarship" value={data.appliedAnotherScholarship} onChange={handleChange} />
-        <Input label="39. Are you currently receiving any scholarship?" name="receivingAnotherScholarship" value={data.receivingAnotherScholarship} onChange={handleChange} />
+        <Select label="38. Have you applied for another scholarship?" name="appliedAnotherScholarship" value={data.appliedAnotherScholarship} onChange={handleChange} options={['Yes', 'No']} />
+        <Select label="39. Are you currently receiving any scholarship?" name="receivingAnotherScholarship" value={data.receivingAnotherScholarship} onChange={handleChange} options={['Yes', 'No']} />
         <Input label="40. Name of scholarship or sponsor:" name="scholarshipNameSponsor" value={data.scholarshipNameSponsor} onChange={handleChange} />
         <Input label="41. Amount received or expected:" name="amountReceivedExpected" value={data.amountReceivedExpected} onChange={handleChange} />
         <div className="md:col-span-2">
           <Input label="42. Expenses covered by it:" name="expensesCovered" value={data.expensesCovered} onChange={handleChange} />
         </div>
         <div className="md:col-span-2">
-          <Input label="43. Have you received support from any NGO, government department, employer, or institution?" name="supportFromNGO" value={data.supportFromNGO} onChange={handleChange} />
+          <Select label="43. Have you received support from any NGO, government department, employer, or institution?" name="supportFromNGO" value={data.supportFromNGO} onChange={handleChange} options={['Yes', 'No']} />
         </div>
       </div>
 

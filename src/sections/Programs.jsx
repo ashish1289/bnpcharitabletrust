@@ -2,61 +2,61 @@ import React from "react";
 import * as motion from "motion/react-client";
 // import {  Variants } from "motion/react";
 import {
-  BookOpenCheck,
-  HandHeart,
-  UtensilsCrossed,
-  Users,
-  Leaf,
+  GraduationCap,
+  Trophy,
+  BookOpen,
+  Tractor,
+  Medal,
   HeartPulse,
 } from "lucide-react";
 
 export default function Programs() {
   const programs = [
     {
-      icon: <BookOpenCheck size={80} strokeWidth={1.5} />,
-      title: "Education For All",
-      desc: "Helping children access quality education and learning materials.",
-      img: "https://images.unsplash.com/photo-1569420626546-55b02c8376b1?q=80&w=2068&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D", // Replace with your real images
+      icon: <GraduationCap size={80} strokeWidth={1.5} />,
+      title: "Education Scholarships",
+      desc: "Providing monthly financial assistance and scholarships to meritorious and underprivileged students pursuing Engineering, Medical, Nursing, Diploma, Graduation, and Post-Graduation across Odisha.",
+      img: "/education_scholarships_india.png",
       hueA: 200,
       hueB: 260,
     },
     {
-      icon: <UtensilsCrossed size={80} strokeWidth={1.5} />,
-      title: "Food & Nutrition",
-      desc: "Providing nutritious meals to underprivileged families.",
-      img: "/education.jpg",
+      icon: <Trophy size={80} strokeWidth={1.5} />,
+      title: "Academic Excellence Awards",
+      desc: "Recognizing Board and University toppers with cash awards to encourage academic excellence and inspire students to pursue higher education with confidence.",
+      img: "/academic_awards_india.png",
       hueA: 20,
       hueB: 40,
     },
     {
-      icon: <Users size={80} strokeWidth={1.5} />,
-      title: "Women Empowerment",
-      desc: "Training and supporting women to build a better future.",
-      img: "/women.jpg",
+      icon: <BookOpen size={80} strokeWidth={1.5} />,
+      title: "Manoj Das Sahitya Award",
+      desc: "Instituted in memory of the legendary writer Shri Manoj Das, this prestigious award recognizes eminent writers who have made remarkable contributions to literature and cultural heritage.",
+      img: "/sahitya_award_india.png",
       hueA: 300,
       hueB: 340,
     },
     {
-      icon: <HandHeart size={80} strokeWidth={1.5} />,
-      title: "Community Support",
-      desc: "Supporting families with essential resources and care.",
-      img: "/education.jpg",
+      icon: <Tractor size={80} strokeWidth={1.5} />,
+      title: "Farmer Recognition",
+      desc: "Recognizing the best cultivators from all 30 districts of Odisha with annual awards that celebrate innovation, dedication, and excellence in agriculture.",
+      img: "/farmer_recognition_india.png",
       hueA: 120,
       hueB: 160,
     },
     {
-      icon: <Leaf size={80} strokeWidth={1.5} />,
-      title: "Envirmonmental Conservation",
-      desc: "Protecting and preserving natural ecosystems for future generations.",
-      img: "/101.jpg",
+      icon: <Medal size={80} strokeWidth={1.5} />,
+      title: "Sports Excellence Awards",
+      desc: "Honouring Odia athletes who have won medals at National and International competitions, inspiring future generations through excellence in sports.",
+      img: "/sports_excellence_india.png",
       hueA: 70,
       hueB: 110,
     },
     {
       icon: <HeartPulse size={80} strokeWidth={1.5} />,
-      title: "healthcare initiatives",
-      desc: "Providing medical care and health resources to underserved communities.",
-      img: "/9.png",
+      title: "Community Welfare",
+      desc: "Supporting public welfare initiatives, charitable organizations, and community development programs that improve education, healthcare, and social well-being across Odisha.",
+      img: "/community_welfare_india.png",
       hueA: 160,
       hueB: 200,
     },
@@ -86,7 +86,7 @@ export default function Programs() {
         <span className="text-[#26B66F] funky-text">Our</span> Programs
       </motion.h2> */}
 
-      <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-16 px-6">
+      <div className="max-w-[1600px] mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-24 gap-x-12 px-6 lg:px-12">
         {programs.map((p, i) => (
           <ProgramCard
             key={i}

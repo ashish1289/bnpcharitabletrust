@@ -10,6 +10,21 @@ const Input = ({ label, name, value, onChange, type = "text", required = false }
   </div>
 );
 
+const Select = ({ label, name, value, onChange, options, required = false }) => (
+  <div className="mb-4">
+    <label className="block text-sm font-semibold text-gray-700 mb-1">
+      {label} {required && <span className="text-red-500">*</span>}
+    </label>
+    <select name={name} value={value} onChange={onChange} required={required}
+      className="w-full rounded-xl border border-gray-300 p-3 focus:border-[#0F72CE] focus:ring-1 focus:ring-[#0F72CE] outline-none bg-white">
+      <option value="">Select an option</option>
+      {options.map((opt, i) => (
+        <option key={i} value={opt}>{opt}</option>
+      ))}
+    </select>
+  </div>
+);
+
 const Step1Personal = ({ data, setFormData, onDocChange, documents }) => {
   const handleChange = (e) => {
     setFormData(prev => ({
@@ -57,10 +72,10 @@ const Step1Personal = ({ data, setFormData, onDocChange, documents }) => {
         </div>
         
         <Input label="9. District and state:" name="districtAndState" value={data.districtAndState} onChange={handleChange} required />
-        <Input label="10. Rural/urban area:" name="ruralUrbanArea" value={data.ruralUrbanArea} onChange={handleChange} />
+        <Select label="10. Rural/urban area:" name="ruralUrbanArea" value={data.ruralUrbanArea} onChange={handleChange} options={['Rural', 'Urban']} />
         <Input label="11. Preferred language for communication:" name="preferredLanguage" value={data.preferredLanguage} onChange={handleChange} />
         <Input label="12. Disability, if any:" name="disability" value={data.disability} onChange={handleChange} />
-        <Input label="13. Category requiring special consideration, if applicable:" name="specialCategory" value={data.specialCategory} onChange={handleChange} />
+        <Select label="13. Category requiring special consideration:" name="specialCategory" value={data.specialCategory} onChange={handleChange} options={['General', 'SC', 'ST', 'OBC', 'SEBC', 'Other']} />
       </div>
     </div>
   );
