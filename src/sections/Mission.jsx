@@ -70,9 +70,9 @@ const BentoCard = ({ title, text, image, accentGradient }) => {
 
       <div className="bg-white/95 p-6 md:p-8 rounded-3xl min-h-[260px] flex flex-col">
         <div className="flex-1">
-          <div className="w-full h-36 md:h-44 overflow-hidden rounded-xl mb-4">
+          <div className="w-full h-36 md:h-44 overflow-hidden rounded-xl mb-4 bg-transparent flex items-center justify-center">
             {image ? (
-              <img src={image} alt={title} className="w-full h-full object-cover" />
+              <img src={image} alt={title} className="w-full h-full object-contain p-2 mix-blend-multiply" />
             ) : (
               <div className="w-full h-full bg-gray-100" />
             )}
@@ -85,15 +85,6 @@ const BentoCard = ({ title, text, image, accentGradient }) => {
           <p className="text-gray-600 text-sm md:text-base">{text}</p>
         </div>
 
-        <div className="mt-4 flex items-center justify-between">
-          <a
-            href="#donate"
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#0F72CE] text-white text-sm shadow-sm hover:bg-[#095aa4] transition"
-          >
-            Support
-          </a>
-          <span className="text-sm text-gray-400">Learn more →</span>
-        </div>
       </div>
     </motion.article>
   );
@@ -107,27 +98,27 @@ export default function Mission() {
   const cards = [
     {
       title: "Empower Education",
-      text: "We provide scholarships, classrooms, and mentors — because every child deserves a future.",
-      image: "/educationgif.gif",
+      text: "We provide scholarships and monthly financial assistance to meritorious and underprivileged students pursuing Engineering, Medical, Nursing, Diploma, Graduation, and Post-Graduation, enabling them to achieve their academic aspirations without financial barriers.",
+      image: "/education_card.png",
       gradient: "linear-gradient(135deg,#A8E6FF 0%, #D7F8E4 100%)",
     },
     {
-      title: "Nourish & Thrive",
-      text: "Healthy meals and nutrition programs for children and families at risk.",
-      image: "/nutrition.gif",
+      title: "Empower Farmers",
+      text: "Recognizing the backbone of our nation, we honor outstanding cultivators from all 30 districts of Odisha with cash awards, encouraging innovation, sustainable farming, and rural prosperity.",
+      image: "/farmer_card.png",
+      gradient: "linear-gradient(135deg,#FFD8B6 0%, #D7F8E4 100%)",
+    },
+    {
+      title: "Manoj Das Sahitya Award",
+      text: "In memory of the legendary writer Manoj Das, the Trust recognizes eminent authors through the prestigious Manoj Das Sahitya Award, celebrating excellence in literature and preserving Odisha's rich literary heritage.",
+      image: "/literature_card.png",
       gradient: "linear-gradient(135deg,#FFD8B6 0%, #FFEFD6 100%)",
     },
     {
-      title: "Women-Led Change",
-      text: "Training, small business grants and community leadership support for women.",
-      image: "/issue-4.gif",
+      title: "Celebrate Sporting Excellence",
+      text: "We recognize and reward Odia athletes who have brought glory to the state and the nation through outstanding performances at National and International sporting events, inspiring future generations of champions.",
+      image: "/sports_card.png",
       gradient: "linear-gradient(135deg,#E7E3FF 0%, #DDEBFF 100%)",
-    },
-    {
-      title: "Community Resilience",
-      text: "Local healthcare, disaster relief and sustainable livelihood initiatives.",
-      image: "/community.gif",
-      gradient: "linear-gradient(135deg,#CFF7E1 0%, #E6FFF6 100%)",
     },
   ];
 
@@ -182,36 +173,25 @@ export default function Mission() {
               {/* Big quote - animate line by line */}
               <LineSplit
                 lines={[
-                  "“Small acts of kindness create the ripples that become waves of change.”",
+                  "“Empowering Lives. Recognizing Excellence. Building a Better Odisha.”",
                 ]}
                 className="text-lg md:text-xl text-[#0F72CE] font-semibold"
               />
             </div>
 
             <motion.p
-  initial={{ opacity: 0, y: 18 }}
-  whileInView={{ opacity: 1, y: 0 }}
-  transition={{ duration: 0.6, delay: 0.12 }}
-  viewport={{ once: true }}
-  className="text-gray-700 leading-relaxed"
->
-  We work hand-in-hand with communities, educators, frontline workers, and
-  local leaders to build sustainable pathways of hope. Our mission is rooted
-  in dignity — ensuring that every child, woman, and family has access to
-  opportunities that empower them to rise above hardship with confidence.
-  <br /><br />
-  Through education, nutrition, healthcare, and community development, we
-  nurture environments where people are not just supported, but strengthened
-  to shape their own futures. We believe true impact is created not through
-  temporary aid, but through long-term transformation — the kind that uplifts
-  generations.
-  <br /><br />
-  Every program we initiate is designed to restore dignity, amplify
-  potential, and enable communities to stand resilient, united, and hopeful.
-  Together, we are building a movement where compassion becomes action,
-  action becomes change, and change becomes a better world for all.
-</motion.p>
-
+              initial={{ opacity: 0, y: 18 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.12 }}
+              viewport={{ once: true }}
+              className="text-gray-700 leading-relaxed"
+            >
+              BNP Charitable Trust is committed to creating a society where talent is nurtured, hard work is recognized, and every deserving individual has the opportunity to succeed. Through scholarships, financial assistance, awards, and community development initiatives, we strive to uplift lives and promote inclusive growth across Odisha.
+              <br /><br />
+              Our mission is to support meritorious and underprivileged students, encourage progressive farmers, honor literary excellence, recognize outstanding sportspersons, and contribute to public welfare. Guided by compassion, integrity, and service, we believe that investing in people today creates a stronger and more prosperous tomorrow.
+              <br /><br />
+              Every initiative of the Trust is undertaken without discrimination based on caste, creed, religion, language, gender, or region, ensuring equal opportunities for all.
+            </motion.p>
           </div>
 
           {/* right column: bento grid (2x2 on large screens) */}
