@@ -16,7 +16,7 @@ export default function Programs() {
       icon: <GraduationCap size={80} strokeWidth={1.5} />,
       title: "Education Scholarships",
       desc: "Providing monthly financial assistance and scholarships to meritorious and underprivileged students pursuing Engineering, Medical, Nursing, Diploma, Graduation, and Post-Graduation across Odisha.",
-      img: "/education_scholarships_india.png",
+      img: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=2070&auto=format&fit=crop",
       hueA: 200,
       hueB: 260,
     },

@@ -186,7 +186,7 @@ const MissionPageSection = () => {
 
           <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: true }} className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <motion.div variants={fadeUp} className="group rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300">
-              <img src="/education_scholarships_india.png" alt="Education" className="w-full h-56 object-cover group-hover:scale-105 transition-transform duration-500" />
+              <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=2070&auto=format&fit=crop" alt="Education" className="w-full h-56 object-cover group-hover:scale-105 transition-transform duration-500" />
               <div className="bg-white p-8">
                 <h3 className="text-xl font-bold text-[#0A4C8B] mb-3">Education & Scholarships</h3>
                 <p className="text-gray-600 text-sm leading-relaxed">Providing scholarships, educational resources, and financial assistance to deserving students so that financial limitations never become barriers to learning and success.</p>
