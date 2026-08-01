@@ -14,6 +14,7 @@ import Home from "./pages/Home";
 import About from "./pages/About";
 import "./App.css";
 import MissionPage from "./pages/MissionPage";
+import EncouragementPage from "./pages/EncouragementPage";
 // import Awards from "./pages/Awards";
 import BoardOfTrustees from "./pages/BoardOfTrustees";
 import MeetOurTrustees from "./pages/MeetOurTrustees";
@@ -48,6 +49,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
         <Route path="/mission" element={<MissionPage />} />
+        <Route path="/encouragement" element={<EncouragementPage />} />
         {/* <Route path="/awards" element={<Awards />} /> */}
         <Route path="/board-of-trustees" element={<BoardOfTrustees />} />
         <Route path="/about/trustees" element={<MeetOurTrustees />} />

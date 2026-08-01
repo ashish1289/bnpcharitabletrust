@@ -1,12 +1,14 @@
 import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, ChevronDown, Users, Building2, Info } from "lucide-react";
+import { Menu, X, ChevronDown, Users, Building2, Info, Star, GraduationCap } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 
 const aboutSubLinks = [
   { name: "About Us", href: "/about", icon: Info, desc: "Learn more about our trust and vision" },
   { name: "Meet Our Trustees", href: "/about/trustees", icon: Users, desc: "Get to know the people behind the mission" },
   { name: "Governing Body", href: "/about/governing-body", icon: Building2, desc: "Structure, roles and responsibilities" },
+  { name: "Encouragement Scope", href: "/encouragement", icon: Star, desc: "Awards and recognition programs" },
+  { name: "Scholarship Program", href: "/scholarship-info", icon: GraduationCap, desc: "Financial assistance for education" },
 ];
 
 const navLinks = [
