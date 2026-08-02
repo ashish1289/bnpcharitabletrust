@@ -82,7 +82,7 @@ const Footer = () => {
               <MapPin size={18} className="mt-1 shrink-0" />
               <div>
                 <span className="block font-semibold text-[#5CC9FF]">Registered Office:</span>
-                N2/25, Block N2, Irc Village, Nayapalli, Bhubaneswar, Odisha 751015 , India
+                N2/25,IRC Village, Nayapalli, Bhubaneswar, Odisha 751015 , India
               </div>
             </li>
             <li className="flex items-start gap-2">

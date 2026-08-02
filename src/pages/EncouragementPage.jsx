@@ -101,7 +101,7 @@ const EncouragementPage = () => {
               {/* CARD 1: Literature */}
               <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} className="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden flex flex-col md:flex-row items-stretch">
                 <div className="md:w-2/5 relative">
-                  <img src="/sahitya_award_india.png" alt="Literature" className="w-full h-full object-cover min-h-[300px]" />
+                  <img src="/images.jpeg" alt="Literature" className="w-full h-full object-cover min-h-[300px]" />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-8">
                     <h3 className="text-3xl font-bold text-white flex items-center gap-3"><BookOpen size={32} /> Literature</h3>
                   </div>

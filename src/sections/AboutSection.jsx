@@ -1,12 +1,12 @@
 import React, { useMemo, useState, useEffect } from "react";
 import { motion, useInView } from "framer-motion";
 import { Link } from "react-router-dom";
-import { 
-  GraduationCap, 
-  Trophy, 
-  Tractor, 
-  BookOpen, 
-  Medal, 
+import {
+  GraduationCap,
+  Trophy,
+  Tractor,
+  BookOpen,
+  Medal,
   HeartPulse,
   ArrowRight
 } from "lucide-react";
@@ -71,7 +71,7 @@ const AnimatedCounter = ({ target, duration = 2, suffix = "" }) => {
 const AboutSection = () => {
   return (
     <div className="w-full relative overflow-hidden bg-white pt-24 pb-0">
-      
+
       {/* ========================= INTRO SECTION ========================= */}
       <section
         className="w-full py-16 md:py-24 relative overflow-hidden"
@@ -122,8 +122,8 @@ const AboutSection = () => {
             </motion.div>
           </div>
 
-          {/* ========================= TOP THREE CARDS ========================= */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* ========================= TOP TWO CARDS ========================= */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-5xl mx-auto">
             {/* WHO WE ARE BOX */}
             <motion.div
               initial={{ opacity: 0, y: 50 }}
@@ -163,8 +163,8 @@ const AboutSection = () => {
                     alt="Shri Niranjan Patnaik"
                     className="w-full h-full object-cover"
                     onError={(e) => {
-                        e.target.src = "https://via.placeholder.com/150"; 
-                        e.target.alt = "Founder Image Missing";
+                      e.target.src = "https://via.placeholder.com/150";
+                      e.target.alt = "Founder Image Missing";
                     }}
                   />
                 </div>
@@ -190,7 +190,7 @@ const AboutSection = () => {
               </div>
             </motion.div>
 
-            {/* OUR CORE VALUES BOX */}
+            {/* OUR CORE VALUES BOX (Commented out as per request)
             <motion.div
               initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -210,10 +210,11 @@ const AboutSection = () => {
                 <li className="flex items-center gap-3"><span className="text-2xl">⚖️</span> Equal Opportunity for Everyone</li>
               </ul>
             </motion.div>
+            */}
           </div>
 
           {/* ========================= VISION CARD ========================= */}
-          <motion.div
+          {/* <motion.div
             initial={{ opacity: 0, y: 60 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
@@ -225,11 +226,12 @@ const AboutSection = () => {
             <p className="text-white/95 leading-relaxed text-lg lg:text-xl max-w-4xl relative z-10 font-light">
               To build a progressive and compassionate Odisha where every deserving student receives quality education, every hardworking farmer is recognized, every talented sportsperson is encouraged, every literary contribution is celebrated, and every citizen has equal opportunities to achieve a better future.
             </p>
-          </motion.div>
+          </motion.div> */}
         </div>
       </section>
 
       {/* ========================= OUR FOCUS AREAS ========================= */}
+      {/* 
       <section className="py-24 bg-gray-50/50">
         <div className="max-w-7xl mx-auto px-6 lg:px-10">
           <motion.div
@@ -248,7 +250,7 @@ const AboutSection = () => {
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-            {/* Card 1 */}
+            
             <motion.div
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -267,7 +269,7 @@ const AboutSection = () => {
               </p>
             </motion.div>
 
-            {/* Card 2 */}
+            
             <motion.div
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -286,7 +288,7 @@ const AboutSection = () => {
               </p>
             </motion.div>
 
-            {/* Card 3 */}
+            
             <motion.div
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -307,8 +309,10 @@ const AboutSection = () => {
           </div>
         </div>
       </section>
+      */}
 
       {/* ========================= OUR OBJECTIVES ========================= */}
+      {/* 
       <section className="py-24 bg-white">
         <div className="max-w-7xl mx-auto px-6 lg:px-10">
           <motion.div
@@ -352,10 +356,12 @@ const AboutSection = () => {
           </div>
         </div>
       </section>
+      */}
 
       {/* ========================= FOUNDER'S JOURNEY TIMELINE ========================= */}
+      {/* 
       <section className="py-24 bg-slate-900 text-white relative overflow-hidden">
-        {/* Background Accents */}
+        
         <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-600/20 rounded-full blur-[100px] pointer-events-none transform translate-x-1/2 -translate-y-1/2"></div>
         <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-emerald-600/20 rounded-full blur-[100px] pointer-events-none transform -translate-x-1/2 translate-y-1/2"></div>
 
@@ -376,7 +382,7 @@ const AboutSection = () => {
           </motion.div>
 
           <div className="relative">
-            {/* Timeline Line */}
+            
             <div className="hidden lg:block absolute top-1/2 left-0 w-full h-1 bg-gray-700 transform -translate-y-1/2"></div>
             <div className="lg:hidden absolute left-[31px] top-0 bottom-0 w-1 bg-gray-700"></div>
 
@@ -396,12 +402,12 @@ const AboutSection = () => {
                   viewport={{ once: true, amount: 0.8 }}
                   className="relative pl-20 lg:pl-0 lg:text-center group lg:grid lg:grid-rows-2 lg:h-[450px]"
                 >
-                  {/* Timeline Dot */}
+                  
                   <div className="absolute left-4 lg:left-1/2 top-0 lg:top-1/2 w-8 h-8 bg-blue-500 rounded-full border-4 border-slate-900 transform lg:-translate-x-1/2 lg:-translate-y-1/2 flex items-center justify-center z-10 shadow-[0_0_15px_rgba(59,130,246,0.5)] group-hover:scale-125 transition-transform duration-300">
                     <div className="w-2 h-2 bg-white rounded-full"></div>
                   </div>
+
                   
-                  {/* Desktop Layout */}
                   <div className={`hidden lg:flex flex-col w-full h-full ${i % 2 === 0 ? 'row-start-1 justify-end pb-12' : 'row-start-2 justify-start pt-12'}`}>
                     <div className="bg-slate-800/80 backdrop-blur-sm p-6 rounded-2xl border border-slate-700 hover:border-blue-500/50 transition-colors">
                       <div className="text-3xl mb-3">{item.icon}</div>
@@ -410,7 +416,7 @@ const AboutSection = () => {
                     </div>
                   </div>
 
-                  {/* Mobile Layout */}
+                  
                   <div className="lg:hidden w-full pb-10 pt-2">
                     <div className="bg-slate-800/80 backdrop-blur-sm p-6 rounded-2xl border border-slate-700 hover:border-blue-500/50 transition-colors">
                       <div className="text-3xl mb-3">{item.icon}</div>
@@ -424,13 +430,15 @@ const AboutSection = () => {
           </div>
         </div>
       </section>
+      */}
 
       {/* ========================= OUR COMMITMENT & IMPACT COUNTER ========================= */}
+      {/* 
       <section className="py-24 bg-blue-50/50 relative">
         <div className="max-w-7xl mx-auto px-6 lg:px-10">
-          
+
           <div className="grid lg:grid-cols-2 gap-16 items-center">
-            {/* Our Commitment */}
+            
             <motion.div
               initial={{ opacity: 0, x: -40 }}
               whileInView={{ opacity: 1, x: 0 }}
@@ -450,7 +458,7 @@ const AboutSection = () => {
               </div>
             </motion.div>
 
-            {/* Impact Counters */}
+            
             <motion.div
               initial={{ opacity: 0, x: 40 }}
               whileInView={{ opacity: 1, x: 0 }}
@@ -460,7 +468,7 @@ const AboutSection = () => {
               <h3 className="text-3xl md:text-4xl font-bold text-gray-900 mb-8 lg:mb-12">
                 Creating Impact Across Odisha
               </h3>
-              
+
               <div className="grid grid-cols-2 gap-4 sm:gap-6">
                 {[
                   { target: 500, label: "Scholarships Awarded", suffix: "+" },
@@ -482,6 +490,7 @@ const AboutSection = () => {
           </div>
         </div>
       </section>
+      */}
 
       {/* ========================= CALL TO ACTION FOOTER ========================= */}
       <section className="py-24 bg-gradient-to-br from-[#0F72CE] to-[#0A4C8B] text-white text-center">
@@ -498,22 +507,22 @@ const AboutSection = () => {
             <p className="text-xl text-blue-100 mb-12 max-w-2xl mx-auto font-light">
               Whether you're a student seeking support, or someone looking to partner with us for a greater cause, we welcome you.
             </p>
-            
+
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link 
-                to="/scholarship/apply" 
+              <Link
+                to="/scholarship/apply"
                 className="inline-flex justify-center items-center gap-2 bg-white text-[#0A4C8B] font-bold py-4 px-8 rounded-full shadow-xl hover:bg-gray-50 hover:shadow-2xl hover:-translate-y-1 transition-all"
               >
                 Apply for Scholarship <ArrowRight size={20} />
               </Link>
-              <Link 
-                to="/contact" 
+              <Link
+                to="/contact"
                 className="inline-flex justify-center items-center gap-2 bg-transparent border-2 border-white/30 text-white font-bold py-4 px-8 rounded-full hover:bg-white/10 transition-all"
               >
                 Partner With Us
               </Link>
-              <Link 
-                to="/contact" 
+              <Link
+                to="/contact"
                 className="inline-flex justify-center items-center gap-2 bg-transparent border-2 border-white/30 text-white font-bold py-4 px-8 rounded-full hover:bg-white/10 transition-all"
               >
                 Contact Us

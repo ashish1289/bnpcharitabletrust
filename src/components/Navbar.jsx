@@ -6,7 +6,7 @@ import { Link, useLocation } from "react-router-dom";
 const aboutSubLinks = [
   { name: "About Us", href: "/about", icon: Info, desc: "Learn more about our trust and vision" },
   { name: "Meet Our Trustees", href: "/about/trustees", icon: Users, desc: "Get to know the people behind the mission" },
-  { name: "Governing Body", href: "/about/governing-body", icon: Building2, desc: "Structure, roles and responsibilities" },
+  // { name: "Governing Body", href: "/about/governing-body", icon: Building2, desc: "Structure, roles and responsibilities" },
   { name: "Encouragement Scope", href: "/encouragement", icon: Star, desc: "Awards and recognition programs" },
   { name: "Scholarship Program", href: "/scholarship-info", icon: GraduationCap, desc: "Financial assistance for education" },
 ];
@@ -151,6 +151,12 @@ const Navbar = () => {
             </motion.div>
           ))}
 
+          <motion.div whileHover={{ y: -2 }} transition={{ type: "spring", stiffness: 300 }}>
+            <Link to="/scholarship/apply" className="inline-flex items-center rounded-full bg-white border border-[#0F72CE] px-4 py-2 text-sm font-semibold text-[#0F72CE] shadow-sm transition hover:bg-blue-50">
+              Apply for Scholarship
+            </Link>
+          </motion.div>
+
           {authUser ? (
             <motion.div whileHover={{ scale: 1.05 }}>
               <Link to={profileHref} className="flex items-center gap-2 bg-[#0F72CE] text-white px-4 py-2 rounded-full font-semibold text-sm hover:bg-[#0A4C8B] transition">
@@ -242,6 +248,10 @@ const Navbar = () => {
                   {link.name}
                 </Link>
               ))}
+
+              <Link to="/scholarship/apply" className="py-3 px-2 text-[#0F72CE] text-base font-bold hover:bg-gray-50 rounded-xl transition">
+                Apply for Scholarship
+              </Link>
 
               {authUser ? (
                 <Link to={profileHref} className="flex items-center gap-3 py-3 px-2 text-[#0F72CE] font-semibold hover:bg-gray-50 rounded-xl transition">

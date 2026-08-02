@@ -3,17 +3,17 @@ import Layout from "../layout/Layout";
 import Hero from "../sections/Hero";
 import ScholarshipPromoSection from "../sections/ScholarshipPromoSection";
 import Programs from "../sections/Programs";
-import Mission from "../sections/Mission";
+// import Mission from "../sections/Mission";
 // import Impact from "../components/Impact";
 
 const Home = () => {
   return (
     <Layout >
       <Hero />
-      <ScholarshipPromoSection />
+      {/* <ScholarshipPromoSection /> */}
       <Programs />
       {/* <Impact/> */}
-      <Mission />
+      {/* <Mission /> */}
     </Layout>
   );
 };

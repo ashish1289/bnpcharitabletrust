@@ -96,20 +96,20 @@ const ContactSection = () => {
 
               <div className="flex items-center gap-4">
                 <Mail size={28} className="text-[#0F72CE]" />
-                <p className="text-lg">support@bnpcharity.org</p>
+                <p className="text-lg">support@bnpcharity.in</p>
               </div>
 
               <div className="flex items-center gap-4">
                 <Phone size={28} className="text-[#0F72CE]" />
-                <p className="text-lg">+91 98765 43210</p>
+                <p className="text-lg">0674255399 , 06742559009</p>
               </div>
 
               <div className="flex items-start gap-4">
                 <MapPin size={28} className="text-[#0F72CE] mt-1" />
                 <div>
-                  <p className="text-lg font-bold text-[#0F72CE]">Registered Office</p>
+                  <p className="text-lg font-bold text-[#0F72CE]">Office</p>
                   <p className="text-lg leading-relaxed">
-                    N2/25, Block N2, Irc Village, Nayapalli, Bhubaneswar, Odisha 751015 , India
+                    N2/25, IRC Village, Nayapalli, Bhubaneswar, Odisha 751015 , India
                   </p>
                 </div>
               </div>
@@ -117,7 +117,7 @@ const ContactSection = () => {
               <div className="flex items-start gap-4">
                 <MapPin size={28} className="text-[#0F72CE] mt-1" />
                 <div>
-                  <p className="text-lg font-bold text-[#0F72CE]">Head Office</p>
+                  <p className="text-lg font-bold text-[#0F72CE]">Registered Office</p>
                   <p className="text-lg leading-relaxed">
                     FALCON HOUSE, A/22, Cuttack Puri Road, Bhubaneswar-751006
                   </p>

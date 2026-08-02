@@ -102,11 +102,30 @@ const MissionPageSection = () => {
             transition={{ duration: 0.7, delay: 0.4 }}
             className="text-lg md:text-xl text-white/95 max-w-4xl mx-auto leading-relaxed drop-shadow-md font-medium"
           >
-            At BNP Charitable Trust, our mission is to empower individuals and strengthen communities through education, scholarships, financial assistance, rural development, environmental conservation, and community welfare. Inspired by the vision of our Founder, Shri Niranjan Patnaik, we are committed to creating lasting social impact by ensuring that every deserving individual has access to opportunities for a better future.
+            BNP Charitable Trust is committed to creating a society where talent is nurtured, hard work is recognized, and every deserving individual has the opportunity to succeed. Through scholarships, financial assistance, awards, and community development initiatives, we strive to uplift lives and promote inclusive growth across Odisha.
           </motion.p>
         </div>
       </section>
 
+      {/* ======================= MISSION STATEMENT ======================= */}
+      <section className="py-20 md:py-32 bg-white relative">
+        <div className="max-w-4xl mx-auto px-6 text-center">
+          <motion.div 
+            initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}
+            className="space-y-8 text-xl md:text-2xl text-gray-700 leading-relaxed font-light"
+          >
+            <p>
+              Our mission is to support meritorious and underprivileged students, encourage progressive farmers, honor literary excellence, recognize outstanding sportspersons, and contribute to public welfare. Guided by <strong className="font-semibold text-[#0A4C8B]">compassion, integrity, and service</strong>, we believe that investing in people today creates a stronger and more prosperous tomorrow.
+            </p>
+            <p>
+              Every initiative of the Trust is undertaken without discrimination based on caste, creed, religion, language, gender, or region, ensuring equal opportunities for all.
+            </p>
+          </motion.div>
+        </div>
+      </section>
+
+      {false && (
+        <>
       {/* ======================= SECTION 1: MISSION IN ACTION ======================= */}
       <section className="py-24 bg-gradient-to-b from-white to-blue-50/50 relative">
         <div className="max-w-7xl mx-auto px-6">
@@ -349,6 +368,8 @@ const MissionPageSection = () => {
           </motion.div>
         </div>
       </section>
+        </>
+      )}
 
       {/* ======================= FINAL CTA BANNER ======================= */}
       <section className="relative w-full overflow-hidden text-center text-white py-24 px-6">

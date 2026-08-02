@@ -8,6 +8,8 @@ import {
   Tractor,
   Medal,
   HeartPulse,
+  Leaf,
+  Stethoscope,
 } from "lucide-react";
 
 export default function Programs() {
@@ -16,7 +18,7 @@ export default function Programs() {
       icon: <GraduationCap size={80} strokeWidth={1.5} />,
       title: "Education Scholarships",
       desc: "Providing monthly financial assistance and scholarships to meritorious and underprivileged students pursuing Engineering, Medical, Nursing, Diploma, Graduation, and Post-Graduation across Odisha.",
-      img: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=2070&auto=format&fit=crop",
+      img: "/odisha_college_students_1785671916561.png",
       hueA: 200,
       hueB: 260,
     },
@@ -32,15 +34,15 @@ export default function Programs() {
       icon: <BookOpen size={80} strokeWidth={1.5} />,
       title: "Manoj Das Sahitya Award",
       desc: "Instituted in memory of the legendary writer Shri Manoj Das, this prestigious award recognizes eminent writers who have made remarkable contributions to literature and cultural heritage.",
-      img: "/sahitya_award_india.png",
+      img: "/images.jpeg",
       hueA: 300,
       hueB: 340,
     },
     {
       icon: <Tractor size={80} strokeWidth={1.5} />,
-      title: "Farmer Recognition",
+      title: "Farmers Recognition",
       desc: "Recognizing the best cultivators from all 30 districts of Odisha with annual awards that celebrate innovation, dedication, and excellence in agriculture.",
-      img: "/farmer_recognition_india.png",
+      img: "/odisha_farmer_1785671235573.png",
       hueA: 120,
       hueB: 160,
     },
@@ -59,6 +61,22 @@ export default function Programs() {
       img: "/community_welfare_india.png",
       hueA: 160,
       hueB: 200,
+    },
+    {
+      icon: <Leaf size={80} strokeWidth={1.5} />,
+      title: "Environmental Conservation",
+      desc: "Promoting green initiatives, tree plantations, and eco-awareness campaigns to preserve natural resources and create a sustainable environment for future generations in Odisha.",
+      img: "/mission_environment_1785615361296.png",
+      hueA: 90,
+      hueB: 130,
+    },
+    {
+      icon: <Stethoscope size={80} strokeWidth={1.5} />,
+      title: "Healthcare Initiatives",
+      desc: "Organizing free medical checkup camps, health awareness drives, and providing essential healthcare support to underprivileged communities across rural Odisha.",
+      img: "/9.png",
+      hueA: 340,
+      hueB: 10,
     },
   ];
 
@@ -86,7 +104,7 @@ export default function Programs() {
         <span className="text-[#26B66F] funky-text">Our</span> Programs
       </motion.h2> */}
 
-      <div className="max-w-[1600px] mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-24 gap-x-12 px-6 lg:px-12">
+      <div className="max-w-[1600px] mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-y-20 gap-x-8 px-6 lg:px-10">
         {programs.map((p, i) => (
           <ProgramCard
             key={i}

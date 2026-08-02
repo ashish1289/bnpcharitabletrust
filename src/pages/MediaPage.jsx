@@ -1,4 +1,4 @@
-﻿import React, { useState } from "react";
+import React, { useState } from "react";
 import Layout from "../layout/Layout";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Play, Image, Video, ArrowLeft } from "lucide-react";
@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 const tabs = ["All", "Photos", "Videos", "Events"];
 
 const mediaItems = [
+  /*
   { id: 1, type: "photo", category: "Events", title: "Inauguration Ceremony", desc: "Grand inauguration of BNP Charitable Trust", src: "/1.png", tag: "2024" },
   { id: 2, type: "photo", category: "Events", title: "Community Outreach", desc: "Reaching families across rural Odisha", src: "/2.png", tag: "2024" },
   { id: 3, type: "photo", category: "Events", title: "Empowering Communities", desc: "Building futures through united effort", src: "/3.png", tag: "2024" },
@@ -17,6 +18,7 @@ const mediaItems = [
   { id: 8, type: "photo", category: "Events", title: "Women Empowerment", desc: "Skill development workshop for women", src: "/women.jpg", tag: "2023" },
   { id: 9, type: "photo", category: "Events", title: "Leadership Meet", desc: "Annual trustees leadership meeting", src: "/Niranjan.jpg", tag: "2023" },
   { id: 10, type: "photo", category: "Events", title: "Environmental Conservation", desc: "Nature and eco-awareness initiative", src: "/101.jpg", tag: "2023" },
+  */
 ];
 
 const MediaPage = () => {
