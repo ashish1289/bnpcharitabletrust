@@ -1,12 +1,11 @@
 import React from 'react';
-import Layout from '../../layout/Layout';
 import ScholarshipAdminPanel from '../../components/admin/ScholarshipAdminPanel';
 
 const ScholarshipAdminPage = () => {
   return (
-    <Layout>
+    <div className="bg-gray-50 min-h-screen">
       <ScholarshipAdminPanel />
-    </Layout>
+    </div>
   );
 };
 

@@ -23,7 +23,7 @@ const Select = ({ label, name, value, onChange, options, required = false }) => 
   </div>
 );
 
-const Step2Education = ({ data, setFormData, onDocChange, documents }) => {
+const Step2Education = ({ data, setFormData, onDocChange, documents, settings }) => {
   const handleChange = (e) => {
     setFormData(prev => ({
       ...prev,
@@ -80,30 +80,39 @@ const Step2Education = ({ data, setFormData, onDocChange, documents }) => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6">
         <div className="md:col-span-2">
-          <Input label="14. Name of the course for which assistance is requested:" name="courseName" value={data.courseName} onChange={handleChange} required />
+          <Input label="14. Name of the course for which assistance is requested:" name="courseName" value={data.courseName} onChange={handleChange} required={settings?.courseName !== false} />
         </div>
         <div className="md:col-span-2">
-          <Input label="15. Name and address of the institution:" name="institutionNameAddress" value={data.institutionNameAddress} onChange={handleChange} required />
+          <Input label="15. Name and address of the institution:" name="institutionNameAddress" value={data.institutionNameAddress} onChange={handleChange} required={settings?.institutionNameAddress !== false} />
+        </div>
+        <Input label="16. Total duration of the course (e.g., 4 years):" name="courseDuration" value={data.courseDuration} onChange={handleChange} required={settings?.courseDuration !== false} />
+        <Input label="17. Present year/semester of study:" name="presentYearSemester" value={data.presentYearSemester} onChange={handleChange} required={settings?.presentYearSemester !== false} />
+        
+        <div className="mb-4">
+          <label className="block text-sm font-semibold text-gray-700 mb-1">
+            18. Admission status: {settings?.admissionStatus !== false && <span className="text-red-500">*</span>}
+          </label>
+          <select name="admissionStatus" value={data.admissionStatus} onChange={handleChange} required={settings?.admissionStatus !== false}
+            className="w-full rounded-xl border border-gray-300 p-3 focus:border-[#0F72CE] focus:ring-1 focus:ring-[#0F72CE] outline-none bg-white">
+            <option value="">Select Status</option>
+            <option value="Confirmed">Confirmed</option>
+            <option value="Pending">Pending</option>
+          </select>
         </div>
         
-        <Input label="16. Course duration:" name="courseDuration" value={data.courseDuration} onChange={handleChange} required />
-        <Input label="17. Present year or semester:" name="presentYearSemester" value={data.presentYearSemester} onChange={handleChange} required />
-        <Select label="18. Admission status:" name="admissionStatus" value={data.admissionStatus} onChange={handleChange} required options={['Confirmed', 'Provisional', 'Awaiting allotment']} />
-        
         <div>
-          <Input label="19. Total annual course fee:" name="totalAnnualCourseFee" value={data.totalAnnualCourseFee} onChange={handleChange} required />
+          <Input label="19. Total annual course fee:" name="totalAnnualCourseFee" type="number" value={data.totalAnnualCourseFee} onChange={handleChange} required={settings?.totalAnnualCourseFee !== false} />
           <div className="mb-4 bg-blue-50 border border-blue-200 p-4 rounded-xl">
-            <label className="block text-sm font-bold text-[#0F72CE] mb-2">Attach Tuition Fee Document (PDF/Image) *</label>
-            <input type="file" name="tuitionFeeReceipt" onChange={onDocChange} accept=".pdf,image/*" 
+            <label className="block text-sm font-bold text-[#0F72CE] mb-2">Attach Tuition Fee Receipt / Structure {settings?.tuitionFeeReceipt !== false && '*'}</label>
+            <input type="file" name="tuitionFeeReceipt" onChange={onDocChange} accept=".pdf,image/*" required={settings?.tuitionFeeReceipt !== false && !documents?.tuitionFeeReceipt}
               className="text-sm file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-[#0F72CE] file:text-white hover:file:bg-[#0A4C8B] transition" />
             {documents?.tuitionFeeReceipt && <p className="text-xs text-green-600 mt-2 font-semibold">✓ {documents.tuitionFeeReceipt.name} selected</p>}
           </div>
         </div>
 
-        <Input label="20. Amount already paid:" name="amountAlreadyPaid" value={data.amountAlreadyPaid} onChange={handleChange} />
-        <Input label="21. Outstanding amount:" name="outstandingAmount" value={data.outstandingAmount} onChange={handleChange} />
-        <Input label="22. Expected expenditure on books, hostel, transport, equipment, and other items:" name="expectedExpenditure" value={data.expectedExpenditure} onChange={handleChange} />
-        <Input label="23. Scholarship amount requested:" name="scholarshipAmountRequested" value={data.scholarshipAmountRequested} onChange={handleChange} required />
+        <Input label="20. Amount already paid (if any):" name="amountAlreadyPaid" type="number" value={data.amountAlreadyPaid} onChange={handleChange} required={settings?.amountAlreadyPaid !== false} />
+        <Input label="21. Outstanding amount:" name="outstandingAmount" type="number" value={data.outstandingAmount} onChange={handleChange} required={settings?.outstandingAmount !== false} />
+        <Input label="22. Scholarship amount requested:" name="scholarshipAmountRequested" type="number" value={data.scholarshipAmountRequested} onChange={handleChange} required={settings?.scholarshipAmountRequested !== false} />
       </div>
     </div>
   );

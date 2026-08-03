@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react'; // Ensure correct import for framer-motion v12
 import Step1Personal from './Step1Personal';
 import Step2Education from './Step2Education';
@@ -42,6 +42,19 @@ const ScholarshipFormWizard = ({ authUser }) => {
   const [documents, setDocuments] = useState({ tuitionFeeReceipt: null, familyIncomeCertificate: null, aadhaarCard: null });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [message, setMessage] = useState('');
+  const [settings, setSettings] = useState(null);
+
+  useEffect(() => {
+    const loadSettings = async () => {
+      try {
+        const data = await api.getSettings();
+        setSettings(data.mandatoryFields);
+      } catch (error) {
+        console.error('Failed to load form settings, using defaults', error);
+      }
+    };
+    loadSettings();
+  }, []);
 
   // Hydrate email if authUser exists
   React.useEffect(() => {
@@ -69,19 +82,49 @@ const ScholarshipFormWizard = ({ authUser }) => {
     const ref = formData.references;
     const dec = formData.declarations;
 
+    const config = settings || {};
+
+    const check = (value, fieldName) => {
+      // If setting is explicitly false, it is not required
+      if (config[fieldName] === false) return true;
+      // Otherwise it is required, so value must be truthy
+      return !!value;
+    };
+
     switch (stepId) {
       case 1:
-        return !!(pd.fullName && pd.dateOfBirth && pd.gender && pd.mobileNumber && pd.emailAddress && pd.aadhaarNumber && pd.permanentAddress && pd.districtAndState);
+        return check(pd.fullName, 'fullName') && 
+               check(pd.dateOfBirth, 'dateOfBirth') && 
+               check(pd.gender, 'gender') && 
+               check(pd.mobileNumber, 'mobileNumber') && 
+               check(pd.emailAddress, 'emailAddress') && 
+               check(pd.aadhaarNumber, 'aadhaarNumber') && 
+               check(pd.permanentAddress, 'permanentAddress') && 
+               check(pd.districtAndState, 'districtAndState');
       case 2:
-        return !!(ed.courseName && ed.institutionNameAddress && ed.courseDuration && ed.presentYearSemester && ed.totalAnnualCourseFee && ed.scholarshipAmountRequested);
+        return check(ed.courseName, 'courseName') && 
+               check(ed.institutionNameAddress, 'institutionNameAddress') && 
+               check(ed.courseDuration, 'courseDuration') && 
+               check(ed.presentYearSemester, 'presentYearSemester') && 
+               check(ed.totalAnnualCourseFee, 'totalAnnualCourseFee') && 
+               check(ed.scholarshipAmountRequested, 'scholarshipAmountRequested');
       case 3:
-        return !!(fd.totalFamilyMembers && fd.totalAnnualFamilyIncome);
+        return check(fd.totalFamilyMembers, 'totalFamilyMembers') && 
+               check(fd.totalAnnualFamilyIncome, 'totalAnnualFamilyIncome');
       case 4:
-        return !!(oa.appliedAnotherScholarship && oa.receivingAnotherScholarship);
+        return check(oa.appliedAnotherScholarship, 'appliedAnotherScholarship') && 
+               check(oa.receivingAnotherScholarship, 'receivingAnotherScholarship');
       case 5:
-        return !!(ps.whyCourseInstitution && ps.financialDifficulties && ps.howScholarshipHelps);
+        return check(ps.whyCourseInstitution, 'whyCourseInstitution') && 
+               check(ps.financialDifficulties, 'financialDifficulties') && 
+               check(ps.howScholarshipHelps, 'howScholarshipHelps');
       case 6:
-        return !!(ref.reference1.name && ref.reference1.mobile && dec.applicantSignature && dec.applicantName && dec.applicantDate && dec.applicantPlace);
+        return check(ref.reference1.name, 'reference1') && 
+               check(ref.reference1.mobile, 'reference1') && 
+               check(dec.applicantSignature, 'applicantName') && 
+               check(dec.applicantName, 'applicantName') && 
+               check(dec.applicantDate, 'applicantDate') && 
+               check(dec.applicantPlace, 'applicantPlace');
       default:
         return false;
     }
@@ -121,6 +164,28 @@ const ScholarshipFormWizard = ({ authUser }) => {
       setMessage(error.message);
     } finally {
       setIsSubmitting(false);
+    }
+  };
+
+  const renderStep = () => {
+    // If settings haven't loaded yet, pass a default empty object to avoid crashes
+    const config = settings || {};
+    
+    switch(currentStep) {
+      case 1:
+        return <Step1Personal data={formData.personalDetails} setFormData={setFormData} onDocChange={handleDocumentChange} documents={documents} settings={config} />;
+      case 2:
+        return <Step2Education data={formData.educationalRecord} setFormData={setFormData} onDocChange={handleDocumentChange} documents={documents} settings={config} />;
+      case 3:
+        return <Step3Family data={formData.familyDetails} setFormData={setFormData} onDocChange={handleDocumentChange} documents={documents} settings={config} />;
+      case 4:
+        return <Step4Assistance data={formData.otherAssistance} setFormData={setFormData} settings={config} />;
+      case 5:
+        return <Step5Statement data={formData.personalStatement} setFormData={setFormData} settings={config} />;
+      case 6:
+        return <Step6References data={formData.references} declarations={formData.declarations} setFormData={setFormData} settings={config} />;
+      default:
+        return <Step1Personal data={formData.personalDetails} setFormData={setFormData} onDocChange={handleDocumentChange} documents={documents} settings={config} />;
     }
   };
 
@@ -182,12 +247,7 @@ const ScholarshipFormWizard = ({ authUser }) => {
               exit={{ x: -20, opacity: 0 }}
               transition={{ duration: 0.2 }}
             >
-              {currentStep === 1 && <Step1Personal data={formData.personalDetails} setFormData={setFormData} onDocChange={handleDocumentChange} documents={documents} />}
-              {currentStep === 2 && <Step2Education data={formData.educationalRecord} setFormData={setFormData} onDocChange={handleDocumentChange} documents={documents} />}
-              {currentStep === 3 && <Step3Family data={formData.familyDetails} setFormData={setFormData} onDocChange={handleDocumentChange} documents={documents} />}
-              {currentStep === 4 && <Step4Assistance data={formData.otherAssistance} setFormData={setFormData} />}
-              {currentStep === 5 && <Step5Statement data={formData.personalStatement} setFormData={setFormData} />}
-              {currentStep === 6 && <Step6References data={formData.references} declarations={formData.declarations} setFormData={setFormData} />}
+              {renderStep()}
             </motion.div>
           </AnimatePresence>
 

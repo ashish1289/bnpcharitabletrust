@@ -8,7 +8,7 @@ const Input = ({ label, name, value, onChange, type = "text", required = false }
   </div>
 );
 
-const Step6References = ({ data, declarations, setFormData }) => {
+const Step6References = ({ data, declarations, setFormData, settings }) => {
   const handleRefChange = (refNumber, e) => {
     setFormData(prev => ({
       ...prev,
@@ -35,23 +35,23 @@ const Step6References = ({ data, declarations, setFormData }) => {
         {/* Reference 1 */}
         <div className="p-6 border rounded-2xl bg-gray-50">
           <h3 className="font-bold text-lg mb-4 text-[#0F72CE]">Reference 1</h3>
-          <Input label="Name:" name="name" value={data.reference1.name} onChange={(e) => handleRefChange('reference1', e)} required />
-          <Input label="Designation:" name="designation" value={data.reference1.designation} onChange={(e) => handleRefChange('reference1', e)} required />
-          <Input label="Institution or organisation:" name="institution" value={data.reference1.institution} onChange={(e) => handleRefChange('reference1', e)} required />
-          <Input label="Relationship with applicant:" name="relationship" value={data.reference1.relationship} onChange={(e) => handleRefChange('reference1', e)} required />
-          <Input label="Mobile number:" name="mobile" value={data.reference1.mobile} onChange={(e) => handleRefChange('reference1', e)} required />
-          <Input label="Email address:" name="email" type="email" value={data.reference1.email} onChange={(e) => handleRefChange('reference1', e)} required />
+          <Input label="Name:" name="name" value={data.reference1.name} onChange={(e) => handleRefChange('reference1', e)} required={settings?.reference1 !== false} />
+          <Input label="Designation:" name="designation" value={data.reference1.designation} onChange={(e) => handleRefChange('reference1', e)} required={settings?.reference1 !== false} />
+          <Input label="Institution or organisation:" name="institution" value={data.reference1.institution} onChange={(e) => handleRefChange('reference1', e)} required={settings?.reference1 !== false} />
+          <Input label="Relationship with applicant:" name="relationship" value={data.reference1.relationship} onChange={(e) => handleRefChange('reference1', e)} required={settings?.reference1 !== false} />
+          <Input label="Mobile number:" name="mobile" value={data.reference1.mobile} onChange={(e) => handleRefChange('reference1', e)} required={settings?.reference1 !== false} />
+          <Input label="Email address:" name="email" type="email" value={data.reference1.email} onChange={(e) => handleRefChange('reference1', e)} required={settings?.reference1 !== false} />
         </div>
 
         {/* Reference 2 */}
         <div className="p-6 border rounded-2xl bg-gray-50">
           <h3 className="font-bold text-lg mb-4 text-[#0F72CE]">Reference 2</h3>
-          <Input label="Name:" name="name" value={data.reference2.name} onChange={(e) => handleRefChange('reference2', e)} required />
-          <Input label="Designation:" name="designation" value={data.reference2.designation} onChange={(e) => handleRefChange('reference2', e)} required />
-          <Input label="Institution or organisation:" name="institution" value={data.reference2.institution} onChange={(e) => handleRefChange('reference2', e)} required />
-          <Input label="Relationship with applicant:" name="relationship" value={data.reference2.relationship} onChange={(e) => handleRefChange('reference2', e)} required />
-          <Input label="Mobile number:" name="mobile" value={data.reference2.mobile} onChange={(e) => handleRefChange('reference2', e)} required />
-          <Input label="Email address:" name="email" type="email" value={data.reference2.email} onChange={(e) => handleRefChange('reference2', e)} required />
+          <Input label="Name:" name="name" value={data.reference2.name} onChange={(e) => handleRefChange('reference2', e)} required={settings?.reference2 !== false} />
+          <Input label="Designation:" name="designation" value={data.reference2.designation} onChange={(e) => handleRefChange('reference2', e)} required={settings?.reference2 !== false} />
+          <Input label="Institution or organisation:" name="institution" value={data.reference2.institution} onChange={(e) => handleRefChange('reference2', e)} required={settings?.reference2 !== false} />
+          <Input label="Relationship with applicant:" name="relationship" value={data.reference2.relationship} onChange={(e) => handleRefChange('reference2', e)} required={settings?.reference2 !== false} />
+          <Input label="Mobile number:" name="mobile" value={data.reference2.mobile} onChange={(e) => handleRefChange('reference2', e)} required={settings?.reference2 !== false} />
+          <Input label="Email address:" name="email" type="email" value={data.reference2.email} onChange={(e) => handleRefChange('reference2', e)} required={settings?.reference2 !== false} />
         </div>
       </div>
 
@@ -62,10 +62,10 @@ const Step6References = ({ data, declarations, setFormData }) => {
           I understand that submission of false information may result in rejection or cancellation of the scholarship.
         </p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <Input label="Applicant’s signature (Type full name):" name="applicantSignature" value={declarations.applicantSignature} onChange={handleDecChange} required />
-          <Input label="Name:" name="applicantName" value={declarations.applicantName} onChange={handleDecChange} required />
-          <Input label="Date:" name="applicantDate" type="date" value={declarations.applicantDate} onChange={handleDecChange} required />
-          <Input label="Place:" name="applicantPlace" value={declarations.applicantPlace} onChange={handleDecChange} required />
+          <Input label="Applicant’s signature (Type full name):" name="applicantSignature" value={declarations.applicantSignature} onChange={handleDecChange} required={settings?.applicantName !== false} />
+          <Input label="Name:" name="applicantName" value={declarations.applicantName} onChange={handleDecChange} required={settings?.applicantName !== false} />
+          <Input label="Date:" name="applicantDate" type="date" value={declarations.applicantDate} onChange={handleDecChange} required={settings?.applicantDate !== false} />
+          <Input label="Place:" name="applicantPlace" value={declarations.applicantPlace} onChange={handleDecChange} required={settings?.applicantPlace !== false} />
         </div>
       </div>
 
@@ -75,10 +75,10 @@ const Step6References = ({ data, declarations, setFormData }) => {
           I confirm that the family, income, educational, and financial information provided in this application is correct. I authorise the Trust to verify the submitted information for scholarship purposes.
         </p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <Input label="Parent/Guardian’s signature (Type full name):" name="parentSignature" value={declarations.parentSignature} onChange={handleDecChange} required />
-          <Input label="Name:" name="parentName" value={declarations.parentName} onChange={handleDecChange} required />
-          <Input label="Relationship with applicant:" name="parentRelationship" value={declarations.parentRelationship} onChange={handleDecChange} required />
-          <Input label="Date:" name="parentDate" type="date" value={declarations.parentDate} onChange={handleDecChange} required />
+          <Input label="Parent/Guardian’s signature (Type full name):" name="parentSignature" value={declarations.parentSignature} onChange={handleDecChange} required={settings?.parentName !== false} />
+          <Input label="Name:" name="parentName" value={declarations.parentName} onChange={handleDecChange} required={settings?.parentName !== false} />
+          <Input label="Relationship with applicant:" name="parentRelationship" value={declarations.parentRelationship} onChange={handleDecChange} required={settings?.parentRelationship !== false} />
+          <Input label="Date:" name="parentDate" type="date" value={declarations.parentDate} onChange={handleDecChange} required={settings?.applicantDate !== false} />
         </div>
       </div>
     </div>

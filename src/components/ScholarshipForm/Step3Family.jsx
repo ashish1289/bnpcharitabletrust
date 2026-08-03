@@ -23,7 +23,7 @@ const Select = ({ label, name, value, onChange, options, required = false }) => 
   </div>
 );
 
-const Step3Family = ({ data, setFormData, onDocChange, documents }) => {
+const Step3Family = ({ data, setFormData, onDocChange, documents, settings }) => {
   const handleChange = (e) => {
     setFormData(prev => ({
       ...prev,
@@ -80,34 +80,36 @@ const Step3Family = ({ data, setFormData, onDocChange, documents }) => {
       <button type="button" onClick={addFamilyMember} className="mb-8 text-sm text-[#0F72CE] font-semibold hover:underline">+ Add another family member</button>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6">
-        <Input label="24. Father’s or guardian’s occupation:" name="fatherOccupation" value={data.fatherOccupation} onChange={handleChange} required />
-        <Input label="25. Mother’s or guardian’s occupation:" name="motherOccupation" value={data.motherOccupation} onChange={handleChange} required />
-        <Input label="26. Total number of family members:" name="totalFamilyMembers" value={data.totalFamilyMembers} onChange={handleChange} required />
-        <Input label="27. Number of earning members:" name="earningMembers" value={data.earningMembers} onChange={handleChange} required />
-        <Input label="28. Number of dependants:" name="dependants" value={data.dependants} onChange={handleChange} required />
+        <Input label="24. Father's occupation:" name="fatherOccupation" value={data.fatherOccupation} onChange={handleChange} required={settings?.fatherOccupation !== false} />
+        <Input label="25. Mother's occupation:" name="motherOccupation" value={data.motherOccupation} onChange={handleChange} required={settings?.motherOccupation !== false} />
         
         <div>
-          <Input label="29. Total annual family income from all sources:" name="totalAnnualFamilyIncome" value={data.totalAnnualFamilyIncome} onChange={handleChange} required />
+          <Input label="26. Total annual family income (₹):" name="totalAnnualFamilyIncome" type="number" value={data.totalAnnualFamilyIncome} onChange={handleChange} required={settings?.totalAnnualFamilyIncome !== false} />
           <div className="mb-4 bg-blue-50 border border-blue-200 p-4 rounded-xl">
-            <label className="block text-sm font-bold text-[#0F72CE] mb-2">Attach Family Income Document (PDF/Image) *</label>
-            <input type="file" name="familyIncomeCertificate" onChange={onDocChange} accept=".pdf,image/*" 
+            <label className="block text-sm font-bold text-[#0F72CE] mb-2">Attach Income Certificate (PDF/Image) {settings?.familyIncomeCertificate !== false && '*'}</label>
+            <input type="file" name="familyIncomeCertificate" onChange={onDocChange} accept=".pdf,image/*" required={settings?.familyIncomeCertificate !== false && !documents?.familyIncomeCertificate}
               className="text-sm file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-[#0F72CE] file:text-white hover:file:bg-[#0A4C8B] transition" />
             {documents?.familyIncomeCertificate && <p className="text-xs text-green-600 mt-2 font-semibold">✓ {documents.familyIncomeCertificate.name} selected</p>}
           </div>
         </div>
-
-        <div className="md:col-span-2">
-          <Input label="30. Sources of family income:" name="incomeSources" value={data.incomeSources} onChange={handleChange} />
-        </div>
         
-        <Input label="31. Agricultural land owned or cultivated, if any:" name="agriculturalLand" value={data.agriculturalLand} onChange={handleChange} />
-        <Select label="32. House ownership status:" name="houseOwnership" value={data.houseOwnership} onChange={handleChange} options={['Owned', 'Rented', 'Other']} />
+        <Input label="27. Total family members:" name="totalFamilyMembers" type="number" value={data.totalFamilyMembers} onChange={handleChange} required={settings?.totalFamilyMembers !== false} />
+        <Input label="28. Number of earning members:" name="earningMembers" type="number" value={data.earningMembers} onChange={handleChange} required={settings?.earningMembers !== false} />
         
         <div className="md:col-span-2">
-          <Input label="33. Major family assets, if any:" name="majorAssets" value={data.majorAssets} onChange={handleChange} />
+          <Input label="29. Specific sources of income (e.g., farming, salary, business):" name="incomeSources" value={data.incomeSources} onChange={handleChange} required={settings?.incomeSources !== false} />
         </div>
         <div className="md:col-span-2">
-          <Input label="34. Existing loans or major liabilities:" name="liabilities" value={data.liabilities} onChange={handleChange} />
+          <Input label="30. Agricultural land holding (if any, specify area):" name="agriculturalLand" value={data.agriculturalLand} onChange={handleChange} required={settings?.agriculturalLand !== false} />
+        </div>
+        
+        <Select label="31. Own house or rented?" name="houseOwnership" value={data.houseOwnership} onChange={handleChange} options={['Owned', 'Rented', 'Other']} required={settings?.houseOwnership !== false} />
+        
+        <div className="md:col-span-2">
+          <Input label="32. Major assets (e.g., 2-wheeler, 4-wheeler, commercial property):" name="majorAssets" value={data.majorAssets} onChange={handleChange} required={settings?.majorAssets !== false} />
+        </div>
+        <div className="md:col-span-2">
+          <Input label="33. Details of outstanding loans/liabilities:" name="liabilities" value={data.liabilities} onChange={handleChange} required={settings?.liabilities !== false} />
         </div>
         <div className="md:col-span-2">
           <Input label="35. Serious illness, disability, bereavement, unemployment, or other hardship in the family:" name="hardships" value={data.hardships} onChange={handleChange} />

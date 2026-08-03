@@ -30,6 +30,7 @@ import ScholarshipAdminPage from "./pages/admin/ScholarshipAdminPage";
 import AdminLoginPage from "./pages/admin/AdminLoginPage";
 import StudentProfile from "./pages/StudentProfile";
 import ScholarshipInfo from "./pages/ScholarshipInfo";
+import Maintenance from "./pages/Maintenance";
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -62,6 +63,7 @@ function App() {
         <Route path="/blog/:id" element={<BlogDetail />} />
         <Route path="/scholarship/apply" element={<ScholarshipApply />} />
         <Route path="/scholarship-info" element={<ScholarshipInfo />} />
+        <Route path="/maintenance" element={<Maintenance />} />
         <Route path="/admin/login" element={<AdminLoginPage />} />
         <Route path="/admin/scholarships" element={<ScholarshipAdminPage />} />
         <Route path="/profile" element={<StudentProfile />} />

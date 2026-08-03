@@ -31,7 +31,7 @@ const Select = ({ label, name, value, onChange, options, required = false }) => 
   </div>
 );
 
-const Step4Assistance = ({ data, setFormData }) => {
+const Step4Assistance = ({ data, setFormData, settings }) => {
   const handleChange = (e) => {
     setFormData(prev => ({
       ...prev,
@@ -43,37 +43,37 @@ const Step4Assistance = ({ data, setFormData }) => {
     <div>
       <h2 className="text-2xl font-bold text-gray-800 mb-6">D. Other Financial Assistance</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 mb-8">
-        <Select label="38. Have you applied for another scholarship?" name="appliedAnotherScholarship" value={data.appliedAnotherScholarship} onChange={handleChange} options={['Yes', 'No']} />
-        <Select label="39. Are you currently receiving any scholarship?" name="receivingAnotherScholarship" value={data.receivingAnotherScholarship} onChange={handleChange} options={['Yes', 'No']} />
-        <Input label="40. Name of scholarship or sponsor:" name="scholarshipNameSponsor" value={data.scholarshipNameSponsor} onChange={handleChange} />
-        <Input label="41. Amount received or expected:" name="amountReceivedExpected" value={data.amountReceivedExpected} onChange={handleChange} />
-        <div className="md:col-span-2">
-          <Input label="42. Expenses covered by it:" name="expensesCovered" value={data.expensesCovered} onChange={handleChange} />
-        </div>
-        <div className="md:col-span-2">
-          <Select label="43. Have you received support from any NGO, government department, employer, or institution?" name="supportFromNGO" value={data.supportFromNGO} onChange={handleChange} options={['Yes', 'No']} />
-        </div>
-      </div>
+        <Select label="35. Have you applied for any other scholarship?" name="appliedAnotherScholarship" value={data.appliedAnotherScholarship} onChange={handleChange} options={['Yes', 'No']} required={settings?.appliedAnotherScholarship !== false} />
+        <Select label="36. Are you receiving any other scholarship?" name="receivingAnotherScholarship" value={data.receivingAnotherScholarship} onChange={handleChange} options={['Yes', 'No']} required={settings?.receivingAnotherScholarship !== false} />
+        
+        {data.receivingAnotherScholarship === 'Yes' && (
+          <>
+            <Input label="37. Scholarship name and sponsor:" name="scholarshipNameSponsor" value={data.scholarshipNameSponsor} onChange={handleChange} required={settings?.scholarshipNameSponsor !== false} />
+            <Input label="38. Amount received/expected:" name="amountReceivedExpected" value={data.amountReceivedExpected} onChange={handleChange} required={settings?.amountReceivedExpected !== false} />
+          </>
+        )}
 
-      <h2 className="text-2xl font-bold text-gray-800 mb-6">E. Achievements and Personal Initiative</h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6">
+        <div className="md:col-span-2 mt-4">
+          <h3 className="text-xl font-bold text-gray-800 mb-4 border-b pb-2">E. Achievements & Extracurricular Activities</h3>
+        </div>
+
         <div className="md:col-span-2">
-          <Textarea label="44. Academic achievements:" name="academicAchievements" value={data.academicAchievements} onChange={handleChange} />
+          <Input label="39. Major academic achievements (e.g., Olympiad rank, school topper):" name="academicAchievements" value={data.academicAchievements} onChange={handleChange} required={settings?.academicAchievements !== false} />
         </div>
         <div className="md:col-span-2">
-          <Textarea label="45. Sports, cultural, literary, technical, or other achievements:" name="otherAchievements" value={data.otherAchievements} onChange={handleChange} />
+          <Input label="40. Awards, recognitions, or participation in sports/arts:" name="awardsRecognitions" value={data.awardsRecognitions} onChange={handleChange} required={settings?.awardsRecognitions !== false} />
         </div>
         <div className="md:col-span-2">
-          <Textarea label="46. Volunteering or community activities:" name="volunteeringActivities" value={data.volunteeringActivities} onChange={handleChange} />
+          <Input label="41. Volunteering or social service activities:" name="volunteeringActivities" value={data.volunteeringActivities} onChange={handleChange} required={settings?.volunteeringActivities !== false} />
         </div>
         <div className="md:col-span-2">
-          <Textarea label="47. Skill-development or online courses completed:" name="skillCourses" value={data.skillCourses} onChange={handleChange} />
+          <Input label="42. Have you received support from any NGO/Trust before? Details:" name="supportFromNGO" value={data.supportFromNGO} onChange={handleChange} required={settings?.supportFromNGO !== false} />
         </div>
         <div className="md:col-span-2">
-          <Textarea label="48. Part-time work or family responsibilities:" name="partTimeWork" value={data.partTimeWork} onChange={handleChange} />
+          <Input label="43. Have you engaged in any part-time work or internship?" name="partTimeWork" value={data.partTimeWork} onChange={handleChange} required={settings?.partTimeWork !== false} />
         </div>
         <div className="md:col-span-2">
-          <Textarea label="49. Awards, certificates, or recognitions received:" name="awardsRecognitions" value={data.awardsRecognitions} onChange={handleChange} />
+          <Input label="44. Relevant skill courses completed (e.g., coding, tailoring):" name="skillCourses" value={data.skillCourses} onChange={handleChange} required={settings?.skillCourses !== false} />
         </div>
       </div>
     </div>
