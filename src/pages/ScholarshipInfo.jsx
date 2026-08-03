@@ -26,14 +26,39 @@ const ScholarshipInfo = () => {
               Empowering deserving students to achieve their educational dreams. The BNP Sikshya Sahayog Scholarship provides crucial financial support to meritorious students facing financial difficulties.
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <div className="flex items-center gap-2 bg-white px-5 py-3 rounded-full shadow-sm border border-gray-100">
-                <CheckCircle className="text-green-500" size={20} />
-                <span className="font-semibold text-gray-700">60%+ Marks Required</span>
+
+          </motion.div>
+
+          {/* Eligibility Criteria Card */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="bg-white rounded-3xl p-8 md:p-10 shadow-sm border border-gray-200 max-w-4xl mx-auto mb-16"
+          >
+            <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+              <CheckCircle className="text-[#0F72CE]" size={28} />
+              Eligibility Criteria
+            </h2>
+            <div className="grid sm:grid-cols-2 gap-6">
+              <div className="flex items-center gap-4 bg-gray-50 p-6 rounded-2xl border border-gray-100">
+                <div className="w-12 h-12 bg-green-100 text-green-600 rounded-full flex items-center justify-center shrink-0">
+                  <CheckCircle size={24} />
+                </div>
+                <div>
+                  <h4 className="font-bold text-gray-900 text-lg">Academic Merit</h4>
+                  <p className="text-sm text-gray-600 mt-1">Minimum 60%+ marks required in the last qualifying examination.</p>
+                </div>
               </div>
-              <div className="flex items-center gap-2 bg-white px-5 py-3 rounded-full shadow-sm border border-gray-100">
-                <Coins className="text-yellow-500" size={20} />
-                <span className="font-semibold text-gray-700">Family Income &lt; ₹3,00,000</span>
+              
+              <div className="flex items-center gap-4 bg-gray-50 p-6 rounded-2xl border border-gray-100">
+                <div className="w-12 h-12 bg-yellow-100 text-yellow-600 rounded-full flex items-center justify-center shrink-0">
+                  <Coins size={24} />
+                </div>
+                <div>
+                  <h4 className="font-bold text-gray-900 text-lg">Financial Need</h4>
+                  <p className="text-sm text-gray-600 mt-1">Annual family income must be less than ₹3,00,000.</p>
+                </div>
               </div>
             </div>
           </motion.div>
@@ -58,7 +83,7 @@ const ScholarshipInfo = () => {
                   The fastest and most convenient way to apply. Fill out our secure digital form, upload your documents directly, and track your application status in real-time.
                 </p>
                 <Link to="/scholarship/apply" className="inline-flex items-center justify-center w-full py-4 bg-[#0F72CE] text-white rounded-xl font-bold text-lg hover:bg-[#0A4C8B] transition-colors shadow-lg shadow-blue-500/30">
-                  Start Online Application
+                  Online Application
                 </Link>
               </div>
             </motion.div>

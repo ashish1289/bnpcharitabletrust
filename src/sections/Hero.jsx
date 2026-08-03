@@ -138,7 +138,7 @@ const Hero = () => {
                       Charitable Trust
                     </h3>
                     <p className="text-[13px] font-semibold text-gray-800 mt-1">
-                      Founder - Shri Niranjan Pattnaik
+                      Founder - Niranjan Pattnaik
                     </p>
                   </div>
                 </div>

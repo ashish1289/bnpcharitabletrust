@@ -32,7 +32,7 @@ export default function Programs() {
     },
     {
       icon: <BookOpen size={80} strokeWidth={1.5} />,
-      title: "Manoj Das Sahitya Award",
+      title: "Manoj Das Sahitya Samman",
       desc: "Instituted in memory of the legendary writer Shri Manoj Das, this prestigious award recognizes eminent writers who have made remarkable contributions to literature and cultural heritage.",
       img: "/images.jpeg",
       hueA: 300,
@@ -40,7 +40,12 @@ export default function Programs() {
     },
     {
       icon: <Tractor size={80} strokeWidth={1.5} />,
-      title: "Farmers Recognition",
+      title: (
+        <>
+          Farmers Recognition <br />
+          <span className="text-[18px] font-medium opacity-90">(Krushak Bandan Samman)</span>
+        </>
+      ),
       desc: "Recognizing the best cultivators from all 30 districts of Odisha with annual awards that celebrate innovation, dedication, and excellence in agriculture.",
       img: "/odisha_farmer_1785671235573.png",
       hueA: 120,

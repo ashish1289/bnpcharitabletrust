@@ -6,25 +6,31 @@ import Footer from "../components/Footer";
 import { Link } from "react-router-dom";
 
 // Split Text Utility Component
-const SplitText = ({ text, delayStep = 0.03, className = "" }) => {
-  const letters = useMemo(() => text.split(""), [text]);
+const SplitText = ({ text, delayStep = 0.03, className }) => {
+  const words = text.split(" ");
+  let charIndex = 0;
   return (
-    <h2 aria-hidden="true" className={`inline-block overflow-hidden ${className}`} style={{ lineHeight: 1.05 }}>
-      {letters.map((char, i) => {
-        const letter = char === " " ? "\u00A0" : char;
-        return (
-          <motion.span
-            key={i}
-            style={{ display: "inline-block" }}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.45, delay: i * delayStep, ease: "easeOut" }}
-            viewport={{ once: true, amount: 0.6 }}
-          >
-            {letter}
-          </motion.span>
-        );
-      })}
+    <h2 className={`inline-flex flex-wrap justify-center gap-x-3 md:gap-x-4 overflow-hidden ${className}`}>
+      {words.map((word, wIdx) => (
+        <span key={wIdx} className="inline-block whitespace-nowrap">
+          {word.split("").map((char, i) => {
+            const currentDelay = charIndex * delayStep;
+            charIndex++;
+            return (
+              <motion.span
+                key={i}
+                className="inline-block"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.45, delay: currentDelay, ease: "easeOut" }}
+                viewport={{ once: true }}
+              >
+                {char}
+              </motion.span>
+            );
+          })}
+        </span>
+      ))}
     </h2>
   );
 };
@@ -68,7 +74,7 @@ const EncouragementPage = () => {
             <div style={{ fontFamily: "'Gloria Hallelujah', cursive" }} className="mb-6">
               <SplitText
                 text="Recognizing Talent, Inspiring Excellence"
-                className="text-4xl md:text-5xl lg:text-7xl font-extrabold text-white drop-shadow-lg"
+                className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-white drop-shadow-lg"
               />
             </div>
 

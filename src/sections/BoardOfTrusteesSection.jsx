@@ -2,20 +2,29 @@ import React, { useMemo } from "react";
 import { motion } from "framer-motion";
 
 const SplitText = ({ text, delayStep = 0.03, className }) => {
-  const letters = useMemo(() => text.split(""), [text]);
+  const words = text.split(" ");
+  let charIndex = 0;
   return (
-    <h2 className={`inline-block overflow-hidden ${className}`}>
-      {letters.map((char, i) => (
-        <motion.span
-          key={i}
-          className="inline-block"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.45, delay: i * delayStep, ease: "easeOut" }}
-          viewport={{ once: true }}
-        >
-          {char === " " ? "\u00A0" : char}
-        </motion.span>
+    <h2 className={`inline-flex flex-wrap justify-center gap-x-2 md:gap-x-3 overflow-hidden ${className}`}>
+      {words.map((word, wIdx) => (
+        <span key={wIdx} className="inline-block whitespace-nowrap">
+          {word.split("").map((char, i) => {
+            const currentDelay = charIndex * delayStep;
+            charIndex++;
+            return (
+              <motion.span
+                key={i}
+                className="inline-block"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.45, delay: currentDelay, ease: "easeOut" }}
+                viewport={{ once: true }}
+              >
+                {char}
+              </motion.span>
+            );
+          })}
+        </span>
       ))}
     </h2>
   );
@@ -23,19 +32,19 @@ const SplitText = ({ text, delayStep = 0.03, className }) => {
 
 const BoardOfTrusteesSection = () => {
   const trustees = [
-    { serialNo: 1, name: "Shri Tara Ranjan Patnaik", designation: "Chairman, Trustees", img: "/tara.jpeg" },
-    { serialNo: 2, name: "Shri Dharmaditya Patnaik", designation: "Trustees", img: "/dharmaditya.jpeg" },
-    { serialNo: 3, name: "Shri Dibyalok Patnaik", designation: "Trustees", img: "/divyalok.jpeg" },
-    { serialNo: 4, name: "Shri Somjit Patnaik", designation: "Trustees", img: "/somjit.jpeg" },
-    { serialNo: 5, name: "Shri Devjyoti Patnaik", designation: "Trustees", img: "/devjyoti.jpeg" },
-    { serialNo: 6, name: "Shri Navajyoti Patnaik", designation: "Trustees", img: "/nabajyoti.jpeg" },
-    { serialNo: 7, name: "Shri Abhishek Patnaik", designation: "Trustees", img: "/abhisek.jpeg" },
-    { serialNo: 8, name: "Shri Anshuman Patnaik", designation: "Trustees", img: "/anshuman.jpeg" },
-    { serialNo: 9, name: "Shri Anurag Patnaik", designation: "Trustees", img: "/anurag.jpeg" },
-    { serialNo: 10, name: "Shri Parthajit Patnaik", designation: "Trustees", img: "/parthajit.jpeg" },
-    { serialNo: 11, name: "Ms. Adyasha Patnaik", designation: "Trustees", img: "/adyasha.jpeg" },
-    { serialNo: 12, name: "Shri Anupam Patnaik", designation: "Trustees", img: "/anup.jpeg" },
-    { serialNo: 13, name: "Ms. Tanaya Patnaik", designation: "Trustees", img: "/tanya.jpeg" },
+    { serialNo: 1, name: "Shri Tara Ranjan Patnaik", designation: "Chairman, Trustees", img: "/profiledemo.jpg" },
+    { serialNo: 2, name: "Shri Dharmaditya Patnaik", designation: "Trustees", img: "/profiledemo.jpg" },
+    { serialNo: 3, name: "Shri Dibyalok Patnaik", designation: "Trustees", img: "/profiledemo.jpg" },
+    { serialNo: 4, name: "Shri Somjit Patnaik", designation: "Trustees", img: "/profiledemo.jpg" },
+    { serialNo: 5, name: "Shri Devjyoti Patnaik", designation: "Trustees", img: "/profiledemo.jpg" },
+    { serialNo: 6, name: "Shri Navajyoti Patnaik", designation: "Trustees", img: "/profiledemo.jpg" },
+    { serialNo: 7, name: "Shri Abhishek Patnaik", designation: "Trustees", img: "/profiledemo.jpg" },
+    { serialNo: 8, name: "Shri Anshuman Patnaik", designation: "Trustees", img: "/profiledemo.jpg" },
+    { serialNo: 9, name: "Shri Anurag Patnaik", designation: "Trustees", img: "/profiledemo.jpg" },
+    { serialNo: 10, name: "Shri Parthajit Patnaik", designation: "Trustees", img: "/profiledemo.jpg" },
+    { serialNo: 11, name: "Ms. Adyasha Patnaik", designation: "Trustees", img: "/profiledemo.jpg" },
+    { serialNo: 12, name: "Shri Anupam Patnaik", designation: "Trustees", img: "/profiledemo.jpg" },
+    { serialNo: 13, name: "Ms. Tanaya Patnaik", designation: "Trustees", img: "/profiledemo.jpg" },
   ];
 
   return (

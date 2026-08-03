@@ -122,20 +122,65 @@ const AboutSection = () => {
             </motion.div>
           </div>
 
-          {/* ========================= TOP TWO CARDS ========================= */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-5xl mx-auto">
+          {/* ========================= ABOUT CONTENT ========================= */}
+          <div className="flex flex-col gap-12 max-w-6xl mx-auto">
+            
+            {/* FOUNDER SECTION - Full width with large image */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+              className="bg-white rounded-3xl p-8 lg:p-12 shadow-xl border border-gray-100 flex flex-col lg:flex-row gap-10 lg:gap-16 items-center hover:shadow-2xl transition-shadow"
+            >
+              <div className="w-full sm:w-2/3 lg:w-2/5 shrink-0 mx-auto">
+                <div className="w-full aspect-square rounded-3xl overflow-hidden shadow-lg border-4 border-white bg-gray-50">
+                  <img
+                    src="/niranjan.jpeg"
+                    alt="Niranjan Patnaik"
+                    className="w-full h-full object-cover object-top"
+                    onError={(e) => {
+                      e.target.src = "https://via.placeholder.com/400";
+                    }}
+                  />
+                </div>
+              </div>
+              
+              <div className="w-full lg:w-3/5 flex flex-col justify-center text-center lg:text-left">
+                <h2 className="text-3xl lg:text-4xl font-extrabold text-[#0F72CE] mb-2">
+                  Niranjan Patnaik
+                </h2>
+                <h4 className="text-lg font-semibold text-gray-500 mb-6 uppercase tracking-wider">
+                  Founder, BNP Charitable Trust
+                </h4>
+                
+                <div className="text-gray-600 leading-relaxed text-base lg:text-lg space-y-4 text-justify sm:text-left">
+                  <p>
+                    Shri Niranjan Patnaik is a distinguished public leader, entrepreneur, and social worker whose life has been dedicated to the service of the people of Odisha. Over several decades, he has contributed to the state's development through public service, business leadership, and social initiatives. He served as a Minister in the Government of Odisha and held several important portfolios, including Industries, Irrigation, Health, Revenue, Science & Technology, and Power.
+                  </p>
+                  <p>
+                    After decades in public life, he envisioned BNP Charitable Trust as a platform to continue serving society beyond politics. Through the Trust, he seeks to empower future generations by supporting education, honoring excellence, strengthening rural communities, and promoting inclusive development across Odisha.
+                  </p>
+                </div>
+                
+                <div className="mt-8 p-6 bg-blue-50 rounded-2xl border-l-4 border-[#0F72CE] italic text-[#0A4C8B] font-medium text-lg shadow-sm">
+                  "Public service does not end with public office. It continues through meaningful action that empowers people and transforms lives."
+                </div>
+              </div>
+            </motion.div>
+
             {/* WHO WE ARE BOX */}
             <motion.div
-              initial={{ opacity: 0, y: 50 }}
+              initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7 }}
               viewport={{ once: true }}
-              className="bg-white rounded-3xl p-8 shadow-xl border border-gray-100 flex flex-col h-full hover:shadow-2xl transition-shadow"
+              className="bg-white rounded-3xl p-8 lg:p-12 shadow-xl border border-gray-100 hover:shadow-2xl transition-shadow"
             >
-              <h3 className="text-2xl font-bold text-[#0F72CE] mb-4">
+              <h3 className="text-3xl font-bold text-[#0F72CE] mb-6 text-center">
                 Who We Are
               </h3>
-              <div className="text-gray-600 leading-relaxed text-md space-y-4 flex-1">
+              <div className="text-gray-600 leading-relaxed text-lg space-y-5 text-center max-w-4xl mx-auto">
                 <p>
                   BNP Charitable Trust is a registered charitable organization established to promote education, literary excellence, sports, agriculture, and public welfare across Odisha.
                 </p>
@@ -148,69 +193,6 @@ const AboutSection = () => {
               </div>
             </motion.div>
 
-            {/* FOUNDER BOX */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9, y: 50 }}
-              whileInView={{ opacity: 1, scale: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
-              className="bg-white rounded-3xl p-8 shadow-xl border border-gray-100 flex flex-col h-full text-center lg:text-left hover:shadow-2xl transition-shadow"
-            >
-              <div className="flex flex-col lg:flex-row items-center gap-6 mb-6">
-                <div className="w-24 h-24 shrink-0 rounded-full overflow-hidden shadow-md">
-                  <img
-                    src="/niranjan.jpeg"
-                    alt="Shri Niranjan Patnaik"
-                    className="w-full h-full object-cover object-top"
-                    onError={(e) => {
-                      e.target.src = "https://via.placeholder.com/150";
-                      e.target.alt = "Founder Image Missing";
-                    }}
-                  />
-                </div>
-                <div>
-                  <h3 className="text-2xl font-bold text-[#0F72CE]">
-                    Niranjan Patnaik
-                  </h3>
-                  <p className="text-gray-500 text-sm font-medium">
-                    Founder, BNP Charitable Trust
-                  </p>
-                </div>
-              </div>
-              <div className="text-gray-600 leading-relaxed text-sm flex-1 space-y-3">
-                <p>
-                  Shri Niranjan Patnaik is a distinguished public leader, entrepreneur, and social worker whose life has been dedicated to the service of the people of Odisha. Over several decades, he has contributed to the state's development through public service, business leadership, and social initiatives. He served as a Minister in the Government of Odisha and held several important portfolios, including Industries, Irrigation, Health, Revenue, Science & Technology, and Power.
-                </p>
-                <p>
-                  After decades in public life, he envisioned BNP Charitable Trust as a platform to continue serving society beyond politics. Through the Trust, he seeks to empower future generations by supporting education, honoring excellence, strengthening rural communities, and promoting inclusive development across Odisha.
-                </p>
-              </div>
-              <div className="mt-4 p-4 bg-blue-50 rounded-xl border border-blue-100 italic text-[#0A4C8B] font-medium text-sm">
-                "Public service does not end with public office. It continues through meaningful action that empowers people and transforms lives."
-              </div>
-            </motion.div>
-
-            {/* OUR CORE VALUES BOX (Commented out as per request)
-            <motion.div
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.1 }}
-              viewport={{ once: true }}
-              className="bg-white rounded-3xl p-8 shadow-xl border border-gray-100 flex flex-col h-full hover:shadow-2xl transition-shadow"
-            >
-              <h3 className="text-2xl font-bold text-[#0F72CE] mb-6">
-                Our Core Values
-              </h3>
-              <ul className="space-y-4 text-gray-700 text-base lg:text-lg font-medium flex-1">
-                <li className="flex items-center gap-3"><span className="text-2xl">❤️</span> Compassion in Service</li>
-                <li className="flex items-center gap-3"><span className="text-2xl">🎓</span> Empowerment Through Education</li>
-                <li className="flex items-center gap-3"><span className="text-2xl">🤝</span> Integrity & Transparency</li>
-                <li className="flex items-center gap-3"><span className="text-2xl">🌱</span> Sustainable Community Development</li>
-                <li className="flex items-center gap-3"><span className="text-2xl">🏅</span> Recognition of Excellence</li>
-                <li className="flex items-center gap-3"><span className="text-2xl">⚖️</span> Equal Opportunity for Everyone</li>
-              </ul>
-            </motion.div>
-            */}
           </div>
 
           {/* ========================= VISION CARD ========================= */}
