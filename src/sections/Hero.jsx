@@ -110,7 +110,7 @@ const Hero = () => {
                 viewport={{ once: true }}
                 className="text-white/90 text-base md:text-lg mt-6 leading-relaxed max-w-2xl"
               >
-                BNP Charitable Trust is dedicated to supporting meritorious students, recognizing progressive farmers, celebrating literary and sporting excellence, and advancing health and community welfare across Odisha through scholarships, financial assistance, awards, and impactful social initiatives.
+                BNP Charitable Trust is dedicated to supporting meritorious students, recognizing progressive farmers, celebrating literary , sporting excellence , advancing health , environment and community welfare across Odisha through scholarships, financial assistance, awards, and impactful social initiatives.
               </motion.p>
 
             </div>
