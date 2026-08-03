@@ -26,7 +26,7 @@ export default function Programs() {
       icon: <Trophy size={80} strokeWidth={1.5} />,
       title: "Academic Excellence Awards",
       desc: "Recognizing Board and University toppers with cash awards to encourage academic excellence and inspire students to pursue higher education with confidence.",
-      img: "/academic_awards_india.png",
+      img: "/7894.jpeg",
       hueA: 20,
       hueB: 40,
     },

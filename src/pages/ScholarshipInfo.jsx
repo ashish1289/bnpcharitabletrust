@@ -115,7 +115,7 @@ const ScholarshipInfo = () => {
                   </li>
                   <li className="flex items-start gap-3">
                     <MapPin className="text-gray-400 mt-1 shrink-0" size={18} />
-                    <span className="text-gray-700"><strong>Post/Courier:</strong> Send the physical documents directly to our official trust office address.</span>
+                    <span className="text-gray-700"><strong>Post/Courier:</strong> N2/25,IRC Village, Nayapalli, Bhubaneswar, Odisha 751015 , India</span>
                   </li>
                 </ul>
               </div>

@@ -1,4 +1,4 @@
-﻿import React, { useMemo } from "react";
+import React, { useMemo } from "react";
 import { motion } from "framer-motion";
 
 const SplitText = ({ text, delayStep = 0.03, className }) => {
@@ -23,19 +23,19 @@ const SplitText = ({ text, delayStep = 0.03, className }) => {
 
 const BoardOfTrusteesSection = () => {
   const trustees = [
-    { serialNo: 1, name: "Shri Tara Ranjan Patnaik", designation: "Chairman, Trustees", fathersName: "Shri Padmanav Patnaik", address: "Plot No-2132/5058, Tankapani Road, BJB Nagar, Bhubaneswar-751014", img: "/profiledemo.jpg" },
-    { serialNo: 2, name: "Shri Dharmaditya Patnaik", designation: "Trustees", fathersName: "Shri Chita Ranjan Patnaik", address: "70, Forest Park, Bhubaneswar-751009", img: "/profiledemo.jpg" },
-    { serialNo: 3, name: "Shri Dibyalok Patnaik", designation: "Trustees", fathersName: "Shri Chita Ranjan Patnaik", address: "70, Forest Park, Bhubaneswar-751009", img: "/profiledemo.jpg" },
-    { serialNo: 4, name: "Shri Somjit Patnaik", designation: "Trustees", fathersName: "Shri Suranjan Patnaik", address: "Flat No-G 06, Block-C Ramky Towers, Gachibowli, VTC- Gochibowli, Dist- K. V. Rangaready, State- Telangana-500032", img: "/profiledemo.jpg" },
-    { serialNo: 5, name: "Shri Devjyoti Patnaik", designation: "Trustees", fathersName: "Shri Niranjan Patnaik", address: "N-2/29, IRC Village, Nayapalli, Bhubaneswar-751015", img: "/profiledemo.jpg" },
-    { serialNo: 6, name: "Shri Navajyoti Patnaik", designation: "Trustees", fathersName: "Shri Niranjan Patnaik", address: "N-2/29, IRC Village, Nayapalli, Bhubaneswar-751015", img: "/profiledemo.jpg" },
-    { serialNo: 7, name: "Shri Abhishek Patnaik", designation: "Trustees", fathersName: "Shri Biswaranjan Patnaik", address: "BB-16, Civil Township Rourkela-769004", img: "/profiledemo.jpg" },
-    { serialNo: 8, name: "Shri Anshuman Patnaik", designation: "Trustees", fathersName: "Shri Dipti Ranjan Patnaik", address: "808, ARCON RETREAT, Patia Bhubaneswar-751031", img: "/profiledemo.jpg" },
-    { serialNo: 9, name: "Shri Anurag Patnaik", designation: "Trustees", fathersName: "Shri Dipti Ranjan Patnaik", address: "A/6, Commercial Estate, Civil Township Rourkela, Sundargarh, Odisha-769004", img: "/profiledemo.jpg" },
-    { serialNo: 10, name: "Shri Parthajit Patnaik", designation: "Trustees", fathersName: "Shri Tara Ranjan Patnaik", address: "Plot No-2132/5058, Tankapani Road, B J B Nagar, Bhubaneswar-751014", img: "/profiledemo.jpg" },
-    { serialNo: 11, name: "Ms. Adyasha Patnaik", designation: "Trustees", fathersName: "Shri Prava Ranjan Patnaik", address: "Plot No-2132/5058, Tankapani Road, B J B Nagar, Bhubaneswar-751014", img: "/profiledemo.jpg" },
-    { serialNo: 12, name: "Shri Anupam Patnaik", designation: "Trustees", fathersName: "Shri Amiya Ranjan Patnaik", address: "N-2/29, IRC Village, Nayapalli, Bhubaneswar-751015", img: "/profiledemo.jpg" },
-    { serialNo: 13, name: "Ms. Tanaya Patnaik", designation: "Trustees", fathersName: "Shri Soumya Ranjan Patnaik", address: "185 VIP Area, IRC Village, Nayapalli, Bhubaneswar-751015", img: "/profiledemo.jpg" },
+    { serialNo: 1, name: "Shri Tara Ranjan Patnaik", designation: "Chairman, Trustees", img: "/tara.jpeg" },
+    { serialNo: 2, name: "Shri Dharmaditya Patnaik", designation: "Trustees", img: "/dharmaditya.jpeg" },
+    { serialNo: 3, name: "Shri Dibyalok Patnaik", designation: "Trustees", img: "/divyalok.jpeg" },
+    { serialNo: 4, name: "Shri Somjit Patnaik", designation: "Trustees", img: "/somjit.jpeg" },
+    { serialNo: 5, name: "Shri Devjyoti Patnaik", designation: "Trustees", img: "/devjyoti.jpeg" },
+    { serialNo: 6, name: "Shri Navajyoti Patnaik", designation: "Trustees", img: "/nabajyoti.jpeg" },
+    { serialNo: 7, name: "Shri Abhishek Patnaik", designation: "Trustees", img: "/abhisek.jpeg" },
+    { serialNo: 8, name: "Shri Anshuman Patnaik", designation: "Trustees", img: "/anshuman.jpeg" },
+    { serialNo: 9, name: "Shri Anurag Patnaik", designation: "Trustees", img: "/anurag.jpeg" },
+    { serialNo: 10, name: "Shri Parthajit Patnaik", designation: "Trustees", img: "/parthajit.jpeg" },
+    { serialNo: 11, name: "Ms. Adyasha Patnaik", designation: "Trustees", img: "/adyasha.jpeg" },
+    { serialNo: 12, name: "Shri Anupam Patnaik", designation: "Trustees", img: "/anup.jpeg" },
+    { serialNo: 13, name: "Ms. Tanaya Patnaik", designation: "Trustees", img: "/tanya.jpeg" },
   ];
 
   return (
@@ -72,8 +72,8 @@ const BoardOfTrusteesSection = () => {
             </p>
           </motion.div>
           <motion.img
-            src="/Niranjan.jpg" alt="Trustee Leader"
-            className="rounded-3xl w-full h-[400px] object-cover shadow-xl"
+            src="/niranjan.jpeg" alt="Trustee Leader"
+            className="rounded-3xl w-full h-[400px] object-cover object-top shadow-xl"
             initial={{ opacity: 0, x: 40 }} whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.7 }} viewport={{ once: true }}
           />
@@ -89,20 +89,10 @@ const BoardOfTrusteesSection = () => {
               initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7 }} viewport={{ once: true }}
             >
-              <div className="text-center mb-4">
-                <img src={t.img} alt={t.name} className="w-32 h-32 mx-auto rounded-full object-cover mb-4 shadow-md" />
+              <div className="text-center">
+                <img src={t.img} alt={t.name} className="w-32 h-32 mx-auto rounded-full object-cover object-top mb-4 shadow-md" />
                 <h4 className="text-lg font-bold text-[#0A4C8B]">{t.name}</h4>
                 <p className="text-gray-600 text-md mt-1">{t.designation}</p>
-              </div>
-              <div className="space-y-2 text-sm">
-                <p className="text-gray-700">
-                  <span className="font-semibold">Father's/Husband's Name:</span>{" "}
-                  <span className="text-gray-600">{t.fathersName}</span>
-                </p>
-                <p className="text-gray-700">
-                  <span className="font-semibold">Address:</span>{" "}
-                  <span className="text-gray-600">{t.address}</span>
-                </p>
               </div>
             </motion.div>
           ))}
