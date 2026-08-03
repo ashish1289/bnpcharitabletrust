@@ -151,9 +151,12 @@ const Navbar = () => {
             </motion.div>
           ))}
 
-          <motion.div whileHover={{ y: -2 }} transition={{ type: "spring", stiffness: 300 }}>
-            <Link to="/scholarship/apply" className="inline-flex items-center rounded-full bg-white border border-[#0F72CE] px-4 py-2 text-sm font-semibold text-[#0F72CE] shadow-sm transition hover:bg-blue-50">
-              Apply for Scholarship
+          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} transition={{ type: "spring", stiffness: 400 }}>
+            <Link to="/scholarship/apply" className="relative inline-flex overflow-hidden rounded-full p-[2px] shadow-lg shadow-[#0F72CE]/40 group">
+              <span className="absolute inset-[-1000%] animate-[spin_2.5s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#0F72CE_0%,#ffffff_50%,#0F72CE_100%)]" />
+              <span className="relative inline-flex h-full w-full items-center justify-center rounded-full bg-[#0F72CE] px-5 py-2.5 text-sm font-bold text-white transition-all group-hover:bg-[#0A4C8B]">
+                Apply for Scholarship
+              </span>
             </Link>
           </motion.div>
 
@@ -249,8 +252,11 @@ const Navbar = () => {
                 </Link>
               ))}
 
-              <Link to="/scholarship/apply" className="py-3 px-2 text-[#0F72CE] text-base font-bold hover:bg-gray-50 rounded-xl transition">
-                Apply for Scholarship
+              <Link to="/scholarship/apply" className="relative inline-flex overflow-hidden rounded-full p-[2px] shadow-md shadow-[#0F72CE]/30 w-full mt-2 group block">
+                <span className="absolute inset-[-1000%] animate-[spin_2.5s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#0F72CE_0%,#ffffff_50%,#0F72CE_100%)]" />
+                <span className="relative inline-flex h-full w-full items-center justify-center rounded-full bg-[#0F72CE] py-3 text-base font-bold text-white transition-all group-hover:bg-[#0A4C8B]">
+                  Apply for Scholarship
+                </span>
               </Link>
 
               {authUser ? (

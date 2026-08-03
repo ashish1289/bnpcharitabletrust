@@ -1,5 +1,5 @@
-import React, { useMemo } from "react";
-import { motion } from "framer-motion";
+import React, { useMemo, useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
 import { GraduationCap, Trophy, Tractor, BookOpen, Medal, HeartPulse } from "lucide-react";
 
@@ -54,29 +54,35 @@ const Hero = () => {
     "/201.png",
     "/202.png",
     "/203.png",
-    "/odisha_graduation_celebration_1785670974702.png",
+    "/utkala.jpeg",
     "/odisha_tree_plantation_1785670994720.png"
   ];
+
+  const [currentImg, setCurrentImg] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImg((prev) => (prev + 1) % backgroundImages.length);
+    }, 5000); // 5 seconds per image
+    return () => clearInterval(interval);
+  }, [backgroundImages.length]);
 
   return (
     <>
       <section className="relative w-full min-h-screen flex flex-col justify-center overflow-hidden">
 
         {/* 🎞 Background Carousel */}
-        {backgroundImages.map((img, i) => (
+        <AnimatePresence>
           <motion.div
-            key={i}
+            key={currentImg}
             className="absolute inset-0 w-full h-full bg-cover bg-center"
-            style={{
-              backgroundImage: `url(${img})`,
-              animation: `fadeSlide 18s infinite`,
-              animationDelay: `${i * 6}s`,
-            }}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 2 }}
-          ></motion.div>
-        ))}
+            style={{ backgroundImage: `url(${backgroundImages[currentImg]})` }}
+            initial={{ opacity: 0, scale: 1.05 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 1.5, ease: "easeInOut" }}
+          />
+        </AnimatePresence>
 
         {/* Dark overlay */}
         <div className="absolute inset-0 bg-black/20"></div>

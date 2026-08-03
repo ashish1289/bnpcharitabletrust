@@ -159,9 +159,9 @@ const AboutSection = () => {
               <div className="flex flex-col lg:flex-row items-center gap-6 mb-6">
                 <div className="w-24 h-24 shrink-0 rounded-full overflow-hidden shadow-md">
                   <img
-                    src="/np.jpg"
+                    src="/niranjan.jpeg"
                     alt="Shri Niranjan Patnaik"
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover object-top"
                     onError={(e) => {
                       e.target.src = "https://via.placeholder.com/150";
                       e.target.alt = "Founder Image Missing";

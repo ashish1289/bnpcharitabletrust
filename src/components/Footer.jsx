@@ -125,7 +125,7 @@ const Footer = () => {
       <div className="mt-14 border-t border-white/10 pt-6 text-center text-gray-400 text-sm flex flex-col sm:flex-row justify-center items-center gap-2">
         <span>© {new Date().getFullYear()} BNP Charitable Trust — All Rights Reserved.</span>
         <span className="hidden sm:inline">|</span>
-        <span>Developed by <span className="text-[#5CC9FF] font-semibold">ttrackepay</span></span>
+        <span>Developed by <a href="https://trackepay.in" target="_blank" rel="noopener noreferrer" className="text-[#5CC9FF] font-semibold hover:underline">trackepay</a></span>
       </div>
     </footer>
   );
