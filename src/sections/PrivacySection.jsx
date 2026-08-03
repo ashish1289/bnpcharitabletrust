@@ -136,9 +136,9 @@ const PrivacySection = () => {
               or want to request data changes, please contact:
             </p>
             <p className="mt-2 font-semibold text-[#0F72CE]">
-              📧 support@bnpcharity.org  
+              📧 support@bnptrust.in
               <br />
-              📞 +91 98765 43210
+              📞 06742559009
             </p>
           </SectionBox>
         </div>

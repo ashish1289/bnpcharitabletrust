@@ -9,9 +9,9 @@ const ScholarshipInfo = () => {
     <Layout>
       <div className="bg-gray-50/50 min-h-screen pt-24 pb-20">
         <div className="max-w-6xl mx-auto px-4">
-          
+
           {/* Hero Section */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             className="text-center max-w-3xl mx-auto mb-16"
@@ -25,7 +25,7 @@ const ScholarshipInfo = () => {
             <p className="text-lg text-gray-600 leading-relaxed mb-8">
               Empowering deserving students to achieve their educational dreams. The BNP Sikshya Sahayog Scholarship provides crucial financial support to meritorious students facing financial difficulties.
             </p>
-            
+
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
               <div className="flex items-center gap-2 bg-white px-5 py-3 rounded-full shadow-sm border border-gray-100">
                 <CheckCircle className="text-green-500" size={20} />
@@ -40,9 +40,9 @@ const ScholarshipInfo = () => {
 
           {/* Application Options */}
           <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto mb-20">
-            
+
             {/* Online Card */}
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.1 }}
@@ -64,7 +64,7 @@ const ScholarshipInfo = () => {
             </motion.div>
 
             {/* Offline Card */}
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.2 }}
@@ -79,8 +79,8 @@ const ScholarshipInfo = () => {
                 <p className="text-gray-600 mb-8 leading-relaxed">
                   Prefer a physical copy? Download the official form, print it, fill it out by hand, and mail it along with your documents to our trust office.
                 </p>
-                <a 
-                  href="/BNP Form Revised..pdf" 
+                <a
+                  href="/BNP Form Revised..pdf"
                   download="BNP_Sikshya_Sahayog_Scholarship_Form.pdf"
                   className="inline-flex items-center justify-center gap-2 w-full py-4 bg-gray-100 text-gray-800 rounded-xl font-bold text-lg hover:bg-gray-200 transition-colors"
                 >
@@ -93,7 +93,7 @@ const ScholarshipInfo = () => {
           </div>
 
           {/* Offline Instructions */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
@@ -111,7 +111,7 @@ const ScholarshipInfo = () => {
                 <ul className="space-y-3">
                   <li className="flex items-start gap-3">
                     <Mail className="text-gray-400 mt-1 shrink-0" size={18} />
-                    <span className="text-gray-700"><strong>Email:</strong> Scan the completed documents and email them to <a href="mailto:support@bnpcharity.org" className="text-[#0F72CE] font-semibold hover:underline">support@bnpcharity.org</a></span>
+                    <span className="text-gray-700"><strong>Email:</strong> Scan the completed documents and email them to <a href="mailto:support@bnptrust.in" className="text-[#0F72CE] font-semibold hover:underline">support@bnptrust.in</a></span>
                   </li>
                   <li className="flex items-start gap-3">
                     <MapPin className="text-gray-400 mt-1 shrink-0" size={18} />

@@ -96,7 +96,7 @@ const ContactSection = () => {
 
               <div className="flex items-center gap-4">
                 <Mail size={28} className="text-[#0F72CE]" />
-                <p className="text-lg">support@bnpcharity.in</p>
+                <p className="text-lg">support@bnptrust.in</p>
               </div>
 
               <div className="flex items-center gap-4">

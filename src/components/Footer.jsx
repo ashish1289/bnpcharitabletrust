@@ -73,22 +73,22 @@ const Footer = () => {
           <h3 className="text-lg font-semibold mb-4 text-[#5CC9FF]">Contact</h3>
           <ul className="space-y-3 text-gray-300 text-sm">
             <li className="flex items-center gap-2">
-              <Phone size={16} /> +91 98765 43210
+              <Phone size={16} /> 0674255399 ,06742559009
             </li>
             <li className="flex items-center gap-2">
-              <Mail size={16} /> support@bnpcharity.org
+              <Mail size={16} /> support@bnptrust.in
             </li>
             <li className="flex items-start gap-2">
               <MapPin size={18} className="mt-1 shrink-0" />
               <div>
-                <span className="block font-semibold text-[#5CC9FF]">Registered Office:</span>
+                <span className="block font-semibold text-[#5CC9FF]">Office:</span>
                 N2/25,IRC Village, Nayapalli, Bhubaneswar, Odisha 751015 , India
               </div>
             </li>
             <li className="flex items-start gap-2">
               <MapPin size={18} className="mt-1 shrink-0" />
               <div>
-                <span className="block font-semibold text-[#5CC9FF]">Head Office:</span>
+                <span className="block font-semibold text-[#5CC9FF]">Registered Office:</span>
                 FALCON HOUSE, A/22, Cuttack Puri Road, Bhubaneswar-751006
               </div>
             </li>
