@@ -170,7 +170,7 @@ const AboutSection = () => {
                 </div>
                 <div>
                   <h3 className="text-2xl font-bold text-[#0F72CE]">
-                    Shri Niranjan Patnaik
+                    Niranjan Patnaik
                   </h3>
                   <p className="text-gray-500 text-sm font-medium">
                     Founder, BNP Charitable Trust
