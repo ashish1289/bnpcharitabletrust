@@ -46,8 +46,7 @@ const ScholarshipInfo = () => {
                   <CheckCircle size={24} />
                 </div>
                 <div>
-                  <h4 className="font-bold text-gray-900 text-lg">Academic Merit</h4>
-                  <p className="text-sm text-gray-600 mt-1">Minimum 60%+ marks required in the last qualifying examination.</p>
+                  <p className="text-base font-semibold text-gray-800">Minimum 60%+ marks required in the last qualifying examination.</p>
                 </div>
               </div>
               
@@ -56,8 +55,7 @@ const ScholarshipInfo = () => {
                   <Coins size={24} />
                 </div>
                 <div>
-                  <h4 className="font-bold text-gray-900 text-lg">Financial Need</h4>
-                  <p className="text-sm text-gray-600 mt-1">Annual family income must be less than ₹3,00,000.</p>
+                  <p className="text-base font-semibold text-gray-800">Annual family income must be less than ₹3,00,000.</p>
                 </div>
               </div>
             </div>
