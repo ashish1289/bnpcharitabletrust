@@ -103,7 +103,7 @@ const ScholarshipInfo = () => {
                   Prefer a physical copy? Download the official form, print it, fill it out by hand, and mail it along with your documents to our trust office.
                 </p>
                 <a
-                  href="/BNP Form Revised..pdf"
+                  href="/offineform.pdf"
                   download="BNP_Sikshya_Sahayog_Scholarship_Form.pdf"
                   className="inline-flex items-center justify-center gap-2 w-full py-4 bg-gray-100 text-gray-800 rounded-xl font-bold text-lg hover:bg-gray-200 transition-colors"
                 >
