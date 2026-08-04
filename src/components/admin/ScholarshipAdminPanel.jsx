@@ -860,13 +860,21 @@ const ScholarshipAdminPanel = () => {
               </div>
               
               {/* Viewer */}
-              <div className="flex-1 bg-gray-100 overflow-hidden relative">
-                <iframe 
-                  id="document-viewer-iframe"
-                  src={viewingDocument.url} 
-                  className="w-full h-full border-none"
-                  title={viewingDocument.title}
-                />
+              <div className="flex-1 bg-gray-100 overflow-hidden relative flex items-center justify-center">
+                {viewingDocument.url.match(/\.(jpg|jpeg|png|webp|gif)$/i) ? (
+                  <img 
+                    src={`${viewingDocument.url}?t=${Date.now()}`}
+                    alt={viewingDocument.title}
+                    className="max-w-full max-h-full object-contain p-4"
+                  />
+                ) : (
+                  <iframe 
+                    id="document-viewer-iframe"
+                    src={`${viewingDocument.url}?t=${Date.now()}`}
+                    className="w-full h-full border-none"
+                    title={viewingDocument.title}
+                  />
+                )}
               </div>
             </motion.div>
           </div>
