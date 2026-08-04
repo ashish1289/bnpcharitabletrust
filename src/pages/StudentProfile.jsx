@@ -2,11 +2,14 @@ import React, { useEffect, useState } from 'react';
 import Layout from '../layout/Layout';
 import api from '../api';
 import { Link, useNavigate } from 'react-router-dom';
+import ApplicationPreview from '../components/ScholarshipForm/ApplicationPreview';
+import { X, Eye } from 'lucide-react';
 
 const StudentProfile = () => {
   const [applications, setApplications] = useState([]);
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
+  const [selectedApp, setSelectedApp] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -84,7 +87,7 @@ const StudentProfile = () => {
                     <p className="text-sm text-gray-500">{app.educationalRecord?.institutionNameAddress || 'Institution Not Specified'}</p>
                     <p className="text-xs text-gray-400 mt-2">Submitted: {new Date(app.createdAt).toLocaleDateString()}</p>
                   </div>
-                  <div className="flex flex-col items-end">
+                  <div className="flex flex-col items-end gap-3">
                     <span className={`px-3 py-1 rounded-full text-xs font-bold tracking-wide uppercase
                       ${app.status === 'approved' ? 'bg-green-100 text-green-700' : 
                         app.status === 'rejected' ? 'bg-red-100 text-red-700' : 
@@ -92,10 +95,16 @@ const StudentProfile = () => {
                       {app.status}
                     </span>
                     {app.adminNotes && (
-                      <p className="text-xs text-blue-600 mt-2 bg-blue-50 p-2 rounded max-w-xs text-right">
+                      <p className="text-xs text-blue-600 bg-blue-50 p-2 rounded max-w-xs text-right">
                         <strong>Note:</strong> {app.adminNotes}
                       </p>
                     )}
+                    <button 
+                      onClick={() => setSelectedApp(app)}
+                      className="flex items-center gap-1 text-sm text-[#0F72CE] font-bold hover:underline"
+                    >
+                      <Eye size={16} /> View Details
+                    </button>
                   </div>
                 </div>
               ))}
@@ -103,6 +112,29 @@ const StudentProfile = () => {
           )}
         </div>
       </div>
+
+      {/* Application Preview Modal */}
+      {selectedApp && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+          <div className="bg-white w-full max-w-4xl max-h-[90vh] rounded-3xl shadow-2xl flex flex-col overflow-hidden animate-in fade-in zoom-in duration-200">
+            {/* Modal Header */}
+            <div className="px-6 py-4 border-b flex justify-between items-center bg-gray-50">
+              <div>
+                <h2 className="text-xl font-bold text-gray-800">Application Preview</h2>
+                <p className="text-sm text-gray-500">Submitted: {new Date(selectedApp.createdAt).toLocaleDateString()}</p>
+              </div>
+              <button onClick={() => setSelectedApp(null)} className="p-2 hover:bg-gray-200 rounded-full transition">
+                <X size={24} className="text-gray-500" />
+              </button>
+            </div>
+            
+            {/* Modal Body */}
+            <div className="p-6 overflow-y-auto bg-gray-50/50">
+              <ApplicationPreview data={selectedApp} />
+            </div>
+          </div>
+        </div>
+      )}
     </Layout>
   );
 };

@@ -6,6 +6,7 @@ import Step3Family from './Step3Family';
 import Step4Assistance from './Step4Assistance';
 import Step5Statement from './Step5Statement';
 import Step6References from './Step6References';
+import ApplicationPreview from './ApplicationPreview';
 import api from '../../api';
 
 const initialData = {
@@ -34,6 +35,7 @@ const steps = [
   { id: 4, title: 'Other Assistance' },
   { id: 5, title: 'Personal Statement' },
   { id: 6, title: 'References & Declarations' },
+  { id: 7, title: 'Review Application' },
 ];
 
 const ScholarshipFormWizard = ({ authUser }) => {
@@ -130,25 +132,28 @@ const ScholarshipFormWizard = ({ authUser }) => {
     }
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async (e, status = 'pending') => {
+    if (e) e.preventDefault();
     
-    // Validate all steps before submitting
-    const incompleteSteps = steps.filter(step => !isStepComplete(step.id));
-    if (incompleteSteps.length > 0) {
-      setMessage(`Please completely fill out all required fields. Missing in: ${incompleteSteps.map(s => s.title).join(', ')}`);
-      // Automatically jump to the first incomplete step
-      setCurrentStep(incompleteSteps[0].id);
-      return;
+    // Validate all steps before submitting (even for draft, we could validate, but typically drafts allow incomplete. However, the existing system wants them complete. Let's just allow draft if incomplete, or maybe require it anyway. The prompt says they can preview then submit. So draft must bypass validation?)
+    if (status === 'pending') {
+      const incompleteSteps = steps.filter(step => step.id !== 7 && !isStepComplete(step.id));
+      if (incompleteSteps.length > 0) {
+        setMessage(`Please completely fill out all required fields. Missing in: ${incompleteSteps.map(s => s.title).join(', ')}`);
+        setCurrentStep(incompleteSteps[0].id);
+        return;
+      }
     }
 
     setIsSubmitting(true);
     setMessage('');
 
     try {
-      // Use FormData to send files and JSON payload
+      // Set the intended status
+      const payloadData = { ...formData, status };
+      
       const payload = new FormData();
-      payload.append('applicationData', JSON.stringify(formData));
+      payload.append('applicationData', JSON.stringify(payloadData));
       
       if (documents.tuitionFeeReceipt) payload.append('tuitionFeeReceipt', documents.tuitionFeeReceipt);
       if (documents.familyIncomeCertificate) payload.append('familyIncomeCertificate', documents.familyIncomeCertificate);
@@ -158,8 +163,8 @@ const ScholarshipFormWizard = ({ authUser }) => {
       // For now, let's assume api.submitScholarship supports FormData
       await api.submitScholarship(payload);
       
-      setMessage('Application submitted successfully!');
-      setCurrentStep(7); // Show success screen
+      setMessage(status === 'draft' ? 'Application saved as draft successfully!' : 'Application submitted successfully!');
+      setCurrentStep(8); // Show success screen
     } catch (error) {
       setMessage(error.message);
     } finally {
@@ -184,12 +189,20 @@ const ScholarshipFormWizard = ({ authUser }) => {
         return <Step5Statement data={formData.personalStatement} setFormData={setFormData} settings={config} />;
       case 6:
         return <Step6References data={formData.references} declarations={formData.declarations} setFormData={setFormData} settings={config} />;
+      case 7:
+        return (
+          <div className="bg-gray-50 p-6 rounded-2xl border">
+            <h2 className="text-2xl font-bold text-gray-800 mb-6">Review Your Application</h2>
+            <p className="text-gray-600 mb-8">Please review your details carefully before submitting. If you need to make changes, you can go back to previous steps.</p>
+            <ApplicationPreview data={formData} />
+          </div>
+        );
       default:
         return <Step1Personal data={formData.personalDetails} setFormData={setFormData} onDocChange={handleDocumentChange} documents={documents} settings={config} />;
     }
   };
 
-  if (currentStep === 7) {
+  if (currentStep === 8) {
     return (
       <div className="text-center py-16">
         <h2 className="text-3xl font-bold text-green-600 mb-4">Success!</h2>
@@ -238,7 +251,7 @@ const ScholarshipFormWizard = ({ authUser }) => {
       <div className="p-8">
         {message && <div className="mb-6 p-4 bg-red-50 text-red-700 rounded-xl">{message}</div>}
         
-        <form onSubmit={(e) => { e.preventDefault(); if (currentStep === 6) handleSubmit(e); }}>
+        <form onSubmit={(e) => { e.preventDefault(); if (currentStep === 7) handleSubmit(e, 'pending'); }}>
           <AnimatePresence mode="wait">
             <motion.div
               key={currentStep}
@@ -252,20 +265,28 @@ const ScholarshipFormWizard = ({ authUser }) => {
           </AnimatePresence>
 
           {/* Navigation Buttons */}
-          <div className="mt-8 pt-6 border-t flex justify-between">
+          <div className="mt-8 pt-6 border-t flex flex-wrap gap-4 justify-between items-center">
             <button type="button" onClick={handlePrev} disabled={currentStep === 1 || isSubmitting} className="px-6 py-2 rounded-full border hover:bg-gray-50 disabled:opacity-50">
               Back
             </button>
             
-            {currentStep < 6 ? (
-              <button type="button" onClick={handleNext} className="px-6 py-2 rounded-full bg-[#0F72CE] text-white font-semibold hover:bg-[#0A4C8B]">
-                Next Step
-              </button>
-            ) : (
-              <button type="submit" onClick={handleSubmit} disabled={isSubmitting} className="px-8 py-2 rounded-full bg-green-600 text-white font-semibold hover:bg-green-700 disabled:opacity-50">
-                {isSubmitting ? 'Submitting...' : 'Submit Application'}
-              </button>
-            )}
+            <div className="flex gap-4">
+              {currentStep < 7 && (
+                <button type="button" onClick={(e) => handleSubmit(e, 'draft')} disabled={isSubmitting} className="px-6 py-2 rounded-full border border-orange-200 text-orange-600 font-semibold hover:bg-orange-50 disabled:opacity-50 hidden md:block">
+                  {isSubmitting ? 'Saving...' : 'Save as Draft'}
+                </button>
+              )}
+              
+              {currentStep < 7 ? (
+                <button type="button" onClick={handleNext} className="px-6 py-2 rounded-full bg-[#0F72CE] text-white font-semibold hover:bg-[#0A4C8B]">
+                  Next Step
+                </button>
+              ) : (
+                <button type="submit" disabled={isSubmitting} className="px-8 py-2 rounded-full bg-green-600 text-white font-semibold hover:bg-green-700 disabled:opacity-50">
+                  {isSubmitting ? 'Submitting...' : 'Submit Application'}
+                </button>
+              )}
+            </div>
           </div>
         </form>
       </div>
