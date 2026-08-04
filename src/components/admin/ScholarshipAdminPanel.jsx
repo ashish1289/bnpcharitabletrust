@@ -25,6 +25,7 @@ const ScholarshipAdminPanel = () => {
   const [selectedApp, setSelectedApp] = useState(null);
   const [activeTab, setActiveTab] = useState('personal'); // inside modal
   const [sidebarTab, setSidebarTab] = useState('applications'); // 'applications', 'ineligible', 'settings'
+  const [viewingDocument, setViewingDocument] = useState(null);
 
   // Stats state
   const [stats, setStats] = useState({ total: 0, pending: 0, reviewed: 0, approved: 0, rejected: 0, draft: 0 });
@@ -168,9 +169,12 @@ const ScholarshipAdminPanel = () => {
     return (
       <div className="border border-blue-100 p-5 rounded-xl bg-blue-50/30 flex flex-col items-center text-center transition hover:shadow-md hover:bg-blue-50">
         <span className="font-bold text-sm mb-3 text-blue-900">{title}</span>
-        <a href={url} target="_blank" rel="noreferrer" className="flex items-center justify-center gap-2 px-4 py-2.5 bg-[#0F72CE] text-white rounded-lg text-sm font-semibold hover:bg-[#0A4C8B] w-full transition shadow-sm">
+        <button 
+          onClick={() => setViewingDocument({ title, url })} 
+          className="flex items-center justify-center gap-2 px-4 py-2.5 bg-[#0F72CE] text-white rounded-lg text-sm font-semibold hover:bg-[#0A4C8B] w-full transition shadow-sm"
+        >
           <Eye size={16} /> View Document
-        </a>
+        </button>
       </div>
     );
   };
@@ -794,6 +798,80 @@ const ScholarshipAdminPanel = () => {
         )}
       </AnimatePresence>
       </div>
+
+      {/* --- MODAL FOR DOCUMENT VIEWER --- */}
+      <AnimatePresence>
+        {viewingDocument && (
+          <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 sm:p-6">
+            <motion.div 
+              initial={{ opacity: 0 }} 
+              animate={{ opacity: 1 }} 
+              exit={{ opacity: 0 }} 
+              onClick={() => setViewingDocument(null)}
+              className="absolute inset-0 bg-gray-900/80 backdrop-blur-sm"
+            />
+            
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className="relative w-full max-w-5xl h-[85vh] bg-white rounded-2xl shadow-2xl flex flex-col overflow-hidden"
+            >
+              {/* Header */}
+              <div className="px-6 py-4 border-b border-gray-100 bg-gray-50 flex items-center justify-between shrink-0">
+                <h3 className="font-bold text-lg text-gray-900 flex items-center gap-2">
+                  <FileText size={20} className="text-[#0F72CE]" />
+                  {viewingDocument.title}
+                </h3>
+                <div className="flex items-center gap-3">
+                  <button 
+                    onClick={() => {
+                      const iframe = document.getElementById('document-viewer-iframe');
+                      if (iframe && iframe.contentWindow) {
+                        try {
+                          iframe.contentWindow.print();
+                        } catch (e) {
+                          window.open(viewingDocument.url, '_blank').print();
+                        }
+                      } else {
+                        window.open(viewingDocument.url, '_blank').print();
+                      }
+                    }}
+                    className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 text-gray-700 rounded-lg hover:bg-gray-50 transition text-sm font-semibold shadow-sm"
+                  >
+                    Print
+                  </button>
+                  <a 
+                    href={viewingDocument.url} 
+                    download
+                    target="_blank"
+                    rel="noreferrer"
+                    className="flex items-center gap-2 px-4 py-2 bg-[#0F72CE] text-white rounded-lg hover:bg-[#0A4C8B] transition text-sm font-semibold shadow-sm"
+                  >
+                    <Download size={16} /> Download
+                  </a>
+                  <button 
+                    onClick={() => setViewingDocument(null)} 
+                    className="p-2 bg-gray-100 hover:bg-gray-200 text-gray-600 rounded-lg transition ml-2"
+                  >
+                    <X size={20} />
+                  </button>
+                </div>
+              </div>
+              
+              {/* Viewer */}
+              <div className="flex-1 bg-gray-100 overflow-hidden relative">
+                <iframe 
+                  id="document-viewer-iframe"
+                  src={viewingDocument.url} 
+                  className="w-full h-full border-none"
+                  title={viewingDocument.title}
+                />
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
