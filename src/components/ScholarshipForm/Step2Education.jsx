@@ -1,4 +1,5 @@
 import React from 'react';
+import { UploadCloud, CheckCircle2 } from 'lucide-react';
 
 const Input = ({ label, name, value, onChange, type = "text", required = false }) => (
   <div className="mb-4">
@@ -56,6 +57,7 @@ const Step2Education = ({ data, setFormData, onDocChange, documents, settings })
               <th className="p-3">Year</th>
               <th className="p-3">Marks/CGPA</th>
               <th className="p-3">Percentage</th>
+              <th className="p-3">Certificate</th>
             </tr>
           </thead>
           <tbody>
@@ -71,6 +73,30 @@ const Step2Education = ({ data, setFormData, onDocChange, documents, settings })
                   <td className="p-2"><input className="w-full border p-2 rounded" name="year" value={data.pastEducation[index].year} onChange={(e) => handleTableChange(index, e)} /></td>
                   <td className="p-2"><input className="w-full border p-2 rounded" name="marksCgpa" value={data.pastEducation[index].marksCgpa} onChange={(e) => handleTableChange(index, e)} /></td>
                   <td className="p-2"><input className="w-full border p-2 rounded" name="percentage" value={data.pastEducation[index].percentage} onChange={(e) => handleTableChange(index, e)} /></td>
+                  <td className="p-2 align-middle">
+                    <div className="flex flex-col items-center justify-center">
+                      <label className={`cursor-pointer inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg border transition shadow-sm w-full min-w-[90px] ${documents && documents[`pastEducationCert_${index}`] ? 'bg-green-50 border-green-200 text-green-700 hover:bg-green-100' : 'bg-white border-gray-200 text-gray-700 hover:bg-gray-50'}`}>
+                        {documents && documents[`pastEducationCert_${index}`] ? (
+                          <>
+                            <CheckCircle2 size={14} className="text-green-600" />
+                            <span className="text-xs font-bold truncate max-w-[50px]">{documents[`pastEducationCert_${index}`].name}</span>
+                          </>
+                        ) : (
+                          <>
+                            <UploadCloud size={14} className="text-[#0F72CE]" />
+                            <span className="text-xs font-semibold">Upload</span>
+                          </>
+                        )}
+                        <input 
+                          type="file" 
+                          name={`pastEducationCert_${index}`} 
+                          onChange={onDocChange} 
+                          accept=".pdf,image/*" 
+                          className="hidden" 
+                        />
+                      </label>
+                    </div>
+                  </td>
                 </tr>
               );
             })}
@@ -80,7 +106,49 @@ const Step2Education = ({ data, setFormData, onDocChange, documents, settings })
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6">
         <div className="md:col-span-2">
-          <Input label="14. Name of the course for which assistance is requested:" name="courseName" value={data.courseName} onChange={handleChange} required={settings?.courseName !== false} />
+          <Select 
+            label="14. Name of the course for which assistance is requested:" 
+            name="courseCategory" 
+            value={data.courseCategory || ''} 
+            onChange={(e) => {
+              handleChange(e);
+              if (e.target.value !== 'Other') {
+                // Auto-sync courseName with courseCategory if not Other
+                setFormData(prev => ({
+                  ...prev,
+                  educationalRecord: { ...prev.educationalRecord, courseName: e.target.value }
+                }));
+              } else {
+                // Clear courseName when switching to Other
+                setFormData(prev => ({
+                  ...prev,
+                  educationalRecord: { ...prev.educationalRecord, courseName: '' }
+                }));
+              }
+            }} 
+            options={[
+              'Medical / Healthcare', 
+              'Engineering', 
+              'Post Graduation', 
+              'Diploma', 
+              'Graduation', 
+              'B.Ed', 
+              'M.Ed', 
+              'Other'
+            ]}
+            required={settings?.courseName !== false} 
+          />
+          {data.courseCategory === 'Other' && (
+            <div className="mt-2">
+              <Input 
+                label="Please specify the course name:" 
+                name="courseName" 
+                value={data.courseName} 
+                onChange={handleChange} 
+                required={true} 
+              />
+            </div>
+          )}
         </div>
         <div className="md:col-span-2">
           <Input label="15. Name and address of the institution:" name="institutionNameAddress" value={data.institutionNameAddress} onChange={handleChange} required={settings?.institutionNameAddress !== false} />

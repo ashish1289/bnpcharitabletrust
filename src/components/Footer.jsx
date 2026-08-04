@@ -72,8 +72,12 @@ const Footer = () => {
         >
           <h3 className="text-lg font-semibold mb-4 text-[#5CC9FF]">Contact</h3>
           <ul className="space-y-3 text-gray-300 text-sm">
-            <li className="flex items-center gap-2">
-              <Phone size={16} /> 0674255399 ,06742559009
+            <li className="flex items-start gap-2">
+              <Phone size={16} className="mt-1 shrink-0" />
+              <div>
+                <span className="block">0674255399 , 06742559009</span>
+                <span className="block text-gray-400 mt-1"><span className="font-semibold text-[#5CC9FF]">Technical Support:</span> 7789923442</span>
+              </div>
             </li>
             <li className="flex items-center gap-2">
               <Mail size={16} /> support@bnptrust.in

@@ -13,7 +13,7 @@ const initialData = {
   personalDetails: { fullName: '', dateOfBirth: '', gender: '', mobileNumber: '', emailAddress: '', aadhaarNumber: '', permanentAddress: '', correspondenceAddress: '', districtAndState: '', ruralUrbanArea: '', preferredLanguage: '', disability: '', specialCategory: '' },
   educationalRecord: {
     pastEducation: [{ examination: 'Class 10', schoolCollege: '', boardUniversity: '', year: '', marksCgpa: '', percentage: '' }],
-    courseName: '', institutionNameAddress: '', courseDuration: '', presentYearSemester: '', admissionStatus: '', totalAnnualCourseFee: '', amountAlreadyPaid: '', outstandingAmount: '', expectedExpenditure: '', scholarshipAmountRequested: ''
+    courseCategory: '', courseName: '', institutionNameAddress: '', courseDuration: '', presentYearSemester: '', admissionStatus: '', totalAnnualCourseFee: '', amountAlreadyPaid: '', outstandingAmount: '', expectedExpenditure: '', scholarshipAmountRequested: ''
   },
   familyDetails: {
     familyMembers: [{ name: '', age: '', relationship: '', education: '', occupation: '', annualIncome: '' }],
@@ -158,6 +158,13 @@ const ScholarshipFormWizard = ({ authUser }) => {
       if (documents.tuitionFeeReceipt) payload.append('tuitionFeeReceipt', documents.tuitionFeeReceipt);
       if (documents.familyIncomeCertificate) payload.append('familyIncomeCertificate', documents.familyIncomeCertificate);
       if (documents.aadhaarCard) payload.append('aadhaarCard', documents.aadhaarCard);
+      
+      for (let i = 0; i < 4; i++) {
+        const certKey = `pastEducationCert_${i}`;
+        if (documents[certKey]) {
+          payload.append(certKey, documents[certKey]);
+        }
+      }
 
       // We will need to update api.js to support FormData or write a direct fetch call here
       // For now, let's assume api.submitScholarship supports FormData

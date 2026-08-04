@@ -39,8 +39,8 @@ const Step6References = ({ data, declarations, setFormData, settings }) => {
           <Input label="Designation:" name="designation" value={data.reference1.designation} onChange={(e) => handleRefChange('reference1', e)} required={settings?.reference1 !== false} />
           <Input label="Institution or organisation:" name="institution" value={data.reference1.institution} onChange={(e) => handleRefChange('reference1', e)} required={settings?.reference1 !== false} />
           <Input label="Relationship with applicant:" name="relationship" value={data.reference1.relationship} onChange={(e) => handleRefChange('reference1', e)} required={settings?.reference1 !== false} />
-          <Input label="Mobile number:" name="mobile" value={data.reference1.mobile} onChange={(e) => handleRefChange('reference1', e)} required={settings?.reference1 !== false} />
-          <Input label="Email address:" name="email" type="email" value={data.reference1.email} onChange={(e) => handleRefChange('reference1', e)} required={settings?.reference1 !== false} />
+          <Input label="Mobile number:" name="mobile" value={data.reference1.mobile} onChange={(e) => handleRefChange('reference1', e)} required={settings?.reference1 !== false && settings?.referenceMobile !== false} />
+          <Input label="Email address:" name="email" type="email" value={data.reference1.email} onChange={(e) => handleRefChange('reference1', e)} required={settings?.reference1 !== false && settings?.referenceEmail !== false} />
         </div>
 
         {/* Reference 2 */}
@@ -50,8 +50,8 @@ const Step6References = ({ data, declarations, setFormData, settings }) => {
           <Input label="Designation:" name="designation" value={data.reference2.designation} onChange={(e) => handleRefChange('reference2', e)} required={settings?.reference2 !== false} />
           <Input label="Institution or organisation:" name="institution" value={data.reference2.institution} onChange={(e) => handleRefChange('reference2', e)} required={settings?.reference2 !== false} />
           <Input label="Relationship with applicant:" name="relationship" value={data.reference2.relationship} onChange={(e) => handleRefChange('reference2', e)} required={settings?.reference2 !== false} />
-          <Input label="Mobile number:" name="mobile" value={data.reference2.mobile} onChange={(e) => handleRefChange('reference2', e)} required={settings?.reference2 !== false} />
-          <Input label="Email address:" name="email" type="email" value={data.reference2.email} onChange={(e) => handleRefChange('reference2', e)} required={settings?.reference2 !== false} />
+          <Input label="Mobile number:" name="mobile" value={data.reference2.mobile} onChange={(e) => handleRefChange('reference2', e)} required={settings?.reference2 !== false && settings?.referenceMobile !== false} />
+          <Input label="Email address:" name="email" type="email" value={data.reference2.email} onChange={(e) => handleRefChange('reference2', e)} required={settings?.reference2 !== false && settings?.referenceEmail !== false} />
         </div>
       </div>
 

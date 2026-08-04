@@ -221,6 +221,8 @@ const AdminSettings = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {renderToggle('Reference 1', 'reference1')}
               {renderToggle('Reference 2', 'reference2')}
+              {renderToggle('Ref Mobile Number', 'referenceMobile')}
+              {renderToggle('Ref Email Address', 'referenceEmail')}
               {renderToggle('Tuition Fee Receipt', 'tuitionFeeReceipt')}
               {renderToggle('Income Certificate', 'familyIncomeCertificate')}
               {renderToggle('Aadhaar Card', 'aadhaarCard')}

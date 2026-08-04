@@ -3,6 +3,7 @@ import { Search, LogOut, FileText, CheckCircle, XCircle, Clock, Eye, Download, U
 import { motion, AnimatePresence } from 'framer-motion';
 import api from '../../api';
 import AdminSettings from './AdminSettings';
+import { generatePDF } from '../../utils/generatePDF';
 
 const API_BASE_URL = import.meta.env.PROD ? 'https://app.bnptrust.in/api' : 'http://localhost:5000/api';
 
@@ -406,7 +407,14 @@ const ScholarshipAdminPanel = () => {
                       {app.status}
                     </span>
                   </td>
-                  <td className="p-5 text-right">
+                  <td className="p-5 text-right flex items-center justify-end gap-2">
+                    <button 
+                      onClick={() => generatePDF(app)}
+                      className="p-2.5 bg-gray-50 border border-gray-200 text-gray-600 rounded-lg hover:bg-gray-100 transition shadow-sm"
+                      title="Download PDF"
+                    >
+                      <Download size={18} />
+                    </button>
                     <button 
                       onClick={() => { setSelectedApp(app); setActiveTab('personal'); }}
                       className="px-4 py-2 bg-white border border-gray-200 text-[#0F72CE] font-bold rounded-lg hover:bg-blue-50 hover:border-blue-200 transition shadow-sm"
@@ -492,6 +500,12 @@ const ScholarshipAdminPanel = () => {
                       <option value="rejected">Rejected</option>
                     </select>
                   </div>
+                  <button 
+                    onClick={() => generatePDF(selectedApp)}
+                    className="flex items-center gap-2 px-4 py-2.5 bg-[#0F72CE] text-white font-bold rounded-xl hover:bg-[#0A4C8B] transition shadow-sm"
+                  >
+                    <Download size={18} /> <span className="hidden sm:inline">Download PDF</span>
+                  </button>
                   <button 
                     onClick={() => setSelectedApp(null)} 
                     className="p-3 bg-gray-100 hover:bg-gray-200 text-gray-600 rounded-xl transition"
@@ -597,6 +611,7 @@ const ScholarshipAdminPanel = () => {
                                 <th className="p-4 font-bold border-b">Board / Univ</th>
                                 <th className="p-4 font-bold border-b">Year</th>
                                 <th className="p-4 font-bold border-b text-right">Score</th>
+                                <th className="p-4 font-bold border-b text-center">Certificate</th>
                               </tr>
                             </thead>
                             <tbody className="divide-y">
@@ -607,10 +622,13 @@ const ScholarshipAdminPanel = () => {
                                   <td className="p-4 font-medium text-gray-700">{edu.boardUniversity}</td>
                                   <td className="p-4 font-medium text-gray-700">{edu.year}</td>
                                   <td className="p-4 font-black text-[#0F72CE] text-right text-base">{edu.percentage || edu.marksCgpa}</td>
+                                  <td className="p-4 text-center">
+                                    {edu.certificateFile && renderDocumentButton(`${edu.examination} Certificate`, edu.certificateFile)}
+                                  </td>
                                 </tr>
                               ))}
                               {(!selectedApp.educationalRecord?.pastEducation || selectedApp.educationalRecord.pastEducation.length === 0) && (
-                                <tr><td colSpan="5" className="p-8 text-center text-gray-500 font-medium">No past education records provided.</td></tr>
+                                <tr><td colSpan="6" className="p-8 text-center text-gray-500 font-medium">No past education records provided.</td></tr>
                               )}
                             </tbody>
                           </table>

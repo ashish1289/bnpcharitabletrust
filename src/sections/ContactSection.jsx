@@ -99,9 +99,12 @@ const ContactSection = () => {
                 <p className="text-lg">support@bnptrust.in</p>
               </div>
 
-              <div className="flex items-center gap-4">
-                <Phone size={28} className="text-[#0F72CE]" />
-                <p className="text-lg">0674255399 , 06742559009</p>
+              <div className="flex items-start gap-4">
+                <Phone size={28} className="text-[#0F72CE] mt-1 shrink-0" />
+                <div>
+                  <p className="text-lg">0674255399 , 06742559009</p>
+                  <p className="text-lg text-gray-600 mt-1"><span className="font-bold text-[#0F72CE]">Technical Support:</span> 7789923442</p>
+                </div>
               </div>
 
               <div className="flex items-start gap-4">
