@@ -15,6 +15,7 @@ const ScholarshipAdminPanel = () => {
   
   // Pagination & Filtering State
   const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(20);
   const [totalPages, setTotalPages] = useState(1);
   const [statusFilter, setStatusFilter] = useState('all');
   const [courseFilter, setCourseFilter] = useState('all');
@@ -45,7 +46,7 @@ const ScholarshipAdminPanel = () => {
     try {
       const data = await api.getApplications({
         page,
-        limit: 20,
+        limit,
         status: statusFilter,
         course: courseFilter,
         search: debouncedSearch,
@@ -65,16 +66,23 @@ const ScholarshipAdminPanel = () => {
     } finally {
       setLoading(false);
     }
-  }, [page, statusFilter, courseFilter, debouncedSearch, sidebarTab]);
+  }, [page, limit, statusFilter, courseFilter, debouncedSearch, sidebarTab]);
 
   const fetchStats = useCallback(async () => {
     try {
-      const data = await api.getScholarshipStats();
+      const data = await api.getScholarshipStats({ isEligible: sidebarTab === 'ineligible' ? false : true });
       if (data) setStats(data);
     } catch (error) {
       console.error('Failed to fetch stats', error);
     }
-  }, []);
+  }, [sidebarTab]);
+  
+  // Refetch stats when tab changes
+  useEffect(() => {
+    if (admin) {
+      fetchStats();
+    }
+  }, [sidebarTab, fetchStats, admin]);
 
   const fetchCourses = useCallback(async () => {
     try {
@@ -436,23 +444,41 @@ const ScholarshipAdminPanel = () => {
         </div>
         
         {/* Pagination Controls */}
-        {totalPages > 1 && (
-          <div className="p-4 border-t border-gray-100 bg-gray-50 flex justify-between items-center">
-            <button 
-              disabled={page <= 1} 
-              onClick={() => setPage(p => p - 1)}
-              className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-lg hover:bg-gray-100 disabled:opacity-50 font-medium text-gray-700 transition shadow-sm"
-            >
-              <ChevronLeft size={18} /> Previous
-            </button>
-            <span className="text-gray-600 font-medium">Page <span className="font-bold text-gray-900">{page}</span> of {totalPages}</span>
-            <button 
-              disabled={page >= totalPages} 
-              onClick={() => setPage(p => p + 1)}
-              className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-lg hover:bg-gray-100 disabled:opacity-50 font-medium text-gray-700 transition shadow-sm"
-            >
-              Next <ChevronRight size={18} />
-            </button>
+        {applications.length > 0 && (
+          <div className="p-4 border-t border-gray-100 bg-gray-50 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div className="flex items-center gap-2">
+              <span className="text-sm text-gray-600 font-medium">Rows per page:</span>
+              <select 
+                value={limit} 
+                onChange={(e) => { setLimit(Number(e.target.value)); setPage(1); }}
+                className="bg-white border border-gray-200 rounded-lg text-sm py-1.5 px-3 font-medium text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#0F72CE] cursor-pointer shadow-sm"
+              >
+                <option value={10}>10</option>
+                <option value={20}>20</option>
+                <option value={50}>50</option>
+                <option value={100}>100</option>
+              </select>
+            </div>
+            
+            <div className="flex items-center gap-3">
+              <button 
+                disabled={page <= 1} 
+                onClick={() => setPage(p => p - 1)}
+                className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-lg hover:bg-gray-100 disabled:opacity-50 font-medium text-gray-700 transition shadow-sm"
+              >
+                <ChevronLeft size={18} /> <span className="hidden sm:inline">Previous</span>
+              </button>
+              <span className="text-gray-600 font-medium px-2 text-sm">
+                Page <span className="font-bold text-gray-900">{page}</span> of {totalPages || 1}
+              </span>
+              <button 
+                disabled={page >= totalPages} 
+                onClick={() => setPage(p => p + 1)}
+                className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-lg hover:bg-gray-100 disabled:opacity-50 font-medium text-gray-700 transition shadow-sm"
+              >
+                <span className="hidden sm:inline">Next</span> <ChevronRight size={18} />
+              </button>
+            </div>
           </div>
         )}
       </div>

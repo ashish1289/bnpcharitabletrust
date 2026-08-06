@@ -52,7 +52,11 @@ const api = {
     if (params.isEligible !== undefined) query.append('isEligible', params.isEligible);
     return request(`/scholarships?${query.toString()}`);
   },
-  getScholarshipStats: () => request('/scholarships/stats'),
+  getScholarshipStats: (params = {}) => {
+    const query = new URLSearchParams();
+    if (params.isEligible !== undefined) query.append('isEligible', params.isEligible);
+    return request(`/scholarships/stats?${query.toString()}`);
+  },
   getUniqueCourses: () => request('/scholarships/courses'),
   getMyApplications: () => request('/scholarships/my-applications'),
   updateApplicationStatus: (id, body) => request(`/scholarships/${id}/status`, { method: 'PUT', body }),
