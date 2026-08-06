@@ -1,20 +1,24 @@
 import React from 'react';
 
-const Input = ({ label, name, value, onChange, type = "text", required = false }) => (
+const Input = ({ label, name, value, onChange, type = "text", required = false, ...props }) => (
   <div className="mb-4">
     <label className="block text-sm font-semibold text-gray-700 mb-1">{label} {required && '*'}</label>
-    <input type={type} name={name} value={value} onChange={onChange} required={required}
+    <input type={type} name={name} value={value} onChange={onChange} required={required} {...props}
       className="w-full rounded-xl border border-gray-300 p-3 focus:border-[#0F72CE] focus:ring-1 focus:ring-[#0F72CE] outline-none" />
   </div>
 );
 
 const Step6References = ({ data, declarations, setFormData, settings }) => {
   const handleRefChange = (refNumber, e) => {
+    let { name, value } = e.target;
+    if (name === 'mobile') {
+      value = value.replace(/\D/g, '').slice(0, 10);
+    }
     setFormData(prev => ({
       ...prev,
       references: {
         ...prev.references,
-        [refNumber]: { ...prev.references[refNumber], [e.target.name]: e.target.value }
+        [refNumber]: { ...prev.references[refNumber], [name]: value }
       }
     }));
   };
@@ -39,7 +43,7 @@ const Step6References = ({ data, declarations, setFormData, settings }) => {
           <Input label="Designation:" name="designation" value={data.reference1.designation} onChange={(e) => handleRefChange('reference1', e)} required={settings?.reference1 !== false} />
           <Input label="Institution or organisation:" name="institution" value={data.reference1.institution} onChange={(e) => handleRefChange('reference1', e)} required={settings?.reference1 !== false} />
           <Input label="Relationship with applicant:" name="relationship" value={data.reference1.relationship} onChange={(e) => handleRefChange('reference1', e)} required={settings?.reference1 !== false} />
-          <Input label="Mobile number:" name="mobile" value={data.reference1.mobile} onChange={(e) => handleRefChange('reference1', e)} required={settings?.reference1 !== false && settings?.referenceMobile !== false} />
+          <Input label="Mobile number:" name="mobile" type="tel" maxLength={10} value={data.reference1.mobile} onChange={(e) => handleRefChange('reference1', e)} required={settings?.reference1 !== false && settings?.referenceMobile !== false} />
           <Input label="Email address:" name="email" type="email" value={data.reference1.email} onChange={(e) => handleRefChange('reference1', e)} required={settings?.reference1 !== false && settings?.referenceEmail !== false} />
         </div>
 
@@ -50,7 +54,7 @@ const Step6References = ({ data, declarations, setFormData, settings }) => {
           <Input label="Designation:" name="designation" value={data.reference2.designation} onChange={(e) => handleRefChange('reference2', e)} required={settings?.reference2 !== false} />
           <Input label="Institution or organisation:" name="institution" value={data.reference2.institution} onChange={(e) => handleRefChange('reference2', e)} required={settings?.reference2 !== false} />
           <Input label="Relationship with applicant:" name="relationship" value={data.reference2.relationship} onChange={(e) => handleRefChange('reference2', e)} required={settings?.reference2 !== false} />
-          <Input label="Mobile number:" name="mobile" value={data.reference2.mobile} onChange={(e) => handleRefChange('reference2', e)} required={settings?.reference2 !== false && settings?.referenceMobile !== false} />
+          <Input label="Mobile number:" name="mobile" type="tel" maxLength={10} value={data.reference2.mobile} onChange={(e) => handleRefChange('reference2', e)} required={settings?.reference2 !== false && settings?.referenceMobile !== false} />
           <Input label="Email address:" name="email" type="email" value={data.reference2.email} onChange={(e) => handleRefChange('reference2', e)} required={settings?.reference2 !== false && settings?.referenceEmail !== false} />
         </div>
       </div>

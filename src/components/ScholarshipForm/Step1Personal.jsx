@@ -1,11 +1,11 @@
 import React from 'react';
 
-const Input = ({ label, name, value, onChange, type = "text", required = false }) => (
+const Input = ({ label, name, value, onChange, type = "text", required = false, ...props }) => (
   <div className="mb-4">
     <label className="block text-sm font-semibold text-gray-700 mb-1">
       {label} {required && <span className="text-red-500">*</span>}
     </label>
-    <input type={type} name={name} value={value} onChange={onChange} required={required}
+    <input type={type} name={name} value={value} onChange={onChange} required={required} {...props}
       className="w-full rounded-xl border border-gray-300 p-3 focus:border-[#0F72CE] focus:ring-1 focus:ring-[#0F72CE] outline-none" />
   </div>
 );
@@ -27,9 +27,18 @@ const Select = ({ label, name, value, onChange, options, required = false }) => 
 
 const Step1Personal = ({ data, setFormData, onDocChange, documents, settings }) => {
   const handleChange = (e) => {
+    let { name, value } = e.target;
+    
+    // Restrict mobile number and aadhaar to digits only
+    if (name === 'mobileNumber') {
+      value = value.replace(/\D/g, '').slice(0, 10);
+    } else if (name === 'aadhaarNumber') {
+      value = value.replace(/\D/g, '').slice(0, 12);
+    }
+
     setFormData(prev => ({
       ...prev,
-      personalDetails: { ...prev.personalDetails, [e.target.name]: e.target.value }
+      personalDetails: { ...prev.personalDetails, [name]: value }
     }));
   };
 
@@ -51,11 +60,11 @@ const Step1Personal = ({ data, setFormData, onDocChange, documents, settings }) 
             <option value="Others">Others</option>
           </select>
         </div>
-        <Input label="4. Mobile number:" name="mobileNumber" value={data.mobileNumber} onChange={handleChange} required={settings?.mobileNumber !== false} />
+        <Input label="4. Mobile number:" name="mobileNumber" type="tel" maxLength={10} value={data.mobileNumber} onChange={handleChange} required={settings?.mobileNumber !== false} />
         <Input label="5. Email address:" name="emailAddress" type="email" value={data.emailAddress} onChange={handleChange} required={settings?.emailAddress !== false} />
         
         <div>
-          <Input label="6. Aadhaar or identity-document number:" name="aadhaarNumber" value={data.aadhaarNumber} onChange={handleChange} required={settings?.aadhaarNumber !== false} />
+          <Input label="6. Aadhaar or identity-document number:" name="aadhaarNumber" type="tel" maxLength={12} value={data.aadhaarNumber} onChange={handleChange} required={settings?.aadhaarNumber !== false} />
           <div className="mb-4 bg-blue-50 border border-blue-200 p-4 rounded-xl">
             <label className="block text-sm font-bold text-[#0F72CE] mb-2">Attach Aadhaar Copy (PDF/Image) {settings?.aadhaarCard !== false && '*'}</label>
             <input type="file" name="aadhaarCard" onChange={onDocChange} accept=".pdf,image/*" required={settings?.aadhaarCard !== false && !documents?.aadhaarCard}
