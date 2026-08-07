@@ -38,9 +38,23 @@ const steps = [
   { id: 7, title: 'Review Application' },
 ];
 
-const ScholarshipFormWizard = ({ authUser }) => {
+const ScholarshipFormWizard = ({ authUser, draftApplication }) => {
   const [currentStep, setCurrentStep] = useState(1);
-  const [formData, setFormData] = useState(initialData);
+  const [formData, setFormData] = useState(() => {
+    // If resuming a draft, pre-populate with saved data
+    if (draftApplication) {
+      return {
+        personalDetails: draftApplication.personalDetails || initialData.personalDetails,
+        educationalRecord: draftApplication.educationalRecord || initialData.educationalRecord,
+        familyDetails: draftApplication.familyDetails || initialData.familyDetails,
+        otherAssistance: draftApplication.otherAssistance || initialData.otherAssistance,
+        personalStatement: draftApplication.personalStatement || initialData.personalStatement,
+        references: draftApplication.references || initialData.references,
+        declarations: draftApplication.declarations || initialData.declarations,
+      };
+    }
+    return initialData;
+  });
   const [documents, setDocuments] = useState({ tuitionFeeReceipt: null, familyIncomeCertificate: null, aadhaarCard: null });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [message, setMessage] = useState('');
@@ -58,9 +72,9 @@ const ScholarshipFormWizard = ({ authUser }) => {
     loadSettings();
   }, []);
 
-  // Hydrate email if authUser exists
+  // Hydrate email if authUser exists (only for new applications)
   React.useEffect(() => {
-    if (authUser?.email && !formData.personalDetails.emailAddress) {
+    if (!draftApplication && authUser?.email && !formData.personalDetails.emailAddress) {
       setFormData(prev => ({
         ...prev,
         personalDetails: { ...prev.personalDetails, emailAddress: authUser.email, fullName: authUser.name || '' }
@@ -135,7 +149,6 @@ const ScholarshipFormWizard = ({ authUser }) => {
   const handleSubmit = async (e, status = 'pending') => {
     if (e) e.preventDefault();
     
-    // Validate all steps before submitting (even for draft, we could validate, but typically drafts allow incomplete. However, the existing system wants them complete. Let's just allow draft if incomplete, or maybe require it anyway. The prompt says they can preview then submit. So draft must bypass validation?)
     if (status === 'pending') {
       const incompleteSteps = steps.filter(step => step.id !== 7 && !isStepComplete(step.id));
       if (incompleteSteps.length > 0) {
@@ -149,7 +162,6 @@ const ScholarshipFormWizard = ({ authUser }) => {
     setMessage('');
 
     try {
-      // Set the intended status
       const payloadData = { ...formData, status };
       
       const payload = new FormData();
@@ -166,11 +178,14 @@ const ScholarshipFormWizard = ({ authUser }) => {
         }
       }
 
-      // We will need to update api.js to support FormData or write a direct fetch call here
-      // For now, let's assume api.submitScholarship supports FormData
-      await api.submitScholarship(payload);
+      // If resuming a draft, update it; otherwise create new
+      if (draftApplication?._id) {
+        await api.updateApplication(draftApplication._id, payload);
+      } else {
+        await api.submitScholarship(payload);
+      }
       
-      setMessage(status === 'draft' ? 'Application saved as draft successfully!' : 'Application submitted successfully!');
+      setMessage(status === 'draft' ? 'Draft saved successfully! You can resume it anytime from your profile.' : 'Application submitted successfully!');
       setCurrentStep(8); // Show success screen
     } catch (error) {
       setMessage(error.message);
@@ -210,10 +225,19 @@ const ScholarshipFormWizard = ({ authUser }) => {
   };
 
   if (currentStep === 8) {
+    const isDraft = message.includes('Draft saved');
     return (
-      <div className="text-center py-16">
-        <h2 className="text-3xl font-bold text-green-600 mb-4">Success!</h2>
-        <p className="text-gray-700">{message}</p>
+      <div className="text-center py-16 px-4">
+        <div className={`w-20 h-20 mx-auto mb-6 rounded-full flex items-center justify-center text-3xl ${isDraft ? 'bg-orange-100' : 'bg-green-100'}`}>
+          {isDraft ? '📝' : '✅'}
+        </div>
+        <h2 className={`text-3xl font-bold mb-4 ${isDraft ? 'text-orange-600' : 'text-green-600'}`}>
+          {isDraft ? 'Draft Saved!' : 'Submitted Successfully!'}
+        </h2>
+        <p className="text-gray-700 mb-6">{message}</p>
+        <a href="/profile" className="inline-flex items-center gap-2 px-6 py-3 bg-[#0F72CE] text-white font-semibold rounded-full hover:bg-[#0A4C8B] transition">
+          Go to My Profile
+        </a>
       </div>
     );
   }

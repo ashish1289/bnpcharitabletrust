@@ -59,8 +59,10 @@ const api = {
   },
   getUniqueCourses: () => request('/scholarships/courses'),
   getMyApplications: () => request('/scholarships/my-applications'),
+  getApplication: (id) => request(`/scholarships/${id}`),
   updateApplicationStatus: (id, body) => request(`/scholarships/${id}/status`, { method: 'PUT', body }),
   submitScholarship: (body) => request('/scholarships', { method: 'POST', body }),
+  updateApplication: (id, body) => request(`/scholarships/${id}`, { method: 'PUT', body }),
   getSettings: () => request('/settings'),
   updateSettings: (body) => request('/settings', { method: 'PUT', body })
 };

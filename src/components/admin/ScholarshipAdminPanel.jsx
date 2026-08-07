@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { Search, LogOut, FileText, CheckCircle, XCircle, Clock, Eye, Download, User, ChevronLeft, ChevronRight, Filter, X, Users, AlertCircle, BookOpen, Settings as SettingsIcon, LayoutDashboard, ShieldAlert } from 'lucide-react';
+import { Search, LogOut, FileText, CheckCircle, XCircle, Clock, Eye, Download, User, ChevronLeft, ChevronRight, Filter, X, Users, AlertCircle, BookOpen, Settings as SettingsIcon, LayoutDashboard, ShieldAlert, FileEdit } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import api from '../../api';
 import AdminSettings from './AdminSettings';
@@ -26,7 +26,7 @@ const ScholarshipAdminPanel = () => {
   // Detail view modal state
   const [selectedApp, setSelectedApp] = useState(null);
   const [activeTab, setActiveTab] = useState('personal'); // inside modal
-  const [sidebarTab, setSidebarTab] = useState('applications'); // 'applications', 'ineligible', 'settings'
+  const [sidebarTab, setSidebarTab] = useState('applications'); // 'applications', 'ineligible', 'drafts', 'settings'
   const [viewingDocument, setViewingDocument] = useState(null);
 
   // Stats state
@@ -44,14 +44,23 @@ const ScholarshipAdminPanel = () => {
   const fetchApplications = useCallback(async () => {
     setLoading(true);
     try {
-      const data = await api.getApplications({
+      let params = {
         page,
         limit,
         status: statusFilter,
         course: courseFilter,
         search: debouncedSearch,
-        isEligible: sidebarTab === 'ineligible' ? false : true
-      });
+      };
+
+      if (sidebarTab === 'drafts') {
+        // For drafts tab: get ALL applications (eligible + ineligible) with status=draft
+        params.status = 'draft';
+        // Don't filter by isEligible - drafts should show regardless
+      } else {
+        params.isEligible = sidebarTab === 'ineligible' ? false : true;
+      }
+
+      const data = await api.getApplications(params);
       // The API now returns { applications, total, page, pages }
       if (data && Array.isArray(data.applications)) {
         setApplications(data.applications);
@@ -245,6 +254,17 @@ const ScholarshipAdminPanel = () => {
             <ShieldAlert size={20} /> Ineligible Queue
           </button>
           <button 
+            onClick={() => { setSidebarTab('drafts'); setPage(1); setStatusFilter('all'); }}
+            className={`flex items-center gap-3 px-5 py-4 rounded-2xl font-bold transition-all text-left ${sidebarTab === 'drafts' ? 'bg-orange-500 text-white shadow-md' : 'bg-white text-gray-600 hover:bg-gray-100 border border-gray-200'}`}
+          >
+            <FileEdit size={20} /> Draft Applications
+            {stats.draft > 0 && (
+              <span className={`ml-auto px-2 py-0.5 rounded-full text-xs font-black ${sidebarTab === 'drafts' ? 'bg-white/20 text-white' : 'bg-orange-100 text-orange-700'}`}>
+                {stats.draft}
+              </span>
+            )}
+          </button>
+          <button 
             onClick={() => setSidebarTab('settings')}
             className={`flex items-center gap-3 px-5 py-4 rounded-2xl font-bold transition-all text-left ${sidebarTab === 'settings' ? 'bg-gray-800 text-white shadow-md' : 'bg-white text-gray-600 hover:bg-gray-100 border border-gray-200'}`}
           >
@@ -263,6 +283,106 @@ const ScholarshipAdminPanel = () => {
 
           {sidebarTab === 'settings' ? (
             <AdminSettings />
+          ) : sidebarTab === 'drafts' ? (
+            <>
+              {/* Drafts Header Banner */}
+              <div className="mb-6 p-5 bg-orange-50 border border-orange-200 rounded-2xl flex items-center gap-4">
+                <div className="p-3 bg-orange-100 rounded-xl">
+                  <FileEdit size={24} className="text-orange-600" />
+                </div>
+                <div>
+                  <h3 className="font-extrabold text-orange-900 text-lg">Draft Applications</h3>
+                  <p className="text-sm text-orange-700">These applications have been saved by students but not yet submitted. Students can resume and complete them.</p>
+                </div>
+                <div className="ml-auto text-right">
+                  <p className="text-3xl font-black text-orange-700">{stats.draft}</p>
+                  <p className="text-xs text-orange-500 font-semibold uppercase tracking-wide">Total Drafts</p>
+                </div>
+              </div>
+
+              {/* Drafts Table */}
+              <div className="flex-1 flex flex-col bg-white border border-orange-200 rounded-3xl shadow-sm overflow-hidden">
+                <div className="p-6 border-b border-orange-100 bg-orange-50/50 flex flex-col md:flex-row gap-4 justify-between items-center">
+                  <h3 className="font-bold text-orange-800 text-lg flex items-center gap-2">
+                    <FileEdit size={20} className="text-orange-500" />
+                    All Draft Applications
+                  </h3>
+                  <div className="relative w-full sm:w-64">
+                    <Search size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                    <input
+                      type="text"
+                      placeholder="Search name or email..."
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      className="w-full pl-10 pr-4 py-2.5 bg-white border border-orange-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-orange-400 transition"
+                    />
+                  </div>
+                </div>
+                <div className="overflow-x-auto flex-1">
+                  <table className="w-full text-sm text-left">
+                    <thead className="bg-orange-50/80 text-gray-600 border-b border-orange-100">
+                      <tr>
+                        <th className="p-5 font-semibold">Applicant Name</th>
+                        <th className="p-5 font-semibold">Contact</th>
+                        <th className="p-5 font-semibold">Course</th>
+                        <th className="p-5 font-semibold">Last Saved</th>
+                        <th className="p-5 font-semibold text-right">Action</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-orange-50">
+                      {applications.map((app) => (
+                        <tr key={app._id} className="hover:bg-orange-50/30 transition-colors">
+                          <td className="p-5">
+                            <div className="font-bold text-gray-900 text-base">{app.personalDetails?.fullName || 'N/A'}</div>
+                            <div className="text-xs text-gray-500">{app.personalDetails?.gender} • DOB: {app.personalDetails?.dateOfBirth}</div>
+                          </td>
+                          <td className="p-5">
+                            <div className="font-medium text-gray-800">{app.personalDetails?.emailAddress || 'N/A'}</div>
+                            <div className="text-gray-500">{app.personalDetails?.mobileNumber}</div>
+                          </td>
+                          <td className="p-5">
+                            <div className="font-medium text-gray-800">{app.educationalRecord?.courseName || 'Not specified'}</div>
+                            <div className="text-gray-500 truncate max-w-[200px]">{app.educationalRecord?.institutionNameAddress || 'Not specified'}</div>
+                          </td>
+                          <td className="p-5 font-medium text-gray-600">
+                            {new Date(app.updatedAt || app.createdAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
+                          </td>
+                          <td className="p-5 text-right">
+                            <button
+                              onClick={() => { setSelectedApp(app); setActiveTab('personal'); }}
+                              className="px-4 py-2 bg-white border border-orange-200 text-orange-600 font-bold rounded-lg hover:bg-orange-50 hover:border-orange-300 transition shadow-sm"
+                            >
+                              View Details
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+                      {applications.length === 0 && (
+                        <tr>
+                          <td colSpan="5" className="p-16 text-center text-gray-500 font-medium text-lg">
+                            No draft applications found.
+                          </td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+                {/* Pagination */}
+                {applications.length > 0 && (
+                  <div className="p-4 border-t border-orange-100 bg-orange-50/30 flex justify-between items-center gap-4">
+                    <span className="text-sm text-gray-600 font-medium">Page <span className="font-bold">{page}</span> of {totalPages || 1}</span>
+                    <div className="flex items-center gap-3">
+                      <button disabled={page <= 1} onClick={() => setPage(p => p - 1)} className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-lg hover:bg-gray-100 disabled:opacity-50 font-medium text-gray-700 transition shadow-sm">
+                        <ChevronLeft size={18} /> Previous
+                      </button>
+                      <button disabled={page >= totalPages} onClick={() => setPage(p => p + 1)} className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-lg hover:bg-gray-100 disabled:opacity-50 font-medium text-gray-700 transition shadow-sm">
+                        Next <ChevronRight size={18} />
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </>
           ) : (
             <>
               {/* KPI Cards (Only for Applications view, not Ineligible) */}
