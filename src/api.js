@@ -64,7 +64,16 @@ const api = {
   submitScholarship: (body) => request('/scholarships', { method: 'POST', body }),
   updateApplication: (id, body) => request(`/scholarships/${id}`, { method: 'PUT', body }),
   getSettings: () => request('/settings'),
-  updateSettings: (body) => request('/settings', { method: 'PUT', body })
+  updateSettings: (body) => request('/settings', { method: 'PUT', body }),
+
+  // Forgot password (students only)
+  forgotPassword: (email) => request('/auth/forgot-password', { method: 'POST', body: { email } }),
+  verifyOtp: (email, otp) => request('/auth/verify-otp', { method: 'POST', body: { email, otp } }),
+  resetPassword: (email, otp, newPassword) => request('/auth/reset-password', { method: 'POST', body: { email, otp, newPassword } }),
+
+  // Admin draft reminder emails
+  sendDraftReminder: (applicationId) => request(`/scholarships/send-draft-reminder/${applicationId}`, { method: 'POST' }),
+  sendAllDraftReminders: () => request('/scholarships/send-all-draft-reminders', { method: 'POST' }),
 };
 
 export default api;

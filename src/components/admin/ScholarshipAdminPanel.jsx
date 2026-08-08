@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { Search, LogOut, FileText, CheckCircle, XCircle, Clock, Eye, Download, User, ChevronLeft, ChevronRight, Filter, X, Users, AlertCircle, BookOpen, Settings as SettingsIcon, LayoutDashboard, ShieldAlert, FileEdit } from 'lucide-react';
+import { Search, LogOut, FileText, CheckCircle, XCircle, Clock, Eye, Download, User, ChevronLeft, ChevronRight, Filter, X, Users, AlertCircle, BookOpen, Settings as SettingsIcon, LayoutDashboard, ShieldAlert, FileEdit, Mail } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import api from '../../api';
 import AdminSettings from './AdminSettings';
@@ -31,6 +31,13 @@ const ScholarshipAdminPanel = () => {
 
   // Stats state
   const [stats, setStats] = useState({ total: 0, pending: 0, reviewed: 0, approved: 0, rejected: 0, draft: 0 });
+
+  // Email Reminder State
+  const [sendingReminder, setSendingReminder] = useState({}); // { [appId]: true/false }
+  const [sendingAllReminders, setSendingAllReminders] = useState(false);
+
+  // Status Change Confirmation State
+  const [statusToChange, setStatusToChange] = useState(null); // { id: '...', status: '...', remark: '' }
 
   // Debounce search
   useEffect(() => {
@@ -132,9 +139,9 @@ const ScholarshipAdminPanel = () => {
     return () => { document.body.style.overflow = 'unset'; };
   }, [selectedApp]);
 
-  const updateStatus = async (id, status, currentNotes) => {
+  const updateStatus = async (id, status, currentNotes, remark) => {
     try {
-      const updated = await api.updateApplicationStatus(id, { status, adminNotes: currentNotes });
+      const updated = await api.updateApplicationStatus(id, { status, adminNotes: currentNotes, remark });
       setMessage(`Status updated to ${status}`);
       if (selectedApp?._id === id) {
         setSelectedApp(updated.application);
@@ -158,9 +165,39 @@ const ScholarshipAdminPanel = () => {
       await api.updateApplicationStatus(selectedApp._id, { status: selectedApp.status, adminNotes: selectedApp.adminNotes });
       setMessage('Notes saved successfully');
       fetchApplications();
-      setTimeout(() => setMessage(''), 3000);
     } catch (error) {
       setMessage('Failed to save notes');
+    }
+  };
+
+  const handleSendReminder = async (appId) => {
+    setSendingReminder(prev => ({ ...prev, [appId]: true }));
+    try {
+      const res = await api.sendDraftReminder(appId);
+      setMessage(res.message || 'Reminder email sent successfully.');
+      setTimeout(() => setMessage(''), 4000);
+    } catch (error) {
+      setMessage(error.message || 'Failed to send reminder.');
+      setTimeout(() => setMessage(''), 4000);
+    } finally {
+      setSendingReminder(prev => ({ ...prev, [appId]: false }));
+    }
+  };
+
+  const handleSendAllReminders = async () => {
+    if (!window.confirm(`Are you sure you want to send draft reminder emails to all ${stats.draft} students?`)) {
+      return;
+    }
+    setSendingAllReminders(true);
+    try {
+      const res = await api.sendAllDraftReminders();
+      setMessage(res.message || 'Reminders sent to all draft students.');
+      setTimeout(() => setMessage(''), 4000);
+    } catch (error) {
+      setMessage(error.message || 'Failed to send bulk reminders.');
+      setTimeout(() => setMessage(''), 4000);
+    } finally {
+      setSendingAllReminders(false);
     }
   };
 
@@ -307,15 +344,27 @@ const ScholarshipAdminPanel = () => {
                     <FileEdit size={20} className="text-orange-500" />
                     All Draft Applications
                   </h3>
-                  <div className="relative w-full sm:w-64">
-                    <Search size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-                    <input
-                      type="text"
-                      placeholder="Search name or email..."
-                      value={searchTerm}
-                      onChange={(e) => setSearchTerm(e.target.value)}
-                      className="w-full pl-10 pr-4 py-2.5 bg-white border border-orange-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-orange-400 transition"
-                    />
+                  <div className="flex items-center gap-3 w-full sm:w-auto">
+                    {stats.draft > 0 && (
+                      <button
+                        onClick={handleSendAllReminders}
+                        disabled={sendingAllReminders}
+                        className="flex items-center justify-center gap-2 px-4 py-2.5 bg-orange-600 hover:bg-orange-700 disabled:opacity-50 text-white font-bold text-sm rounded-xl transition shadow-sm"
+                      >
+                        <Mail size={16} />
+                        {sendingAllReminders ? 'Sending...' : 'Remind All'}
+                      </button>
+                    )}
+                    <div className="relative w-full sm:w-64">
+                      <Search size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                      <input
+                        type="text"
+                        placeholder="Search name or email..."
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        className="w-full pl-10 pr-4 py-2.5 bg-white border border-orange-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-orange-400 transition"
+                      />
+                    </div>
                   </div>
                 </div>
                 <div className="overflow-x-auto flex-1">
@@ -347,12 +396,20 @@ const ScholarshipAdminPanel = () => {
                           <td className="p-5 font-medium text-gray-600">
                             {new Date(app.updatedAt || app.createdAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
                           </td>
-                          <td className="p-5 text-right">
+                          <td className="p-5 text-right flex items-center justify-end gap-2">
                             <button
                               onClick={() => { setSelectedApp(app); setActiveTab('personal'); }}
                               className="px-4 py-2 bg-white border border-orange-200 text-orange-600 font-bold rounded-lg hover:bg-orange-50 hover:border-orange-300 transition shadow-sm"
                             >
                               View Details
+                            </button>
+                            <button
+                              onClick={() => handleSendReminder(app._id)}
+                              disabled={sendingReminder[app._id]}
+                              title="Send Reminder Email"
+                              className="p-2 bg-orange-50 hover:bg-orange-100 disabled:opacity-50 text-orange-600 rounded-lg border border-orange-200 transition"
+                            >
+                              <Mail size={18} />
                             </button>
                           </td>
                         </tr>
@@ -637,7 +694,7 @@ const ScholarshipAdminPanel = () => {
                     <select
                       className="rounded-lg border-none p-2 bg-white text-sm font-bold text-gray-800 shadow-sm outline-none focus:ring-2 focus:ring-[#0F72CE] cursor-pointer"
                       value={selectedApp.status}
-                      onChange={(e) => updateStatus(selectedApp._id, e.target.value, selectedApp.adminNotes)}
+                      onChange={(e) => setStatusToChange({ id: selectedApp._id, status: e.target.value, remark: '' })}
                     >
                       <option value="draft">Draft</option>
                       <option value="pending">Pending</option>
@@ -1039,6 +1096,56 @@ const ScholarshipAdminPanel = () => {
                     title={viewingDocument.title}
                   />
                 )}
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* --- CONFIRM STATUS CHANGE & ADD OPTIONAL REMARK MODAL --- */}
+      <AnimatePresence>
+        {statusToChange && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-900/40 backdrop-blur-sm">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className="bg-white w-full max-w-md rounded-3xl shadow-2xl p-6 border border-gray-100 relative"
+            >
+              <h3 className="font-extrabold text-xl text-gray-900 mb-2">Update Application Status</h3>
+              <p className="text-sm text-gray-600 mb-5">
+                You are changing the status to <span className="font-bold text-gray-800 uppercase tracking-wide px-2 py-0.5 bg-gray-100 rounded">{statusToChange.status}</span>. An email will be sent to the student automatically.
+              </p>
+              
+              <div className="mb-6">
+                <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">
+                  Optional Remark / Message to Applicant
+                </label>
+                <textarea
+                  rows={4}
+                  value={statusToChange.remark || ''}
+                  onChange={(e) => setStatusToChange(prev => ({ ...prev, remark: e.target.value }))}
+                  placeholder="Enter a reason or custom remark to include in the status update email..."
+                  className="w-full rounded-2xl border border-gray-200 p-4 text-sm focus:outline-none focus:ring-2 focus:ring-[#0F72CE] transition resize-none placeholder-gray-400"
+                />
+              </div>
+              
+              <div className="flex justify-end gap-3">
+                <button
+                  onClick={() => setStatusToChange(null)}
+                  className="px-5 py-2.5 border border-gray-200 text-gray-700 font-bold rounded-xl hover:bg-gray-50 transition text-sm shadow-sm"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={() => {
+                    updateStatus(statusToChange.id, statusToChange.status, selectedApp.adminNotes, statusToChange.remark);
+                    setStatusToChange(null);
+                  }}
+                  className="px-5 py-2.5 bg-[#0F72CE] text-white font-bold rounded-xl hover:bg-[#0A4C8B] transition text-sm shadow-sm"
+                >
+                  Update Status
+                </button>
               </div>
             </motion.div>
           </div>
