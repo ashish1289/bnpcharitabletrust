@@ -1,5 +1,9 @@
 import { jsPDF } from 'jspdf';
 import autoTable from 'jspdf-autotable';
+import { PDFDocument } from 'pdf-lib';
+
+// The base URL for fetching documents
+const API_BASE_URL = import.meta.env.PROD ? 'https://app.bnptrust.in/api' : 'http://localhost:5000/api';
 
 // Helper to convert image URL to base64 to ensure it embeds nicely
 const getBase64ImageFromURL = (url) => {
@@ -249,9 +253,86 @@ export const generatePDF = async (app) => {
     doc.text(`Page ${i} of ${pageCount} | Generated on ${new Date().toLocaleDateString()}`, 14, 290);
   }
 
-  // Save the PDF
-  const filename = `BNP_Application_${app.personalDetails?.fullName?.replace(/\s+/g, '_') || 'Student'}_${new Date().getTime()}.pdf`;
-  doc.save(filename);
+    // Instead of saving directly, we get the ArrayBuffer to merge with other PDFs/Images
+    const basePdfBytes = doc.output('arraybuffer');
+    const pdfDoc = await PDFDocument.load(basePdfBytes);
+    
+    // Gather all document keys to fetch
+    const documentKeys = [];
+    if (app.documents?.tuitionFeeReceipt) documentKeys.push(app.documents.tuitionFeeReceipt);
+    if (app.documents?.familyIncomeCertificate) documentKeys.push(app.documents.familyIncomeCertificate);
+    if (app.documents?.aadhaarCard) documentKeys.push(app.documents.aadhaarCard);
+    
+    if (app.educationalRecord?.pastEducation) {
+      app.educationalRecord.pastEducation.forEach(edu => {
+        if (edu.certificateFile) documentKeys.push(edu.certificateFile);
+      });
+    }
+
+    // Merge each document
+    for (const key of documentKeys) {
+      try {
+        const url = `${API_BASE_URL}/scholarships/documents/${key}`;
+        // Fetch with cookies for authentication
+        const response = await fetch(url, {
+          credentials: 'include'
+        });
+        
+        if (!response.ok) {
+          console.warn(`Failed to fetch document: ${key}, status: ${response.status}`);
+          continue;
+        }
+
+        const contentType = response.headers.get('content-type');
+        const arrayBuffer = await response.arrayBuffer();
+
+        if (contentType && contentType.includes('pdf')) {
+          // Merge PDF
+          const externalPdf = await PDFDocument.load(arrayBuffer);
+          const copiedPages = await pdfDoc.copyPages(externalPdf, externalPdf.getPageIndices());
+          copiedPages.forEach(page => pdfDoc.addPage(page));
+        } else if (contentType && (contentType.includes('image') || contentType.includes('img'))) {
+          // Embed Image
+          let image;
+          if (contentType.includes('png')) {
+            image = await pdfDoc.embedPng(arrayBuffer);
+          } else if (contentType.includes('jpeg') || contentType.includes('jpg')) {
+            image = await pdfDoc.embedJpg(arrayBuffer);
+          }
+          
+          if (image) {
+            const page = pdfDoc.addPage();
+            const { width, height } = page.getSize();
+            const imgDims = image.scaleToFit(width - 40, height - 40);
+            
+            page.drawImage(image, {
+              x: page.getWidth() / 2 - imgDims.width / 2,
+              y: page.getHeight() / 2 - imgDims.height / 2,
+              width: imgDims.width,
+              height: imgDims.height,
+            });
+          }
+        }
+      } catch (err) {
+        console.error(`Error processing document ${key}:`, err);
+      }
+    }
+
+    // Save final merged PDF
+    const finalPdfBytes = await pdfDoc.save();
+    const blob = new Blob([finalPdfBytes], { type: 'application/pdf' });
+    const blobUrl = URL.createObjectURL(blob);
+    
+    const filename = `BNP_Application_${app.personalDetails?.fullName?.replace(/\s+/g, '_') || 'Student'}_${new Date().getTime()}.pdf`;
+    
+    const link = document.createElement('a');
+    link.href = blobUrl;
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    setTimeout(() => URL.revokeObjectURL(blobUrl), 100);
+
   } catch (error) {
     console.error("PDF Generation failed:", error);
     alert("Failed to generate PDF. Please try again.");

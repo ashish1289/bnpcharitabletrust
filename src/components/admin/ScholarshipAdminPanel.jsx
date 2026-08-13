@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import api from '../../api';
 import AdminSettings from './AdminSettings';
 import { generatePDF } from '../../utils/generatePDF';
+import { exportToExcel } from '../../utils/exportToExcel';
 
 const API_BASE_URL = import.meta.env.PROD ? 'https://app.bnptrust.in/api' : 'http://localhost:5000/api';
 
@@ -201,6 +202,42 @@ const ScholarshipAdminPanel = () => {
     }
   };
 
+  const handleExportAllExcel = async () => {
+    setMessage('Generating Excel file...');
+    try {
+      let params = {
+        page: 1,
+        limit: 100000, // Bypass pagination
+        status: statusFilter,
+        course: courseFilter,
+        search: debouncedSearch,
+      };
+
+      if (sidebarTab === 'drafts') {
+        params.status = 'draft';
+      } else {
+        params.isEligible = sidebarTab === 'ineligible' ? false : true;
+      }
+
+      const data = await api.getApplications(params);
+      const apps = data && data.applications ? data.applications : (Array.isArray(data) ? data : []);
+      if (apps.length > 0) {
+        exportToExcel(apps, `BNP_Applications_${sidebarTab}_${new Date().toISOString().split('T')[0]}.xlsx`);
+        setMessage('Excel file downloaded successfully');
+      } else {
+        setMessage('No applications found to export');
+      }
+    } catch (error) {
+      setMessage(`Failed to export: ${error.message}`);
+    }
+    setTimeout(() => setMessage(''), 4000);
+  };
+
+  const handleExportSingleExcel = (app) => {
+    const filename = `BNP_Application_${app.personalDetails?.fullName?.replace(/\s+/g, '_') || 'Student'}.xlsx`;
+    exportToExcel([app], filename);
+  };
+
   const handleLogout = async () => {
     try {
       await api.logout();
@@ -345,6 +382,12 @@ const ScholarshipAdminPanel = () => {
                     All Draft Applications
                   </h3>
                   <div className="flex items-center gap-3 w-full sm:w-auto">
+                    <button 
+                      onClick={handleExportAllExcel}
+                      className="flex items-center justify-center gap-2 px-4 py-2.5 bg-white border border-green-200 text-green-700 font-bold text-sm rounded-xl hover:bg-green-50 transition shadow-sm"
+                    >
+                      <Download size={16} /> Excel (All)
+                    </button>
                     {stats.draft > 0 && (
                       <button
                         onClick={handleSendAllReminders}
@@ -510,6 +553,12 @@ const ScholarshipAdminPanel = () => {
           </h3>
           
           <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto flex-wrap">
+            <button 
+              onClick={handleExportAllExcel}
+              className="flex items-center justify-center gap-2 px-4 py-2.5 bg-white border border-green-200 text-green-700 font-bold text-sm rounded-xl hover:bg-green-50 transition shadow-sm"
+            >
+              <Download size={16} /> Excel (All)
+            </button>
             <div className="relative w-full sm:w-64">
               <Search size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
               <input 
@@ -703,6 +752,12 @@ const ScholarshipAdminPanel = () => {
                       <option value="rejected">Rejected</option>
                     </select>
                   </div>
+                  <button 
+                    onClick={() => handleExportSingleExcel(selectedApp)}
+                    className="flex items-center gap-2 px-4 py-2.5 bg-white border border-green-200 text-green-700 font-bold rounded-xl hover:bg-green-50 transition shadow-sm"
+                  >
+                    <Download size={18} /> <span className="hidden sm:inline">Excel</span>
+                  </button>
                   <button 
                     onClick={() => generatePDF(selectedApp)}
                     className="flex items-center gap-2 px-4 py-2.5 bg-[#0F72CE] text-white font-bold rounded-xl hover:bg-[#0A4C8B] transition shadow-sm"
