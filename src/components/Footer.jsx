@@ -75,7 +75,7 @@ const Footer = () => {
             <li className="flex items-start gap-2">
               <Phone size={16} className="mt-1 shrink-0" />
               <div>
-                <span className="block">0674255399 , 06742559009</span>
+                <span className="block">7077786737</span>
                 <span className="block text-gray-400 mt-1"><span className="font-semibold text-[#5CC9FF]">Technical Support:</span> 8917342626</span>
               </div>
             </li>

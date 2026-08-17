@@ -138,7 +138,7 @@ const PrivacySection = () => {
             <p className="mt-2 font-semibold text-[#0F72CE]">
               📧 support@bnptrust.in
               <br />
-              📞 06742559009
+              📞 7077786737
             </p>
           </SectionBox>
         </div>

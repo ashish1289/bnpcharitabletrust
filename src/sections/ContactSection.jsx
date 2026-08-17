@@ -102,7 +102,7 @@ const ContactSection = () => {
               <div className="flex items-start gap-4">
                 <Phone size={28} className="text-[#0F72CE] mt-1 shrink-0" />
                 <div>
-                  <p className="text-lg">0674255399 , 06742559009</p>
+                  <p className="text-lg">7077786737</p>
                   <p className="text-lg text-gray-600 mt-1"><span className="font-bold text-[#0F72CE]">Technical Support:</span> 8917342626</p>
                 </div>
               </div>
