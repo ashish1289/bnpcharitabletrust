@@ -166,12 +166,18 @@ const AdminLoginPage = () => {
             {mode === 'forgot' ? 'Reset Password' : 'Login'}
           </h1>
           <p className="mt-2 text-gray-500 text-sm">
+            {/* Original text when scholarship is open
             {mode === 'forgot'
               ? 'Enter your registered email to receive a one-time password.'
               : 'Students can sign up here. Admins log in with their credentials.'}
+            */}
+            {mode === 'forgot'
+              ? 'Enter your registered email to receive a one-time password.'
+              : 'Please log in with your credentials to check your application status.'}
           </p>
 
           {/* Mode Toggle (Login / Sign Up) */}
+          {/* Original code to uncomment when scholarship starts again
           {mode !== 'forgot' && (
             <div className="mt-6 flex gap-3">
               <button
@@ -185,6 +191,18 @@ const AdminLoginPage = () => {
                 className={`rounded-full px-4 py-2 text-sm font-semibold transition ${mode === 'signup' ? 'bg-[#0F72CE] text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
               >
                 Sign Up
+              </button>
+            </div>
+          )}
+          */}
+          {/* Active code (Sign up disabled) */}
+          {mode !== 'forgot' && (
+            <div className="mt-6 flex gap-3">
+              <button
+                onClick={() => switchMode('login')}
+                className={`rounded-full px-4 py-2 text-sm font-semibold transition bg-[#0F72CE] text-white`}
+              >
+                Login
               </button>
             </div>
           )}
@@ -214,8 +232,13 @@ const AdminLoginPage = () => {
                 <input type="password" name="password" value={form.password} onChange={handleChange} required placeholder="••••••••" className="w-full rounded-xl border border-gray-200 p-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#0F72CE]" />
               </div>
 
+              {/* Original button text when scholarship is open
               <button type="submit" disabled={loading} className="w-full rounded-xl bg-[#0F72CE] px-4 py-3 font-semibold text-white hover:bg-[#0A4C8B] disabled:opacity-70 transition">
                 {loading ? 'Please wait...' : mode === 'login' ? 'Login' : 'Sign Up'}
+              </button>
+              */}
+              <button type="submit" disabled={loading} className="w-full rounded-xl bg-[#0F72CE] px-4 py-3 font-semibold text-white hover:bg-[#0A4C8B] disabled:opacity-70 transition">
+                {loading ? 'Please wait...' : 'Login'}
               </button>
 
               {mode === 'login' && (

@@ -49,6 +49,7 @@ const ScholarshipApply = () => {
           <h1 className="text-4xl font-bold text-[#0F72CE]">
             {draftApplication ? 'Resume Your Application' : 'BNP Sikshya Sahayog Scholarship Form'}
           </h1>
+          {/* Original text when scholarship is open
           {draftApplication ? (
             <p className="mt-3 text-gray-600 max-w-2xl mx-auto">
               You're resuming your saved draft. All your previous progress has been loaded.
@@ -56,6 +57,16 @@ const ScholarshipApply = () => {
           ) : (
             <p className="mt-3 text-gray-600 max-w-2xl mx-auto">
               Eligibility: Students who have secured 60% or above marks in the qualifying examination and whose annual family income does not exceed ₹3,00,000 are eligible to apply for this scholarship.
+            </p>
+          )}
+          */}
+          {draftApplication ? (
+            <p className="mt-3 text-gray-600 max-w-2xl mx-auto">
+              The scholarship application date has ended. You can no longer resume or edit your application.
+            </p>
+          ) : (
+            <p className="mt-3 text-gray-600 max-w-2xl mx-auto">
+              The scholarship application date has ended. No new applications are being accepted at this time.
             </p>
           )}
         </div>
@@ -88,15 +99,31 @@ const ScholarshipApply = () => {
                 <div className="animate-spin w-10 h-10 border-4 border-[#0F72CE] border-t-transparent rounded-full mx-auto mb-4"></div>
                 <p className="text-gray-500 font-medium">Loading your draft application...</p>
               </div>
-            ) : draftError ? (
-              <div className="rounded-2xl border bg-red-50 p-8 text-center max-w-md mx-auto">
-                <p className="text-red-600 font-semibold mb-4">{draftError}</p>
-                <Link to="/profile" className="inline-flex rounded-full bg-[#0F72CE] px-6 py-2 font-semibold text-white hover:bg-[#0A4C8B]">
-                  Back to Profile
-                </Link>
-              </div>
             ) : (
-              <ScholarshipFormWizard authUser={authUser} draftApplication={draftApplication} />
+              <>
+                {/* Original form code when scholarship is open
+                {draftError ? (
+                  <div className="rounded-2xl border bg-red-50 p-8 text-center max-w-md mx-auto">
+                    <p className="text-red-600 font-semibold mb-4">{draftError}</p>
+                    <Link to="/profile" className="inline-flex rounded-full bg-[#0F72CE] px-6 py-2 font-semibold text-white hover:bg-[#0A4C8B]">
+                      Back to Profile
+                    </Link>
+                  </div>
+                ) : (
+                  <ScholarshipFormWizard authUser={authUser} draftApplication={draftApplication} />
+                )}
+                */}
+
+                {/* Active code (Application closed) */}
+                <div className="rounded-2xl border bg-yellow-50 p-8 text-center max-w-md mx-auto">
+                  <p className="text-yellow-700 font-semibold mb-4">
+                    The scholarship application date is over. New applications or draft submissions are no longer allowed.
+                  </p>
+                  <Link to="/profile" className="inline-flex rounded-full bg-[#0F72CE] px-6 py-2 font-semibold text-white hover:bg-[#0A4C8B]">
+                    Check Application Status
+                  </Link>
+                </div>
+              </>
             )}
           </>
         )}

@@ -61,11 +61,19 @@ const ScholarshipPromoSection = () => {
               >
                 Learn More <ArrowRight className="w-5 h-5" />
               </Link>
+              {/* Original Apply Now button when scholarship is open
               <Link 
                 to="/scholarship/apply" 
                 className="inline-flex items-center justify-center gap-2 bg-white text-blue-600 border border-blue-200 hover:border-blue-400 hover:bg-blue-50 font-semibold py-4 px-8 rounded-full shadow-sm transition-all duration-300"
               >
                 Apply Now
+              </Link>
+              */}
+              <Link 
+                to="/admin/login" 
+                className="inline-flex items-center justify-center gap-2 bg-white text-blue-600 border border-blue-200 hover:border-blue-400 hover:bg-blue-50 font-semibold py-4 px-8 rounded-full shadow-sm transition-all duration-300"
+              >
+                Check Status
               </Link>
             </motion.div>
           </motion.div>

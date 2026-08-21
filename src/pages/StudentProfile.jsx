@@ -110,12 +110,14 @@ const StudentProfile = () => {
                     >
                       <Eye size={16} /> Preview
                     </button>
+                    {/* Original Resume Application button
                     <Link
                       to={`/scholarship/apply?resume=${app._id}`}
                       className="flex items-center gap-2 px-5 py-2 bg-orange-500 text-white text-sm font-bold rounded-full hover:bg-orange-600 transition shadow-sm"
                     >
                       <Edit3 size={16} /> Resume Application
                     </Link>
+                    */}
                   </div>
                 </div>
               ))}
@@ -127,17 +129,22 @@ const StudentProfile = () => {
         <div className="bg-white border rounded-2xl shadow-sm p-8 mb-8">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-xl font-bold text-gray-800">My Applications</h2>
+            {/* Original New Application button
             <Link to="/scholarship/apply" className="px-4 py-2 rounded-full bg-[#0F72CE] text-white text-sm font-semibold hover:bg-[#0A4C8B] transition">
               + New Application
             </Link>
+            */}
           </div>
 
           {submittedApps.length === 0 ? (
             <div className="text-center py-12 bg-gray-50 rounded-xl border-dashed border-2">
               <p className="text-gray-500 mb-4">You haven't submitted any applications yet.</p>
+              {/* Original Start Application button
               <Link to="/scholarship/apply" className="inline-flex items-center gap-2 px-6 py-2.5 bg-[#0F72CE] text-white font-semibold rounded-full hover:bg-[#0A4C8B] transition text-sm">
                 Start Application
               </Link>
+              */}
+              <p className="text-sm font-semibold text-red-500">The scholarship application date is now closed.</p>
             </div>
           ) : (
             <div className="grid gap-4">
@@ -185,6 +192,7 @@ const StudentProfile = () => {
                 </p>
               </div>
               <div className="flex items-center gap-3">
+                {/* Original Resume button in modal
                 {selectedApp.status === 'draft' && (
                   <Link
                     to={`/scholarship/apply?resume=${selectedApp._id}`}
@@ -193,6 +201,7 @@ const StudentProfile = () => {
                     <Edit3 size={16} /> Resume
                   </Link>
                 )}
+                */}
                 <button onClick={() => setSelectedApp(null)} className="p-2 hover:bg-gray-200 rounded-full transition">
                   <X size={24} className="text-gray-500" />
                 </button>

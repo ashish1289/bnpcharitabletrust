@@ -61,10 +61,9 @@ const ScholarshipInfo = () => {
             </div>
           </motion.div>
 
-          {/* Application Options */}
+          {/* Application Options (Original Code when scholarship is open)
           <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto mb-20">
 
-            {/* Online Card */}
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
@@ -86,7 +85,6 @@ const ScholarshipInfo = () => {
               </div>
             </motion.div>
 
-            {/* Offline Card */}
             <motion.div
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
@@ -96,8 +94,7 @@ const ScholarshipInfo = () => {
               <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-gray-100 to-transparent rounded-bl-full -mr-8 -mt-8 transition-transform group-hover:scale-110" />
               <div className="relative z-10">
                 <div className="w-14 h-14 bg-gray-800 text-white rounded-2xl flex items-center justify-center mb-6 shadow-md shadow-gray-800/20">
-                  <Download size={28} />
-                </div>
+                  <Download size={28} /                </div>
                 <h3 className="text-2xl font-bold text-gray-900 mb-3">Apply Offline</h3>
                 <p className="text-gray-600 mb-8 leading-relaxed">
                   Prefer a physical copy? Download the official form, print it, fill it out by hand, and mail it along with your documents to our trust office.
@@ -114,8 +111,33 @@ const ScholarshipInfo = () => {
             </motion.div>
 
           </div>
+          */}
 
-          {/* Offline Instructions */}
+          {/* Status Check Card (Active when closed) */}
+          <div className="max-w-xl mx-auto mb-20">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 }}
+              className="bg-white rounded-3xl p-8 shadow-xl shadow-blue-900/5 border border-blue-50 relative overflow-hidden group"
+            >
+              <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-blue-100 to-transparent rounded-bl-full -mr-8 -mt-8 transition-transform group-hover:scale-110" />
+              <div className="relative z-10 text-center">
+                <div className="w-14 h-14 bg-[#0F72CE] text-white rounded-2xl flex items-center justify-center mb-6 mx-auto shadow-md shadow-blue-500/20">
+                  <FileText size={28} />
+                </div>
+                <h3 className="text-2xl font-bold text-gray-900 mb-3">Application Closed</h3>
+                <p className="text-gray-600 mb-8 leading-relaxed">
+                  The scholarship application date has ended. If you have already applied, you can login here to check your application status.
+                </p>
+                <Link to="/admin/login" className="inline-flex items-center justify-center w-full py-4 bg-[#0F72CE] text-white rounded-xl font-bold text-lg hover:bg-[#0A4C8B] transition-colors shadow-lg shadow-blue-500/30">
+                  Check Application Status
+                </Link>
+              </div>
+            </motion.div>
+          </div>
+
+          {/* Offline Instructions (Original code when open)
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -150,6 +172,7 @@ const ScholarshipInfo = () => {
               </div>
             </div>
           </motion.div>
+          */}
 
         </div>
       </div>

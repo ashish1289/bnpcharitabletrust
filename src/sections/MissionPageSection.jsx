@@ -386,8 +386,13 @@ const MissionPageSection = () => {
           <p className="text-xl text-white/90 leading-relaxed mb-10">
             Real change begins when compassionate people come together with a shared purpose. Through education, scholarships, financial assistance, environmental conservation, and community development, BNP Charitable Trust is creating opportunities that empower individuals and strengthen society.
           </p>
+          {/* Original Apply for Scholarship button when scholarship is open
           <Link to="/scholarship/apply" className="inline-flex items-center justify-center bg-white text-[#0A4C8B] hover:bg-blue-50 font-bold py-4 px-10 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 text-lg">
             Apply for Scholarship
+          </Link>
+          */}
+          <Link to="/admin/login" className="inline-flex items-center justify-center bg-white text-[#0A4C8B] hover:bg-blue-50 font-bold py-4 px-10 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 text-lg">
+            Check Scholarship Status
           </Link>
         </motion.div>
       </section>

@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, ChevronDown, Users, Building2, Info, Star, GraduationCap } from "lucide-react";
+import { Menu, X, ChevronDown, Users, Building2, Info, Star, GraduationCap, ArrowRight } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 
 const aboutSubLinks = [
@@ -152,10 +152,19 @@ const Navbar = () => {
           ))}
 
           <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} transition={{ type: "spring", stiffness: 400 }}>
+            {/* Original Apply CTA when scholarship is open
             <Link to="/scholarship/apply" className="relative inline-flex overflow-hidden rounded-full p-[2px] shadow-lg shadow-[#0F72CE]/40 group">
               <span className="absolute inset-[-1000%] animate-[spin_2.5s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#0F72CE_0%,#ffffff_50%,#0F72CE_100%)]" />
               <span className="relative inline-flex h-full w-full items-center justify-center rounded-full bg-[#0F72CE] px-5 py-2.5 text-sm font-bold text-white transition-all group-hover:bg-[#0A4C8B]">
                 Apply for Scholarship
+              </span>
+            </Link>
+            */}
+            <Link to="/admin/login" className="relative inline-flex overflow-hidden rounded-full p-[2px] shadow-lg shadow-[#0F72CE]/40 group">
+              <span className="absolute inset-0 bg-gradient-to-r from-[#0F72CE] via-[#2185D0] to-[#0F72CE] opacity-100 transition-opacity duration-500"></span>
+              <span className="relative flex items-center justify-center gap-2 rounded-full bg-white px-5 py-2.5 text-sm font-bold text-[#0F72CE] transition-all duration-300 group-hover:bg-transparent group-hover:text-white">
+                Check Status
+                <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-1" />
               </span>
             </Link>
           </motion.div>
@@ -252,10 +261,19 @@ const Navbar = () => {
                 </Link>
               ))}
 
+              {/* Original Mobile Apply CTA when scholarship is open
               <Link to="/scholarship/apply" className="relative inline-flex overflow-hidden rounded-full p-[2px] shadow-md shadow-[#0F72CE]/30 w-full mt-2 group block">
                 <span className="absolute inset-[-1000%] animate-[spin_2.5s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#0F72CE_0%,#ffffff_50%,#0F72CE_100%)]" />
                 <span className="relative inline-flex h-full w-full items-center justify-center rounded-full bg-[#0F72CE] py-3 text-base font-bold text-white transition-all group-hover:bg-[#0A4C8B]">
                   Apply for Scholarship
+                </span>
+              </Link>
+              */}
+              <Link to="/admin/login" className="relative inline-flex overflow-hidden rounded-full p-[2px] shadow-md shadow-[#0F72CE]/30 w-full mt-2 group block">
+                <span className="absolute inset-0 bg-gradient-to-r from-[#0F72CE] via-[#2185D0] to-[#0F72CE] opacity-100"></span>
+                <span className="relative flex items-center justify-center gap-2 w-full rounded-full bg-white px-4 py-3 text-base font-bold text-[#0F72CE] transition-all duration-300 group-hover:bg-transparent group-hover:text-white">
+                  Check Status
+                  <ArrowRight size={18} />
                 </span>
               </Link>
 

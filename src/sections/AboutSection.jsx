@@ -487,11 +487,19 @@ const AboutSection = () => {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              {/* Original Apply for Scholarship button when scholarship is open
               <Link
                 to="/scholarship/apply"
                 className="inline-flex justify-center items-center gap-2 bg-white text-[#0A4C8B] font-bold py-4 px-8 rounded-full shadow-xl hover:bg-gray-50 hover:shadow-2xl hover:-translate-y-1 transition-all"
               >
                 Apply for Scholarship <ArrowRight size={20} />
+              </Link>
+              */}
+              <Link
+                to="/admin/login"
+                className="inline-flex justify-center items-center gap-2 bg-white text-[#0A4C8B] font-bold py-4 px-8 rounded-full shadow-xl hover:bg-gray-50 hover:shadow-2xl hover:-translate-y-1 transition-all"
+              >
+                Check Scholarship Status <ArrowRight size={20} />
               </Link>
               <Link
                 to="/contact"
