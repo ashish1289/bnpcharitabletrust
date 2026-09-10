@@ -3,6 +3,7 @@ import { Search, LogOut, FileText, CheckCircle, XCircle, Clock, Eye, Download, U
 import { motion, AnimatePresence } from 'framer-motion';
 import api from '../../api';
 import AdminSettings from './AdminSettings';
+import ManojDasAdminView from './ManojDasAdminView';
 import { generatePDF } from '../../utils/generatePDF';
 import { exportToExcel } from '../../utils/exportToExcel';
 
@@ -344,6 +345,12 @@ const ScholarshipAdminPanel = () => {
           >
             <SettingsIcon size={20} /> Platform Settings
           </button>
+          <button 
+            onClick={() => setSidebarTab('manojDas')}
+            className={`flex items-center gap-3 px-5 py-4 rounded-2xl font-bold transition-all text-left ${sidebarTab === 'manojDas' ? 'bg-indigo-600 text-white shadow-md' : 'bg-white text-gray-600 hover:bg-gray-100 border border-gray-200'}`}
+          >
+            <BookOpen size={20} /> Manoj Das Nominations
+          </button>
         </div>
 
         {/* Main Content Pane */}
@@ -357,6 +364,8 @@ const ScholarshipAdminPanel = () => {
 
           {sidebarTab === 'settings' ? (
             <AdminSettings />
+          ) : sidebarTab === 'manojDas' ? (
+            <ManojDasAdminView />
           ) : sidebarTab === 'drafts' ? (
             <>
               {/* Drafts Header Banner */}

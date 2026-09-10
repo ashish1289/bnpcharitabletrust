@@ -160,10 +160,10 @@ const Navbar = () => {
               </span>
             </Link>
             */}
-            <Link to="/admin/login" className="relative inline-flex overflow-hidden rounded-full p-[2px] shadow-lg shadow-[#0F72CE]/40 group">
+            <Link to="/manoj-das-nomination" className="relative inline-flex overflow-hidden rounded-full p-[2px] shadow-lg shadow-[#0F72CE]/40 group">
               <span className="absolute inset-0 bg-gradient-to-r from-[#0F72CE] via-[#2185D0] to-[#0F72CE] opacity-100 transition-opacity duration-500"></span>
               <span className="relative flex items-center justify-center gap-2 rounded-full bg-white px-5 py-2.5 text-sm font-bold text-[#0F72CE] transition-all duration-300 group-hover:bg-transparent group-hover:text-white">
-                Check Status
+                Apply for Manoj Das Award
                 <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-1" />
               </span>
             </Link>
@@ -269,10 +269,10 @@ const Navbar = () => {
                 </span>
               </Link>
               */}
-              <Link to="/admin/login" className="relative inline-flex overflow-hidden rounded-full p-[2px] shadow-md shadow-[#0F72CE]/30 w-full mt-2 group block">
+              <Link to="/manoj-das-nomination" className="relative inline-flex overflow-hidden rounded-full p-[2px] shadow-md shadow-[#0F72CE]/30 w-full mt-2 group block">
                 <span className="absolute inset-0 bg-gradient-to-r from-[#0F72CE] via-[#2185D0] to-[#0F72CE] opacity-100"></span>
                 <span className="relative flex items-center justify-center gap-2 w-full rounded-full bg-white px-4 py-3 text-base font-bold text-[#0F72CE] transition-all duration-300 group-hover:bg-transparent group-hover:text-white">
-                  Check Status
+                  Apply for Manoj Das Award
                   <ArrowRight size={18} />
                 </span>
               </Link>

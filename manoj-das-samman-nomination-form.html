@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="or">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ମନୋଜ ଦାସ ସାହିତ୍ୟ ସମ୍ମାନ - ମନୋନୟନ ଫର୍ମ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Oriya:wght@500;700&family=Noto+Sans+Oriya:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#e9dfc4;
+    --paper-deep:#ded1a8;
+    --card:#f4ecd6;
+    --ink:#26200f;
+    --ink-soft:#4a4128;
+    --red:#9e2b1f;
+    --red-deep:#7c2118;
+    --gold:#a97c34;
+    --indigo:#213e52;
+    --line:#a08c5c;
+    --line-light:#cdbd8c;
+    --error:#9e2b1f;
+    --radius:4px;
+  }
+
+  *{ box-sizing:border-box; }
+
+  body{
+    margin:0;
+    background:
+      radial-gradient(circle at 15% 10%, rgba(160,140,92,0.12), transparent 40%),
+      radial-gradient(circle at 85% 90%, rgba(160,140,92,0.12), transparent 40%),
+      var(--paper);
+    color:var(--ink);
+    font-family:'Noto Sans Oriya','Noto Sans',sans-serif;
+    line-height:1.6;
+    padding:36px 16px 80px;
+  }
+
+  .sheet{
+    max-width:760px;
+    margin:0 auto;
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    box-shadow:0 1px 0 var(--line-light) inset, 0 18px 40px -24px rgba(38,32,15,0.55);
+    position:relative;
+    overflow:hidden;
+  }
+
+  .motif{
+    height:14px;
+    background-image:repeating-linear-gradient(
+      -45deg,
+      var(--red) 0 6px,
+      var(--gold) 6px 12px,
+      var(--indigo) 12px 18px,
+      transparent 18px 24px
+    );
+    opacity:0.85;
+  }
+
+  header{
+    padding:38px 44px 26px;
+    text-align:center;
+    border-bottom:1px solid var(--line-light);
+  }
+
+  header .kicker{
+    font-size:13px;
+    letter-spacing:0.02em;
+    color:var(--ink-soft);
+    margin:0 0 10px;
+  }
+
+  header h1{
+    font-family:'Noto Serif Oriya', serif;
+    font-weight:700;
+    font-size:clamp(24px, 4vw, 32px);
+    margin:0 0 6px;
+    color:var(--red-deep);
+  }
+
+  header h2{
+    font-family:'Noto Serif Oriya', serif;
+    font-weight:500;
+    font-size:20px;
+    margin:0;
+    color:var(--ink);
+  }
+
+  form{ padding:8px 44px 44px; }
+
+  .field{
+    margin:26px 0;
+  }
+
+  .field > label.q, fieldset legend.q{
+    display:block;
+    font-weight:600;
+    font-size:16px;
+    margin-bottom:10px;
+  }
+
+  .q .num{
+    color:var(--red-deep);
+    font-weight:700;
+    margin-inline-end:4px;
+  }
+
+  .req{
+    color:var(--red);
+    margin-inline-start:3px;
+  }
+
+  input[type="text"], input[type="tel"], input[type="date"], textarea{
+    width:100%;
+    font:inherit;
+    font-size:15px;
+    color:var(--ink);
+    background:transparent;
+    border:none;
+    border-bottom:1px solid var(--line);
+    padding:8px 4px;
+    outline:none;
+    transition:border-color .15s ease, background .15s ease;
+  }
+
+  textarea{ resize:vertical; min-height:64px; border:1px solid var(--line); border-radius:3px; padding:10px; background:rgba(255,255,255,0.25); }
+
+  input:focus, textarea:focus{
+    border-color:var(--red-deep);
+    background:rgba(169,124,52,0.08);
+  }
+
+  input.invalid, textarea.invalid{ border-color:var(--error); background:rgba(158,43,31,0.06); }
+
+  .hint{ font-size:12.5px; color:var(--ink-soft); margin-top:5px; }
+  .error-msg{ font-size:12.5px; color:var(--error); margin-top:5px; display:none; }
+  .field.show-error .error-msg{ display:block; }
+  .field.show-error input, .field.show-error textarea{ border-color:var(--error); }
+
+  .sub-list{ display:grid; gap:14px; margin-top:4px; }
+  .sub-row{ display:flex; align-items:center; gap:10px; }
+  .sub-row .letter{ flex:0 0 22px; font-weight:700; color:var(--gold); }
+  .sub-row input{ flex:1; }
+
+  fieldset{ border:none; padding:0; margin:0; }
+
+  .radio-row{ display:flex; gap:28px; margin-top:2px; }
+  .radio-opt{ display:flex; align-items:center; gap:8px; cursor:pointer; font-size:15px; }
+  .radio-opt input[type="radio"]{
+    appearance:none; width:18px; height:18px; border:1.5px solid var(--line);
+    border-radius:50%; display:inline-grid; place-content:center; margin:0; cursor:pointer;
+  }
+  .radio-opt input[type="radio"]::before{
+    content:""; width:9px; height:9px; border-radius:50%; background:var(--red-deep); transform:scale(0);
+    transition:transform .12s ease;
+  }
+  .radio-opt input[type="radio"]:checked::before{ transform:scale(1); }
+
+  .conditional{
+    margin-top:16px; padding:16px 18px; border-left:3px solid var(--gold);
+    background:rgba(169,124,52,0.08); border-radius:0 3px 3px 0;
+    display:none;
+  }
+  .conditional.open{ display:block; }
+
+  .divider{
+    height:1px; margin:38px 0; background:linear-gradient(to right, transparent, var(--line-light), transparent);
+  }
+
+  .block-title{ font-family:'Noto Serif Oriya', serif; font-weight:700; font-size:18px; color:var(--red-deep); margin:0 0 16px; }
+
+  .coord-grid{ display:grid; grid-template-columns:1fr 1fr; gap:22px 28px; }
+  @media (max-width:520px){ .coord-grid{ grid-template-columns:1fr; } }
+
+  table.panel{ width:100%; border-collapse:collapse; margin-top:6px; }
+  table.panel th, table.panel td{ border:1px solid var(--line-light); padding:8px 10px; font-size:14.5px; }
+  table.panel th{ background:rgba(169,124,52,0.15); text-align:center; font-weight:600; }
+  table.panel td.idx{ text-align:center; width:44px; color:var(--ink-soft); }
+  table.panel td input{ border:none; width:100%; padding:4px; background:transparent; }
+  table.panel td input:focus{ background:rgba(169,124,52,0.1); }
+
+  .notes{ margin-top:34px; font-size:13.5px; color:var(--ink-soft); }
+  .notes .notes-title{ font-weight:700; color:var(--ink); text-decoration:underline; margin-bottom:6px; }
+  .notes p{ margin:4px 0 4px 14px; }
+
+  .actions{
+    display:flex; flex-wrap:wrap; gap:12px; margin-top:40px; padding-top:24px;
+    border-top:1px solid var(--line-light);
+  }
+
+  button{
+    font:inherit; font-size:14.5px; font-weight:600; cursor:pointer;
+    padding:11px 20px; border-radius:3px; border:1px solid var(--line);
+    background:var(--paper-deep); color:var(--ink); transition:transform .08s ease, background .15s ease;
+  }
+  button:hover{ background:var(--line-light); }
+  button:active{ transform:translateY(1px); }
+
+  button.primary{ background:var(--red-deep); border-color:var(--red-deep); color:#f4ecd6; }
+  button.primary:hover{ background:var(--red); }
+
+  button.ghost{ background:transparent; }
+
+  #fileInput{ display:none; }
+
+  .status{
+    margin-top:16px; font-size:13.5px; min-height:18px; color:var(--indigo);
+  }
+
+  .print-only{ display:none; }
+
+  @media print{
+    body{ background:#fff; padding:0; }
+    .sheet{ box-shadow:none; border:none; max-width:100%; }
+    .actions, .hint, .status{ display:none !important; }
+    .conditional{ display:block !important; background:none; border-left:2px solid var(--gold); }
+    input, textarea{ border:none !important; background:none !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="sheet">
+  <div class="motif"></div>
+  <header>
+    <p class="kicker">ODISHA SAHITYA SANSAD</p>
+    <h1>ମନୋଜ ଦାସ ସାହିତ୍ୟ ସମ୍ମାନ – ୨୦୨୬</h1>
+    <h2>ମନୋନୟନ ଫର୍ମ</h2>
+  </header>
+
+  <form id="nomForm" novalidate>
+
+    <p class="block-title">ଲେଖକ/ଲେଖିକାଙ୍କ ବିବରଣୀ</p>
+
+    <div class="field" data-required="true">
+      <label class="q" for="q1"><span class="num">୧.</span> ଏହି ସମ୍ମାନ ପାଇଁ ଯୋଗ୍ୟ ମଣୁଥିବା ଲେଖକ/ଲେଖିକାଙ୍କ ନାମ<span class="req">*</span></label>
+      <input type="text" id="q1" name="q1" required>
+      <p class="error-msg">ଦୟାକରି ଲେଖକ/ଲେଖିକାଙ୍କ ନାମ ଲେଖନ୍ତୁ।</p>
+    </div>
+
+    <div class="field" data-required="true">
+      <label class="q" for="q2"><span class="num">୨.</span> ଉକ୍ତ ଲେଖକ/ଲେଖିକାଙ୍କ ଜନ୍ମ ତାରିଖ<span class="req">*</span></label>
+      <input type="text" id="q2" name="q2" placeholder="ଉଦାହରଣ: ୧୫/୦୮/୧୯୫୫" required>
+      <p class="error-msg">ଦୟାକରି ଜନ୍ମ ତାରିଖ ଲେଖନ୍ତୁ।</p>
+    </div>
+
+    <div class="field" data-required="true">
+      <label class="q" for="q3"><span class="num">୩.</span> ମୁଖ୍ୟତଃ ସେ ସାହିତ୍ୟର କେଉଁ ବିଭାଗରେ ଲେଖାଲେଖି କରନ୍ତି<span class="req">*</span></label>
+      <input type="text" id="q3" name="q3" required>
+      <p class="error-msg">ଦୟାକରି ମୁଖ୍ୟ ବିଭାଗ ଲେଖନ୍ତୁ।</p>
+    </div>
+
+    <div class="field">
+      <label class="q"><span class="num">୪.</span> ଏକାଧିକ ବିଭାଗରେ ଲେଖାଲେଖି କରୁଥିଲେ ତାହା ଉଲ୍ଲେଖ କରନ୍ତୁ</label>
+      <div class="sub-list" id="q4-list"></div>
+    </div>
+
+    <div class="field" data-required="true">
+      <label class="q" for="q5"><span class="num">୫.</span> ତାଙ୍କର ସଂପୂର୍ଣ୍ଣ ଡାକ ଠିକଣା ସହିତ ଫୋନ୍‌ ନମ୍ବର<span class="req">*</span></label>
+      <textarea id="q5" name="q5" rows="3" required></textarea>
+      <p class="error-msg">ଦୟାକରି ଠିକଣା ଓ ଫୋନ୍‌ ନମ୍ବର ଲେଖନ୍ତୁ।</p>
+    </div>
+
+    <div class="divider"></div>
+    <p class="block-title">ପୂର୍ବ ସମ୍ମାନ ଓ ପ୍ରକାଶନ</p>
+
+    <div class="field">
+      <fieldset>
+        <legend class="q"><span class="num">୬.</span> ସେ ପୂର୍ବରୁ କୌଣସି ସମ୍ମାନ ବା ପୁରସ୍କାର ପାଇଛନ୍ତି କି ?</legend>
+        <div class="radio-row" data-group="honour">
+          <label class="radio-opt"><input type="radio" name="honour" value="yes"> ହଁ</label>
+          <label class="radio-opt"><input type="radio" name="honour" value="no" checked> ନାହିଁ</label>
+        </div>
+      </fieldset>
+      <div class="conditional" id="honour-box">
+        <label class="q" style="font-size:14.5px; margin-bottom:8px;">୭. ଯଦି ହଁ, ତେବେ ସର୍ବାଧିକ ତିନୋଟିର ନାମ ଉଲ୍ଲେଖ କରନ୍ତୁ</label>
+        <div class="sub-list" id="q7-list"></div>
+      </div>
+    </div>
+
+    <div class="field" data-required="true">
+      <label class="q"><span class="num">୮.</span> ଲେଖକ/ଲେଖିକାଙ୍କର ଉଲ୍ଲେଖନୀୟ ସର୍ବାଧିକ ୫ଟି ପୁସ୍ତକର ନାମ<span class="req">*</span></label>
+      <div class="sub-list" id="q8-list"></div>
+      <p class="error-msg">ଦୟାକରି ଅତି କମରେ ଗୋଟିଏ ପୁସ୍ତକର ନାମ ଲେଖନ୍ତୁ।</p>
+    </div>
+
+    <div class="field">
+      <fieldset>
+        <legend class="q"><span class="num">୯.</span> ତାଙ୍କର କୌଣସି ପୁସ୍ତକ ଅନ୍ୟ ଭାରତୀୟ ଭାଷାରେ ଅନୂଦିତ ହୋଇଛି କି ?</legend>
+        <div class="radio-row">
+          <label class="radio-opt"><input type="radio" name="translated" value="yes"> ହଁ</label>
+          <label class="radio-opt"><input type="radio" name="translated" value="no" checked> ନାହିଁ</label>
+        </div>
+      </fieldset>
+      <div class="conditional" id="translated-box">
+        <label class="q" style="font-size:14.5px; margin-bottom:8px;">୧୦. ଯଦି ହଁ, ତେବେ କେଉଁ କେଉଁ ଭାଷାରେ ଅନୂଦିତ ହୋଇଛି ଲେଖନ୍ତୁ</label>
+        <div class="sub-list" id="q10-list"></div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+    <p class="block-title">ସୁପାରିଶ</p>
+
+    <div class="field" data-required="true">
+      <label class="q" for="q11"><span class="num">୧୧.</span> ତାଙ୍କୁ 'ମନୋଜ ଦାସ ସାହିତ୍ୟ ସମ୍ମାନ' ପ୍ରଦାନ ପାଇଁ ଆପଣ କାହିଁକି ଯୋଗ୍ୟ ବୋଲି ଭାବୁଛନ୍ତି<span class="req">*</span></label>
+      <textarea id="q11" name="q11" rows="4" required></textarea>
+      <p class="error-msg">ଦୟାକରି କାରଣ ଲେଖନ୍ତୁ।</p>
+    </div>
+
+    <div class="field">
+      <label class="q" for="q12"><span class="num">୧୨.</span> ଏହି ଲେଖକ/ଲେଖିକାଙ୍କ ବ୍ୟତିତ ଆଉ କେଉଁ ଜଣେ ଲେଖକ/ଲେଖିକାଙ୍କ ନାମ ଦ୍ବିତୀୟରେ ସୁପାରିଶ ପାଇଁ ଯୋଗ୍ୟ ବୋଲି ଭାବୁଛନ୍ତି</label>
+      <input type="text" id="q12" name="q12">
+    </div>
+
+    <div class="field">
+      <label class="q" for="q13"><span class="num">୧୩.</span> ଆପଣ ପ୍ରଥମେ ସୁପାରିଶ କରିଥିବା ଲେଖକ/ଲେଖିକାଙ୍କ ସଂପର୍କରେ ସର୍ବନିମ୍ନ ଶବ୍ଦ ଓ ସର୍ବନିମ୍ନ ଧାଡ଼ିରେ କିଛି ଉଲ୍ଲେଖ କରନ୍ତୁ</label>
+      <textarea id="q13" name="q13" rows="3"></textarea>
+    </div>
+
+    <div class="divider"></div>
+    <p class="block-title">ଜିଲ୍ଲା ସଂଯୋଜକଙ୍କ ବିବରଣୀ</p>
+
+    <div class="coord-grid">
+      <div class="field" data-required="true" style="margin:0;">
+        <label class="q" for="coordName">ଜିଲ୍ଲା ସଂଯୋଜକଙ୍କ ନାମ<span class="req">*</span></label>
+        <input type="text" id="coordName" name="coordName" required>
+        <p class="error-msg">ଜିଲ୍ଲା ସଂଯୋଜକଙ୍କ ନାମ ଲେଖନ୍ତୁ।</p>
+      </div>
+      <div class="field" data-required="true" style="margin:0;">
+        <label class="q" for="coordDate">ତାରିଖ<span class="req">*</span></label>
+        <input type="date" id="coordDate" name="coordDate" required>
+        <p class="error-msg">ତାରିଖ ଉଲ୍ଲେଖ କରନ୍ତୁ।</p>
+      </div>
+      <div class="field" data-required="true" style="margin:0;">
+        <label class="q" for="district">ଜିଲ୍ଲାର ନାମ<span class="req">*</span></label>
+        <input type="text" id="district" name="district" required>
+        <p class="error-msg">ଜିଲ୍ଲାର ନାମ ଲେଖନ୍ତୁ।</p>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="q" style="margin-bottom:6px;">ଯେଉଁ ୪ଜଣ ସମଧର୍ମାଙ୍କ ସହ ଆଲୋଚନାକ୍ରମେ ପ୍ରଥମ ନାମ ସୁପାରିଶ କରାଯାଇଛି, ସେମାନଙ୍କ ନାମ ଓ ଟେଲିଫୋନ୍‌ ନମ୍ବର ଦିଅନ୍ତୁ</label>
+      <table class="panel">
+        <thead><tr><th>କ୍ର.ନଂ</th><th>ନାମ</th><th>ଯୋଗାଯୋଗ ନମ୍ବର</th></tr></thead>
+        <tbody id="panel-body"></tbody>
+      </table>
+    </div>
+
+    <div class="notes">
+      <p class="notes-title">ବି.ଦ୍ର:</p>
+      <p>କ- ଜିଲ୍ଲା ସଂଯୋଜକ ନିଜ ନାମ ସୁପାରିଶ ନ କରିବାକୁ ଅନୁରୋଧ।</p>
+      <p>ଖ- ଜିଲ୍ଲା ସଂଯୋଜକ ଏହି ଫର୍ମ ସହିତ ଲେଖକ/ଲେଖିକାଙ୍କ ସଂପର୍କରେ ଅଧିକ ତଥ୍ୟଫର୍ଦ୍ଦ ଯୋଗ କରିପାରିବେ।</p>
+    </div>
+
+    <div class="actions">
+      <button type="submit" class="primary">ପ୍ରିଣ୍ଟ / PDF ଡାଉନଲୋଡ୍</button>
+      <button type="button" class="ghost" id="saveBtn">ଡ୍ରାଫ୍ଟ ସେଭ୍ କରନ୍ତୁ</button>
+      <button type="button" class="ghost" id="loadBtn">ଡ୍ରାଫ୍ଟ ଲୋଡ୍ କରନ୍ତୁ</button>
+      <button type="button" class="ghost" id="resetBtn">ଫର୍ମ ଖାଲି କରନ୍ତୁ</button>
+      <input type="file" id="fileInput" accept="application/json">
+    </div>
+    <p class="status" id="statusMsg"></p>
+  </form>
+</div>
+
+<script>
+(function(){
+  const listeFields = [
+    {id:'q4-list', name:'q4', letters:['କ','ଖ','ଗ','ଘ']},
+    {id:'q7-list', name:'q7', letters:['କ','ଖ','ଗ']},
+    {id:'q8-list', name:'q8', letters:['କ','ଖ','ଗ','ଘ','ଙ']},
+    {id:'q10-list', name:'q10', letters:['କ','ଖ','ଗ']},
+  ];
+
+  listeFields.forEach(cfg => {
+    const wrap = document.getElementById(cfg.id);
+    cfg.letters.forEach((letter, i) => {
+      const row = document.createElement('div');
+      row.className = 'sub-row';
+      row.innerHTML = `<span class="letter">${letter}-</span><input type="text" name="${cfg.name}_${i}">`;
+      wrap.appendChild(row);
+    });
+  });
+
+  const panelBody = document.getElementById('panel-body');
+  ['୧','୨','୩','୪'].forEach((num, i) => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td class="idx">${num}</td>
+      <td><input type="text" name="panelName_${i}"></td>
+      <td><input type="text" name="panelPhone_${i}"></td>`;
+    panelBody.appendChild(tr);
+  });
+
+  function wireConditional(radioName, boxId, showValue){
+    const box = document.getElementById(boxId);
+    const radios = document.querySelectorAll(`input[name="${radioName}"]`);
+    function sync(){
+      const checked = document.querySelector(`input[name="${radioName}"]:checked`);
+      box.classList.toggle('open', checked && checked.value === showValue);
+    }
+    radios.forEach(r => r.addEventListener('change', sync));
+    sync();
+  }
+  wireConditional('honour', 'honour-box', 'yes');
+  wireConditional('translated', 'translated-box', 'yes');
+
+  const form = document.getElementById('nomForm');
+  const statusMsg = document.getElementById('statusMsg');
+
+  function validate(){
+    let firstInvalid = null;
+    document.querySelectorAll('.field[data-required="true"]').forEach(field => {
+      const control = field.querySelector('input, textarea');
+      const valid = control.value.trim().length > 0;
+      field.classList.toggle('show-error', !valid);
+      control.classList.toggle('invalid', !valid);
+      if(!valid && !firstInvalid) firstInvalid = control;
+    });
+    if(firstInvalid){
+      firstInvalid.scrollIntoView({behavior:'smooth', block:'center'});
+      firstInvalid.focus();
+      return false;
+    }
+    return true;
+  }
+
+  form.querySelectorAll('input, textarea').forEach(el => {
+    el.addEventListener('input', () => {
+      const field = el.closest('.field');
+      if(field && field.classList.contains('show-error') && el.value.trim().length > 0){
+        field.classList.remove('show-error');
+        el.classList.remove('invalid');
+      }
+    });
+  });
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    if(!validate()){
+      statusMsg.textContent = 'ଦୟାକରି ଚିହ୍ନିତ (*) ଘର ପୂରଣ କରନ୍ତୁ।';
+      return;
+    }
+    statusMsg.textContent = '';
+    window.print();
+  });
+
+  function serialize(){
+    const data = {};
+    form.querySelectorAll('input, textarea').forEach(el => {
+      if(el.type === 'radio'){ if(el.checked) data[el.name] = el.value; }
+      else if(el.type !== 'file'){ data[el.name] = el.value; }
+    });
+    return data;
+  }
+
+  document.getElementById('saveBtn').addEventListener('click', () => {
+    const data = serialize();
+    const blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    const nameGuess = (data.q1 || 'nomination').trim().replace(/\s+/g,'_');
+    a.href = url;
+    a.download = `manoj-das-samman-${nameGuess || 'draft'}.json`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+    statusMsg.textContent = 'ଡ୍ରାଫ୍ଟ ଡାଉନଲୋଡ୍ ହୋଇଗଲା।';
+  });
+
+  const fileInput = document.getElementById('fileInput');
+  document.getElementById('loadBtn').addEventListener('click', () => fileInput.click());
+  fileInput.addEventListener('change', () => {
+    const file = fileInput.files[0];
+    if(!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      try{
+        const data = JSON.parse(reader.result);
+        Object.entries(data).forEach(([name, value]) => {
+          const radio = form.querySelector(`input[name="${name}"][value="${CSS.escape(value)}"]`);
+          if(radio && radio.type === 'radio'){ radio.checked = true; radio.dispatchEvent(new Event('change')); return; }
+          const el = form.querySelector(`[name="${name}"]`);
+          if(el && el.type !== 'radio'){ el.value = value; }
+        });
+        statusMsg.textContent = 'ଡ୍ରାଫ୍ଟ ସଫଳତାର ସହ ଲୋଡ୍ ହୋଇଗଲା।';
+      }catch(err){
+        statusMsg.textContent = 'ଫାଇଲ୍ ପଢ଼ିବାରେ ତ୍ରୁଟି ହେଲା।';
+      }
+    };
+    reader.readAsText(file);
+    fileInput.value = '';
+  });
+
+  document.getElementById('resetBtn').addEventListener('click', () => {
+    if(confirm('ଆପଣ ନିଶ୍ଚିତ କି ସମସ୍ତ ତଥ୍ୟ ଖାଲି କରିବେ ?')){
+      form.reset();
+      document.querySelectorAll('.field').forEach(f => f.classList.remove('show-error'));
+      document.querySelectorAll('.invalid').forEach(e => e.classList.remove('invalid'));
+      document.getElementById('honour-box').classList.remove('open');
+      document.getElementById('translated-box').classList.remove('open');
+      statusMsg.textContent = 'ଫର୍ମ ଖାଲି ହୋଇଗଲା।';
+    }
+  });
+})();
+</script>
+
+</body>
+</html>
