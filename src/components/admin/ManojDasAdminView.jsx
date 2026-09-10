@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Search, Download, Eye, X, CheckCircle, Clock, XCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import api from '../../api';
 
 const ManojDasAdminView = () => {
   const [nominations, setNominations] = useState([]);
@@ -32,26 +33,13 @@ const ManojDasAdminView = () => {
   const fetchNominations = useCallback(async () => {
     setLoading(true);
     try {
-      // Assuming api.js could be used, but since we didn't add it to api.js, we do a direct fetch with token
-      const token = localStorage.getItem('bnpAuthUser') ? JSON.parse(localStorage.getItem('bnpAuthUser')).token : null;
-      // Note: Actually, in this project the token might be in a cookie or localStorage. Let's use fetch with credentials.
-      
-      const queryParams = new URLSearchParams({
+      const data = await api.getManojDasNominations({
         page,
         limit,
         status: statusFilter,
         search: debouncedSearch
       });
-
-      const res = await fetch(`${import.meta.env.PROD ? 'https://app.bnptrust.in/api' : 'http://localhost:5000/api'}/manoj-das?${queryParams}`, {
-        credentials: 'true', // if using cookies
-        headers: {
-          'Content-Type': 'application/json',
-          ...(token && { 'Authorization': `Bearer ${token}` })
-        }
-      });
       
-      const data = await res.json();
       if (data.success) {
         setNominations(data.nominations);
         setTotalPages(data.pages || 1);
@@ -59,7 +47,7 @@ const ManojDasAdminView = () => {
         setMessage(data.message || 'Failed to fetch nominations');
       }
     } catch (error) {
-      setMessage('Network error fetching nominations');
+      setMessage(error.message || 'Network error fetching nominations');
     } finally {
       setLoading(false);
     }
@@ -67,12 +55,7 @@ const ManojDasAdminView = () => {
 
   const fetchStats = useCallback(async () => {
     try {
-      const token = localStorage.getItem('bnpAuthUser') ? JSON.parse(localStorage.getItem('bnpAuthUser')).token : null;
-      const res = await fetch(`${import.meta.env.PROD ? 'https://app.bnptrust.in/api' : 'http://localhost:5000/api'}/manoj-das/stats`, {
-        credentials: 'true',
-        headers: { ...(token && { 'Authorization': `Bearer ${token}` }) }
-      });
-      const data = await res.json();
+      const data = await api.getManojDasStats();
       if (data.success) {
         setStats(data);
       }
@@ -88,17 +71,7 @@ const ManojDasAdminView = () => {
 
   const handleStatusChange = async (id, newStatus, currentNotes) => {
     try {
-      const token = localStorage.getItem('bnpAuthUser') ? JSON.parse(localStorage.getItem('bnpAuthUser')).token : null;
-      const res = await fetch(`${import.meta.env.PROD ? 'https://app.bnptrust.in/api' : 'http://localhost:5000/api'}/manoj-das/${id}/status`, {
-        method: 'PATCH',
-        credentials: 'true',
-        headers: {
-          'Content-Type': 'application/json',
-          ...(token && { 'Authorization': `Bearer ${token}` })
-        },
-        body: JSON.stringify({ status: newStatus, adminNotes: currentNotes })
-      });
-      const data = await res.json();
+      const data = await api.updateManojDasStatus(id, { status: newStatus, adminNotes: currentNotes });
       if (data.success) {
         setMessage('Status updated successfully');
         if (selectedNom && selectedNom._id === id) {
@@ -109,7 +82,7 @@ const ManojDasAdminView = () => {
         setTimeout(() => setMessage(''), 3000);
       }
     } catch (error) {
-      setMessage('Failed to update status');
+      setMessage(error.message || 'Failed to update status');
     }
   };
 

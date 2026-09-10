@@ -74,6 +74,14 @@ const api = {
   // Admin draft reminder emails
   sendDraftReminder: (applicationId) => request(`/scholarships/send-draft-reminder/${applicationId}`, { method: 'POST' }),
   sendAllDraftReminders: () => request('/scholarships/send-all-draft-reminders', { method: 'POST' }),
+
+  // Manoj Das Nominations
+  getManojDasNominations: (params = {}) => {
+    const query = new URLSearchParams(params);
+    return request(`/manoj-das?${query.toString()}`);
+  },
+  getManojDasStats: () => request('/manoj-das/stats'),
+  updateManojDasStatus: (id, body) => request(`/manoj-das/${id}/status`, { method: 'PATCH', body }),
 };
 
 export default api;
