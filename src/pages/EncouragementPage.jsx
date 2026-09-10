@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import { motion } from "framer-motion";
-import { BookOpen, Tractor, Medal, Trophy, CheckCircle2, Target, Award, Star } from "lucide-react";
+import { BookOpen, Tractor, Medal, Trophy, CheckCircle2, Target, Award, Star, ArrowRight } from "lucide-react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { Link } from "react-router-dom";
@@ -113,7 +113,12 @@ const EncouragementPage = () => {
                   </div>
                 </div>
                 <div className="md:w-3/5 p-8 md:p-12">
-                  <h4 className="text-2xl font-bold text-[#0F72CE] mb-4">Manoj Das Sahitya Samman</h4>
+                  <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-4 mb-4">
+                    <h4 className="text-2xl font-bold text-[#0F72CE]">Manoj Das Sahitya Samman</h4>
+                    <Link to="/manoj-das-nomination" className="inline-flex items-center justify-center gap-2 px-5 py-2 rounded-full border border-[#0F72CE] text-[#0F72CE] font-semibold text-sm hover:bg-[#0F72CE] hover:text-white transition-colors shrink-0">
+                      Apply for Manoj Das Award <ArrowRight size={16} />
+                    </Link>
+                  </div>
                   <p className="text-gray-600 mb-8 leading-relaxed">
                     Literature shapes society by preserving culture, language, and ideas. To honour the remarkable legacy of Padma Shri Manoj Das, BNP Charitable Trust presents the Manoj Das Sahitya Samman to distinguished writers and literary personalities whose work enriches Odia literature and contributes to intellectual and cultural development.
                   </p>
