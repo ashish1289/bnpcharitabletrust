@@ -29,6 +29,8 @@ const AdminLoginPage = () => {
       const savedUser = JSON.parse(localStorage.getItem('bnpAuthUser') || 'null');
       if (savedUser?.role === 'admin') {
         navigate('/admin/scholarships', { replace: true });
+      } else if (savedUser?.role === 'agent') {
+        navigate('/agent/dashboard', { replace: true });
       }
     } catch {
       // Ignore invalid stored values
@@ -78,6 +80,8 @@ const AdminLoginPage = () => {
 
       if (user.role === 'admin') {
         navigate('/admin/scholarships', { replace: true });
+      } else if (user.role === 'agent') {
+        navigate('/agent/dashboard', { replace: true });
       } else {
         navigate('/scholarship-info', { replace: true });
       }

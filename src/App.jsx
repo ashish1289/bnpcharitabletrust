@@ -7,7 +7,6 @@
 // }
 
 // export default App;
-
 import React, { useEffect } from "react";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import Home from "./pages/Home";
@@ -32,6 +31,8 @@ import StudentProfile from "./pages/StudentProfile";
 import ScholarshipInfo from "./pages/ScholarshipInfo";
 import Maintenance from "./pages/Maintenance";
 import ManojDasForm from "./pages/ManojDasForm";
+import AgentDashboard from "./pages/agent/AgentDashboard";
+import AgentVerificationForm from "./pages/agent/AgentVerificationForm";
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -68,6 +69,9 @@ function App() {
         <Route path="/maintenance" element={<Maintenance />} />
         <Route path="/admin/login" element={<AdminLoginPage />} />
         <Route path="/admin/scholarships" element={<ScholarshipAdminPage />} />
+        {/* Agent Routes */}
+        <Route path="/agent/dashboard" element={<AgentDashboard />} />
+        <Route path="/agent/verify/:id" element={<AgentVerificationForm />} />
         <Route path="/profile" element={<StudentProfile />} />
       </Routes>
     </BrowserRouter>

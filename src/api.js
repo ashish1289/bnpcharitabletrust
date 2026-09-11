@@ -82,6 +82,21 @@ const api = {
   },
   getManojDasStats: () => request('/manoj-das/stats'),
   updateManojDasStatus: (id, body) => request(`/manoj-das/${id}/status`, { method: 'PATCH', body }),
+
+  // Admin Agents
+  createAgent: (body) => request('/admin/agents', { method: 'POST', body }),
+  getAgents: () => request('/admin/agents'),
+  getUgApprovedList: (params = {}) => {
+    const query = new URLSearchParams(params);
+    return request(`/admin/ug-approved?${query.toString()}`);
+  },
+  getUgDistricts: () => request('/admin/ug-approved/districts'),
+  assignUgStudents: (body) => request('/admin/ug-approved/assign', { method: 'POST', body }),
+
+  // Agent Endpoints
+  getAgentAssignments: () => request('/agent/assignments'),
+  getAgentAssignment: (id) => request(`/agent/assignments/${id}`),
+  submitVerification: (id, body) => request(`/agent/verify/${id}`, { method: 'POST', body }),
 };
 
 export default api;

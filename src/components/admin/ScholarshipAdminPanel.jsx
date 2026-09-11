@@ -4,6 +4,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import api from '../../api';
 import AdminSettings from './AdminSettings';
 import ManojDasAdminView from './ManojDasAdminView';
+import UgApprovedView from './UgApprovedView';
+import ManageAgentsView from './ManageAgentsView';
 import { generatePDF } from '../../utils/generatePDF';
 import { exportToExcel } from '../../utils/exportToExcel';
 
@@ -351,6 +353,18 @@ const ScholarshipAdminPanel = () => {
           >
             <BookOpen size={20} /> Manoj Das Nominations
           </button>
+          <button 
+            onClick={() => setSidebarTab('ugApproved')}
+            className={`flex items-center gap-3 px-5 py-4 rounded-2xl font-bold transition-all text-left ${sidebarTab === 'ugApproved' ? 'bg-green-600 text-white shadow-md' : 'bg-white text-gray-600 hover:bg-gray-100 border border-gray-200'}`}
+          >
+            <CheckCircle size={20} /> Approved UG
+          </button>
+          <button 
+            onClick={() => setSidebarTab('manageAgents')}
+            className={`flex items-center gap-3 px-5 py-4 rounded-2xl font-bold transition-all text-left ${sidebarTab === 'manageAgents' ? 'bg-blue-600 text-white shadow-md' : 'bg-white text-gray-600 hover:bg-gray-100 border border-gray-200'}`}
+          >
+            <Users size={20} /> Manage Agents
+          </button>
         </div>
 
         {/* Main Content Pane */}
@@ -366,6 +380,10 @@ const ScholarshipAdminPanel = () => {
             <AdminSettings />
           ) : sidebarTab === 'manojDas' ? (
             <ManojDasAdminView />
+          ) : sidebarTab === 'ugApproved' ? (
+            <UgApprovedView />
+          ) : sidebarTab === 'manageAgents' ? (
+            <ManageAgentsView />
           ) : sidebarTab === 'drafts' ? (
             <>
               {/* Drafts Header Banner */}
