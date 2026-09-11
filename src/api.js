@@ -85,11 +85,13 @@ const api = {
 
   // Admin Agents
   createAgent: (body) => request('/admin/agents', { method: 'POST', body }),
+  deleteAgent: (id) => request(`/admin/agents/${id}`, { method: 'DELETE' }),
   getAgents: () => request('/admin/agents'),
   getUgApprovedList: (params = {}) => {
     const query = new URLSearchParams(params);
-    return request(`/admin/ug-approved?${query.toString()}`);
+    return request(`/admin/ug-approved?${query}`);
   },
+  getVerificationReport: (id) => request(`/admin/ug-approved/${id}/report`),
   getUgDistricts: () => request('/admin/ug-approved/districts'),
   assignUgStudents: (body) => request('/admin/ug-approved/assign', { method: 'POST', body }),
 

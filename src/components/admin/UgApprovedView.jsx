@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Search, Filter, FileText, CheckCircle, Clock, Users, X } from 'lucide-react';
+import { Search, Filter, FileText, CheckCircle, Clock, Users, X, MapPin, Eye } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import api from '../../api';
 
@@ -23,8 +23,10 @@ const UgApprovedView = () => {
   const [assignAgentId, setAssignAgentId] = useState('');
   const [assigning, setAssigning] = useState(false);
 
-  // Document Modal
+  // Document Modal & Report Modal
   const [selectedDocs, setSelectedDocs] = useState(null);
+  const [selectedReport, setSelectedReport] = useState(null);
+  const [loadingReport, setLoadingReport] = useState(false);
 
   const fetchData = useCallback(async () => {
     setLoading(true);
@@ -91,6 +93,20 @@ const UgApprovedView = () => {
     }
   };
 
+  const handleViewReport = async (studentId) => {
+    setLoadingReport(true);
+    try {
+      const res = await api.getVerificationReport(studentId);
+      if (res.success) {
+        setSelectedReport(res.report);
+      }
+    } catch (error) {
+      alert('Failed to load report or report not found.');
+    } finally {
+      setLoadingReport(false);
+    }
+  };
+
   return (
     <div className="flex-1 flex flex-col min-w-0">
       {message && (
@@ -122,10 +138,13 @@ const UgApprovedView = () => {
 
         <div className="flex flex-wrap gap-3 items-center w-full xl:w-auto p-4 bg-gray-50 rounded-2xl border border-gray-200">
           <span className="text-sm font-bold text-gray-700">{selectedIds.length} Selected</span>
-          <select value={assignAgentId} onChange={e => setAssignAgentId(e.target.value)} className="bg-white border border-gray-300 rounded-xl px-4 py-2 text-sm font-semibold focus:ring-2 focus:ring-indigo-500 min-w-[150px]">
-            <option value="">Select Agent...</option>
-            {agents.map(a => <option key={a._id} value={a._id}>{a.name} ({a.assignedCount})</option>)}
-          </select>
+              <select value={assignAgentId} onChange={(e) => setAssignAgentId(e.target.value)} className="bg-gray-50 border border-gray-200 text-gray-700 p-2.5 rounded-xl focus:ring-2 focus:ring-indigo-500 font-medium">
+                <option value="">Select Agent...</option>
+                <option value="unassign">⚠️ Unassign Selected</option>
+                {agents.map(a => (
+                  <option key={a._id} value={a._id}>{a.name} ({a.email})</option>
+                ))}
+              </select>
           <button onClick={handleAssign} disabled={assigning || selectedIds.length === 0 || !assignAgentId} className="bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white font-bold px-4 py-2 rounded-xl transition flex items-center gap-2">
             <Users size={16} /> Assign
           </button>
@@ -178,8 +197,13 @@ const UgApprovedView = () => {
                         <span className="text-gray-400 text-xs italic">Unassigned</span>
                       )}
                     </td>
-                    <td className="p-4 text-right">
-                      <button onClick={() => setSelectedDocs(s.documentUrls)} className="p-2 text-indigo-600 hover:bg-indigo-50 rounded-lg transition border border-transparent hover:border-indigo-100">
+                    <td className="p-4 text-right flex items-center justify-end gap-2">
+                      {s.verificationStatus === 'Verified' && (
+                        <button onClick={() => handleViewReport(s._id)} className="p-2 text-green-600 hover:bg-green-50 rounded-lg transition border border-transparent hover:border-green-100" title="View Field Report">
+                          <Eye size={18} />
+                        </button>
+                      )}
+                      <button onClick={() => setSelectedDocs(s.documentUrls)} className="p-2 text-indigo-600 hover:bg-indigo-50 rounded-lg transition border border-transparent hover:border-indigo-100" title="View Initial Docs">
                         <FileText size={18} />
                       </button>
                     </td>
@@ -221,6 +245,102 @@ const UgApprovedView = () => {
                     </div>
                   );
                 })}
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* Field Report Modal */}
+      <AnimatePresence>
+        {selectedReport && (
+          <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
+            <div className="absolute inset-0 bg-gray-900/60 backdrop-blur-sm" onClick={() => setSelectedReport(null)} />
+            <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }} className="relative w-full max-w-4xl bg-white rounded-3xl shadow-2xl flex flex-col overflow-hidden max-h-[90vh]">
+              <div className="p-6 border-b border-gray-100 flex justify-between items-center bg-gray-50">
+                <div>
+                  <h3 className="font-black text-xl text-gray-900">Physical Verification Report</h3>
+                  <p className="text-sm text-gray-500 font-medium">Submitted by {selectedReport.agentId?.name || 'Agent'}</p>
+                </div>
+                <button onClick={() => setSelectedReport(null)} className="p-2 bg-gray-200 hover:bg-gray-300 rounded-full transition"><X size={20} /></button>
+              </div>
+              <div className="p-6 overflow-y-auto space-y-8 bg-gray-50/50">
+                
+                {/* Geolocation & Selfie */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {selectedReport.geolocation && (
+                    <div className="bg-white p-5 rounded-2xl shadow-sm border border-gray-200 flex flex-col gap-3">
+                      <h4 className="font-bold text-gray-700 flex items-center gap-2 uppercase text-xs"><MapPin size={16}/> GPS Location Captured</h4>
+                      <div className="bg-gray-50 p-3 rounded-xl font-mono text-sm text-gray-600">
+                        Lat: {selectedReport.geolocation.lat} <br/>
+                        Lng: {selectedReport.geolocation.lng}
+                      </div>
+                      <a href={`https://maps.google.com/?q=${selectedReport.geolocation.lat},${selectedReport.geolocation.lng}`} target="_blank" rel="noreferrer" className="text-indigo-600 text-sm font-bold hover:underline">View on Google Maps</a>
+                    </div>
+                  )}
+                  {selectedReport.agentSelfieUrl && (
+                    <div className="bg-white p-5 rounded-2xl shadow-sm border border-gray-200">
+                      <h4 className="font-bold text-gray-700 uppercase text-xs mb-3">Agent Selfie</h4>
+                      <img src={selectedReport.agentSelfieUrl} alt="Agent Selfie" className="w-full h-40 object-cover rounded-xl" />
+                    </div>
+                  )}
+                  {selectedReport.physicalFormCopyUrl && (
+                    <div className="bg-white p-5 rounded-2xl shadow-sm border border-gray-200 md:col-span-2">
+                      <h4 className="font-bold text-gray-700 uppercase text-xs mb-3">Physical Form Copy</h4>
+                      <a href={selectedReport.physicalFormCopyUrl} target="_blank" rel="noreferrer" className="block text-center bg-indigo-50 border border-indigo-200 text-indigo-700 font-bold py-3 rounded-xl hover:bg-indigo-100 transition">
+                        View Uploaded Physical Form
+                      </a>
+                    </div>
+                  )}
+                </div>
+
+                {/* Report Details */}
+                <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-200">
+                  <h4 className="font-black text-indigo-900 text-lg mb-4 border-b pb-2">Final Recommendation</h4>
+                  <div className={`text-lg font-black p-4 rounded-xl inline-block ${selectedReport.finalRecommendation === 'RECOMMENDED' ? 'bg-green-100 text-green-800' : selectedReport.finalRecommendation === 'REJECTED' ? 'bg-red-100 text-red-800' : 'bg-amber-100 text-amber-800'}`}>
+                    {selectedReport.finalRecommendation}
+                  </div>
+                  {selectedReport.rejectionReason && (
+                    <p className="mt-3 text-red-700 bg-red-50 p-3 rounded-lg font-medium text-sm">Reason: {selectedReport.rejectionReason}</p>
+                  )}
+                </div>
+
+                <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-200 space-y-4">
+                  <h4 className="font-black text-indigo-900 text-lg mb-2 border-b pb-2">Field Observations</h4>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div><span className="text-xs text-gray-500 font-bold uppercase block">Authentic?</span><span className="font-semibold text-gray-900">{selectedReport.isAuthentic}</span></div>
+                    <div><span className="text-xs text-gray-500 font-bold uppercase block">Genuinely in Need?</span><span className="font-semibold text-gray-900">{selectedReport.isGenuinelyInNeed}</span></div>
+                  </div>
+                  <div>
+                    <span className="text-xs text-gray-500 font-bold uppercase block">Remarks</span>
+                    <p className="font-medium text-gray-800 bg-gray-50 p-3 rounded-lg mt-1">{selectedReport.specificRemarks || 'N/A'}</p>
+                  </div>
+                  <div>
+                    <span className="text-xs text-gray-500 font-bold uppercase block">Local Person Info (Sarpanch/Ward Member)</span>
+                    <p className="font-medium text-gray-800 bg-gray-50 p-3 rounded-lg mt-1">{selectedReport.localPersonInfo || 'N/A'}</p>
+                  </div>
+                </div>
+                
+                <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-200">
+                  <h4 className="font-black text-indigo-900 text-lg mb-4 border-b pb-2">Verified Documents Checklist</h4>
+                  <div className="grid gap-3">
+                    {selectedReport.documents?.map((doc, idx) => (
+                      <div key={idx} className="flex flex-col md:flex-row md:items-center justify-between p-3 border rounded-xl bg-gray-50">
+                        <div className="flex-1">
+                          <p className="font-bold text-sm text-gray-800">{doc.name}</p>
+                          <p className="text-xs text-gray-500 mt-1">
+                            {doc.copyAttached ? '✅ Attached' : '❌ Not Attached'} | {doc.originalVerified ? '✅ Verified' : '❌ Not Verified'}
+                          </p>
+                          {doc.remarks && <p className="text-xs text-gray-600 mt-1 italic">Remarks: {doc.remarks}</p>}
+                        </div>
+                        {doc.uploadedFileUrl && (
+                          <a href={doc.uploadedFileUrl} target="_blank" rel="noreferrer" className="mt-2 md:mt-0 text-xs font-bold text-indigo-600 bg-indigo-100 px-3 py-1.5 rounded-lg whitespace-nowrap hover:bg-indigo-200 transition">View Upload</a>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
               </div>
             </motion.div>
           </div>

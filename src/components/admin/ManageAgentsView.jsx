@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { UserPlus, Shield, CheckCircle, Mail, Lock, User } from 'lucide-react';
+import { UserPlus, Shield, CheckCircle, Mail, Lock, User, Trash2 } from 'lucide-react';
 import api from '../../api';
 
 const ManageAgentsView = () => {
@@ -45,6 +45,20 @@ const ManageAgentsView = () => {
       setMessage(error.message || 'Failed to create agent');
     } finally {
       setCreating(false);
+    }
+  };
+
+  const handleDelete = async (id) => {
+    if (!window.confirm('Are you sure you want to delete this agent? All assigned students will be unassigned.')) return;
+    try {
+      const data = await api.deleteAgent(id);
+      if (data.success) {
+        setMessage('Agent deleted successfully');
+        fetchData();
+        setTimeout(() => setMessage(''), 3000);
+      }
+    } catch (error) {
+      alert(error.message || 'Failed to delete agent');
     }
   };
 
@@ -119,7 +133,7 @@ const ManageAgentsView = () => {
                   <th className="p-4 font-semibold">Email</th>
                   <th className="p-4 font-semibold">District</th>
                   <th className="p-4 font-semibold text-center">Assigned Users</th>
-                  <th className="p-4 font-semibold text-right">Status</th>
+                  <th className="p-4 font-semibold text-right">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100">
@@ -142,8 +156,11 @@ const ManageAgentsView = () => {
                       <td className="p-4 text-center">
                         <span className="bg-blue-100 text-blue-800 font-bold px-3 py-1 rounded-full">{agent.assignedCount}</span>
                       </td>
-                      <td className="p-4 text-right">
-                        <span className="bg-green-50 text-green-700 font-bold px-3 py-1 rounded-full border border-green-200 text-xs uppercase">Active</span>
+                      <td className="p-4 text-right flex items-center justify-end gap-3">
+                        <span className="bg-green-50 text-green-700 font-bold px-2 py-1 rounded-md border border-green-200 text-xs uppercase">Active</span>
+                        <button onClick={() => handleDelete(agent._id)} className="p-1.5 text-red-500 hover:bg-red-50 rounded-md transition" title="Delete Agent">
+                          <Trash2 size={18} />
+                        </button>
                       </td>
                     </tr>
                   ))
