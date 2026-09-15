@@ -1,7 +1,12 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import '../../pages/ManojDasForm.css';
 
 const ManojDasPrintView = ({ formData, onBack }) => {
+  useEffect(() => {
+    document.body.classList.add('printing-manoj-das');
+    return () => document.body.classList.remove('printing-manoj-das');
+  }, []);
+
   const handlePrint = () => {
     window.print();
   };

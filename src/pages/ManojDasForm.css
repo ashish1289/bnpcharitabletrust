@@ -212,3 +212,4 @@
   .manoj-das-wrap .conditional { background: none; border-left: 2px solid var(--gold); }
   .manoj-das-wrap input, .manoj-das-wrap textarea { border: none !important; background: none !important; }
 }
+@media print { body.printing-manoj-das * { visibility: hidden; } body.printing-manoj-das .manoj-das-wrap, body.printing-manoj-das .manoj-das-wrap * { visibility: visible; } body.printing-manoj-das .manoj-das-wrap { position: absolute; left: 0; top: 0; width: 100%; margin: 0; padding: 0; } }
