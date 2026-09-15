@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import './ManojDasForm.css';
 import api from '../api';
+import { odishaDistrictsAndBlocks } from '../data/odishaLocations';
 
 const q4Letters = ['କ', 'ଖ', 'ଗ', 'ଘ'];
 const q7Letters = ['କ', 'ଖ', 'ଗ'];
@@ -14,7 +15,13 @@ const ManojDasForm = () => {
     dateOfBirth: '',
     mainCategory: '',
     otherCategories: Array(4).fill(''),
-    addressAndPhone: '',
+    addressAndPhone: '', // kept for legacy if loaded
+    addressVillage: '',
+    addressPost: '',
+    addressBlock: '',
+    addressDistrict: '',
+    addressPin: '',
+    phoneNumber: '',
     hasPriorHonour: 'no',
     priorHonours: Array(3).fill(''),
     topBooks: Array(5).fill(''),
@@ -61,7 +68,14 @@ const ManojDasForm = () => {
     if (!formData.nomineeName.trim()) newErrors.nomineeName = true;
     if (!formData.dateOfBirth.trim()) newErrors.dateOfBirth = true;
     if (!formData.mainCategory.trim()) newErrors.mainCategory = true;
-    if (!formData.addressAndPhone.trim()) newErrors.addressAndPhone = true;
+    
+    // Validate new address fields
+    if (!formData.addressVillage.trim()) newErrors.addressVillage = true;
+    if (!formData.addressPost.trim()) newErrors.addressPost = true;
+    if (!formData.addressBlock.trim()) newErrors.addressBlock = true;
+    if (!formData.addressDistrict.trim()) newErrors.addressDistrict = true;
+    if (!formData.addressPin.trim()) newErrors.addressPin = true;
+    if (!formData.phoneNumber.trim()) newErrors.phoneNumber = true;
     
     // At least one top book
     if (!formData.topBooks[0].trim() && !formData.topBooks.find(b => b.trim())) {
@@ -167,6 +181,12 @@ const ManojDasForm = () => {
         mainCategory: '',
         otherCategories: Array(4).fill(''),
         addressAndPhone: '',
+        addressVillage: '',
+        addressPost: '',
+        addressBlock: '',
+        addressDistrict: '',
+        addressPin: '',
+        phoneNumber: '',
         hasPriorHonour: 'no',
         priorHonours: Array(3).fill(''),
         topBooks: Array(5).fill(''),
@@ -230,10 +250,55 @@ const ManojDasForm = () => {
             </div>
           </div>
 
-          <div className={`field ${errors.addressAndPhone ? 'show-error' : ''}`}>
-            <label className="q" htmlFor="addressAndPhone"><span className="num">୫.</span> ତାଙ୍କର ସଂପୂର୍ଣ୍ଣ ଡାକ ଠିକଣା ସହିତ ଫୋନ୍‌ ନମ୍ବର<span className="req">*</span></label>
-            <textarea id="addressAndPhone" name="addressAndPhone" rows="3" required value={formData.addressAndPhone} onChange={handleChange} className={errors.addressAndPhone ? 'invalid' : ''}></textarea>
-            <p className="error-msg">ଦୟାକରି ଠିକଣା ଓ ଫୋନ୍‌ ନମ୍ବର ଲେଖନ୍ତୁ।</p>
+          <div className="field">
+            <label className="q"><span className="num">୫.</span> ତାଙ୍କର ସଂପୂର୍ଣ୍ଣ ଡାକ ଠିକଣା ସହିତ ଫୋନ୍‌ ନମ୍ବର<span className="req">*</span></label>
+            {formData.addressAndPhone && (
+              <div style={{marginBottom: '10px', padding: '10px', background: '#fff3cd', borderRadius: '4px'}}>
+                <strong>ପୁରୁଣା ଠିକଣା (Old Data):</strong> {formData.addressAndPhone}
+              </div>
+            )}
+            <div className="coord-grid" style={{ marginTop: '10px' }}>
+              <div className={`field ${errors.addressVillage ? 'show-error' : ''}`} style={{ margin: 0 }}>
+                <label className="q" htmlFor="addressVillage">ଗ୍ରାମ/ସାହି (At/Village)<span className="req">*</span></label>
+                <input type="text" id="addressVillage" name="addressVillage" required value={formData.addressVillage} onChange={handleChange} className={errors.addressVillage ? 'invalid' : ''} />
+              </div>
+              <div className={`field ${errors.addressPost ? 'show-error' : ''}`} style={{ margin: 0 }}>
+                <label className="q" htmlFor="addressPost">ପୋଷ୍ଟ (Post)<span className="req">*</span></label>
+                <input type="text" id="addressPost" name="addressPost" required value={formData.addressPost} onChange={handleChange} className={errors.addressPost ? 'invalid' : ''} />
+              </div>
+              
+              <div className={`field ${errors.addressDistrict ? 'show-error' : ''}`} style={{ margin: 0 }}>
+                <label className="q" htmlFor="addressDistrict">ଜିଲ୍ଲା (District)<span className="req">*</span></label>
+                <select id="addressDistrict" name="addressDistrict" required value={formData.addressDistrict} onChange={(e) => { handleChange(e); setFormData(prev => ({...prev, addressBlock: ''})); }} className={errors.addressDistrict ? 'invalid' : ''} style={{width: '100%', padding: '10px', border: '1px solid #ccc', borderRadius: '4px'}}>
+                  <option value="">ଜିଲ୍ଲା ବାଛନ୍ତୁ</option>
+                  {Object.keys(odishaDistrictsAndBlocks).sort().map(dist => (
+                    <option key={dist} value={dist}>{dist}</option>
+                  ))}
+                </select>
+              </div>
+
+              <div className={`field ${errors.addressBlock ? 'show-error' : ''}`} style={{ margin: 0 }}>
+                <label className="q" htmlFor="addressBlock">ବ୍ଲକ୍ (Block)<span className="req">*</span></label>
+                <select id="addressBlock" name="addressBlock" required value={formData.addressBlock} onChange={handleChange} className={errors.addressBlock ? 'invalid' : ''} disabled={!formData.addressDistrict} style={{width: '100%', padding: '10px', border: '1px solid #ccc', borderRadius: '4px'}}>
+                  <option value="">ବ୍ଲକ୍ ବାଛନ୍ତୁ</option>
+                  {formData.addressDistrict && odishaDistrictsAndBlocks[formData.addressDistrict].map(block => (
+                    <option key={block} value={block}>{block}</option>
+                  ))}
+                </select>
+              </div>
+
+              <div className={`field ${errors.addressPin ? 'show-error' : ''}`} style={{ margin: 0 }}>
+                <label className="q" htmlFor="addressPin">ପିନ୍ କୋଡ୍ (PIN Code)<span className="req">*</span></label>
+                <input type="text" id="addressPin" name="addressPin" required value={formData.addressPin} onChange={handleChange} className={errors.addressPin ? 'invalid' : ''} />
+              </div>
+              <div className={`field ${errors.phoneNumber ? 'show-error' : ''}`} style={{ margin: 0 }}>
+                <label className="q" htmlFor="phoneNumber">ଫୋନ୍ ନମ୍ବର (Phone Number)<span className="req">*</span></label>
+                <input type="text" id="phoneNumber" name="phoneNumber" required value={formData.phoneNumber} onChange={handleChange} className={errors.phoneNumber ? 'invalid' : ''} />
+              </div>
+            </div>
+            {(errors.addressVillage || errors.addressPost || errors.addressBlock || errors.addressDistrict || errors.addressPin || errors.phoneNumber) && (
+              <p className="error-msg">ଦୟାକରି ସଂପୂର୍ଣ୍ଣ ଠିକଣା ପୂରଣ କରନ୍ତୁ।</p>
+            )}
           </div>
 
           <div className="divider"></div>

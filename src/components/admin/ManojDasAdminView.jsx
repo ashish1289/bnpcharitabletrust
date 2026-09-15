@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Search, Download, Eye, X, CheckCircle, Clock, XCircle } from 'lucide-react';
+import { Search, Download, Eye, X, CheckCircle, Clock, XCircle, Trash2, Edit, Printer } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import api from '../../api';
+import ManojDasPrintView from './ManojDasPrintView';
+import { odishaDistrictsAndBlocks } from '../../data/odishaLocations';
 
 const ManojDasAdminView = () => {
   const [nominations, setNominations] = useState([]);
@@ -13,11 +15,15 @@ const ManojDasAdminView = () => {
   const [limit, setLimit] = useState(20);
   const [totalPages, setTotalPages] = useState(1);
   const [statusFilter, setStatusFilter] = useState('all');
+  const [districtFilter, setDistrictFilter] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
   const [debouncedSearch, setDebouncedSearch] = useState('');
 
   // Selected for Modal
   const [selectedNom, setSelectedNom] = useState(null);
+  const [isPrintMode, setIsPrintMode] = useState(false);
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [editData, setEditData] = useState(null);
 
   // Stats
   const [stats, setStats] = useState({ total: 0, pending: 0, reviewed: 0, approved: 0, rejected: 0 });
@@ -37,6 +43,7 @@ const ManojDasAdminView = () => {
         page,
         limit,
         status: statusFilter,
+        district: districtFilter,
         search: debouncedSearch
       });
       
@@ -51,7 +58,7 @@ const ManojDasAdminView = () => {
     } finally {
       setLoading(false);
     }
-  }, [page, limit, statusFilter, debouncedSearch]);
+  }, [page, limit, statusFilter, districtFilter, debouncedSearch]);
 
   const fetchStats = useCallback(async () => {
     try {
@@ -86,6 +93,36 @@ const ManojDasAdminView = () => {
     }
   };
 
+  const handleDelete = async (id) => {
+    if (!window.confirm('Are you sure you want to delete this nomination permanently?')) return;
+    try {
+      const data = await api.deleteManojDasNomination(id);
+      if (data.success) {
+        setMessage('Nomination deleted successfully');
+        fetchNominations();
+        fetchStats();
+        setTimeout(() => setMessage(''), 3000);
+      }
+    } catch (error) {
+      setMessage(error.message || 'Failed to delete nomination');
+    }
+  };
+
+  const handleEditSave = async () => {
+    try {
+      const data = await api.updateManojDasNomination(selectedNom._id, editData);
+      if (data.success) {
+        setMessage('Nomination updated successfully');
+        setSelectedNom(data.nomination);
+        setIsEditMode(false);
+        fetchNominations();
+        setTimeout(() => setMessage(''), 3000);
+      }
+    } catch (error) {
+      setMessage(error.message || 'Failed to update nomination');
+    }
+  };
+
   const handleExportExcel = () => {
     // Basic CSV export for Manoj Das nominations
     if (!nominations.length) {
@@ -116,6 +153,10 @@ const ManojDasAdminView = () => {
     link.click();
     document.body.removeChild(link);
   };
+
+  if (isPrintMode && selectedNom) {
+    return <ManojDasPrintView formData={selectedNom} onBack={() => setIsPrintMode(false)} />;
+  }
 
   return (
     <div className="flex-1 flex flex-col min-w-0">
@@ -162,6 +203,16 @@ const ManojDasAdminView = () => {
             <button onClick={handleExportExcel} className="flex items-center justify-center gap-2 px-4 py-2.5 bg-white border border-green-200 text-green-700 font-bold text-sm rounded-xl hover:bg-green-50 transition shadow-sm">
               <Download size={16} /> Export CSV
             </button>
+            <select 
+              value={districtFilter} 
+              onChange={(e) => { setDistrictFilter(e.target.value); setPage(1); }}
+              className="px-4 py-2.5 bg-white border border-gray-200 rounded-xl text-sm font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500 transition shadow-sm cursor-pointer min-w-[150px]"
+            >
+              <option value="all">All Districts</option>
+              {Object.keys(odishaDistrictsAndBlocks).sort().map(d => (
+                <option key={d} value={d}>{d}</option>
+              ))}
+            </select>
             <div className="relative w-full sm:w-64">
               <Search size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
               <input 
@@ -177,12 +228,12 @@ const ManojDasAdminView = () => {
           <table className="w-full text-sm text-left">
             <thead className="bg-gray-50/80 text-gray-600 border-b border-gray-100">
               <tr>
-                <th className="p-5 font-semibold">Nominee Name</th>
-                <th className="p-5 font-semibold">Category</th>
-                <th className="p-5 font-semibold">Coordinator</th>
+                <th className="p-5 font-semibold">Nominee Name (ଲେଖକ/ଲେଖିକାଙ୍କ ନାମ)</th>
+                <th className="p-5 font-semibold">Category (ବିଭାଗ)</th>
+                <th className="p-5 font-semibold">Coordinator (ଜିଲ୍ଲା ସଂଯୋଜକ)</th>
                 <th className="p-5 font-semibold">Date Applied</th>
                 <th className="p-5 font-semibold text-center">Status</th>
-                <th className="p-5 font-semibold text-right">Action</th>
+                <th className="p-5 font-semibold text-right">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100">
@@ -214,12 +265,21 @@ const ManojDasAdminView = () => {
                     </span>
                   </td>
                   <td className="p-5 text-right">
-                    <button 
-                      onClick={() => setSelectedNom(nom)}
-                      className="px-4 py-2 bg-white border border-gray-200 text-indigo-600 font-bold rounded-lg hover:bg-indigo-50 hover:border-indigo-200 transition shadow-sm"
-                    >
-                      View Details
-                    </button>
+                    <div className="flex justify-end gap-2">
+                      <button 
+                        onClick={() => setSelectedNom(nom)}
+                        className="px-3 py-1.5 bg-white border border-gray-200 text-indigo-600 font-bold rounded-lg hover:bg-indigo-50 transition shadow-sm"
+                      >
+                        View
+                      </button>
+                      <button 
+                        onClick={() => handleDelete(nom._id)}
+                        className="p-1.5 bg-white border border-gray-200 text-red-500 rounded-lg hover:bg-red-50 transition shadow-sm"
+                        title="Delete"
+                      >
+                        <Trash2 size={18} />
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))}
@@ -239,61 +299,127 @@ const ManojDasAdminView = () => {
                   <h3 className="font-bold text-2xl text-gray-900">{selectedNom.nomineeName}</h3>
                   <p className="text-sm text-gray-500 mt-1">Nominated by {selectedNom.coordinatorName} ({selectedNom.district})</p>
                 </div>
-                <div className="flex gap-4 items-center">
-                  <select 
-                    value={selectedNom.status} 
-                    onChange={(e) => handleStatusChange(selectedNom._id, e.target.value, selectedNom.adminNotes)}
-                    className="p-2 border rounded-lg font-bold bg-white focus:ring-2 focus:ring-indigo-500"
-                  >
-                    <option value="pending">Pending</option>
-                    <option value="reviewed">Reviewed</option>
-                    <option value="approved">Approved</option>
-                    <option value="rejected">Rejected</option>
-                  </select>
-                  <button onClick={() => setSelectedNom(null)} className="p-2 bg-gray-200 hover:bg-gray-300 rounded-full transition"><X size={20} /></button>
+                <div className="flex gap-2 items-center flex-wrap">
+                  {!isEditMode ? (
+                    <>
+                      <button onClick={() => { setEditData(selectedNom); setIsEditMode(true); }} className="px-3 py-1.5 bg-white border border-gray-200 text-blue-600 font-bold rounded-lg hover:bg-blue-50 transition shadow-sm flex items-center gap-1"><Edit size={16}/> Edit</button>
+                      <button onClick={() => setIsPrintMode(true)} className="px-3 py-1.5 bg-white border border-gray-200 text-indigo-600 font-bold rounded-lg hover:bg-indigo-50 transition shadow-sm flex items-center gap-1"><Printer size={16}/> Print</button>
+                      <select 
+                        value={selectedNom.status} 
+                        onChange={(e) => handleStatusChange(selectedNom._id, e.target.value, selectedNom.adminNotes)}
+                        className="p-1.5 border rounded-lg font-bold bg-white focus:ring-2 focus:ring-indigo-500"
+                      >
+                        <option value="pending">Pending</option>
+                        <option value="reviewed">Reviewed</option>
+                        <option value="approved">Approved</option>
+                        <option value="rejected">Rejected</option>
+                      </select>
+                    </>
+                  ) : (
+                    <>
+                      <button onClick={handleEditSave} className="px-4 py-1.5 bg-green-600 text-white font-bold rounded-lg hover:bg-green-700 transition shadow-sm">Save Changes</button>
+                      <button onClick={() => setIsEditMode(false)} className="px-4 py-1.5 bg-gray-200 text-gray-700 font-bold rounded-lg hover:bg-gray-300 transition shadow-sm">Cancel</button>
+                    </>
+                  )}
+                  <button onClick={() => { setSelectedNom(null); setIsEditMode(false); }} className="p-2 bg-gray-200 hover:bg-gray-300 rounded-full transition ml-2"><X size={20} /></button>
                 </div>
               </div>
               <div className="p-6 overflow-y-auto flex-1 space-y-6">
-                <div>
-                  <h4 className="font-bold text-indigo-800 text-lg border-b pb-2 mb-4">Author Details</h4>
-                  <div className="grid grid-cols-2 gap-4 text-sm">
-                    <p><span className="font-semibold text-gray-500 block">Name:</span> {selectedNom.nomineeName}</p>
-                    <p><span className="font-semibold text-gray-500 block">Date of Birth:</span> {selectedNom.dateOfBirth}</p>
-                    <p><span className="font-semibold text-gray-500 block">Main Category:</span> {selectedNom.mainCategory}</p>
-                    <p><span className="font-semibold text-gray-500 block">Other Categories:</span> {selectedNom.otherCategories.filter(Boolean).join(', ') || 'None'}</p>
-                    <p className="col-span-2"><span className="font-semibold text-gray-500 block">Address & Phone:</span> {selectedNom.addressAndPhone}</p>
+                
+                {isEditMode ? (
+                  <div className="space-y-4">
+                    <div className="p-4 bg-yellow-50 border border-yellow-200 rounded-lg text-sm mb-4">
+                      <strong>Edit Mode:</strong> You can fix old addresses by copying the text below into the new fields.
+                      {editData.addressAndPhone && <div className="mt-2 text-gray-600 italic">Old Address: {editData.addressAndPhone}</div>}
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div><label className="block text-sm font-bold text-gray-700">Nominee Name</label><input type="text" value={editData.nomineeName} onChange={e => setEditData({...editData, nomineeName: e.target.value})} className="w-full p-2 border rounded" /></div>
+                      <div><label className="block text-sm font-bold text-gray-700">DOB</label><input type="text" value={editData.dateOfBirth} onChange={e => setEditData({...editData, dateOfBirth: e.target.value})} className="w-full p-2 border rounded" /></div>
+                      <div><label className="block text-sm font-bold text-gray-700">Main Category</label><input type="text" value={editData.mainCategory} onChange={e => setEditData({...editData, mainCategory: e.target.value})} className="w-full p-2 border rounded" /></div>
+                    </div>
+                    <div className="border-t pt-4">
+                      <h4 className="font-bold text-gray-800 mb-2">New Address Fields</h4>
+                      <div className="grid grid-cols-2 gap-4">
+                        <div><label className="block text-sm font-bold text-gray-700">Village</label><input type="text" value={editData.addressVillage || ''} onChange={e => setEditData({...editData, addressVillage: e.target.value})} className="w-full p-2 border rounded" /></div>
+                        <div><label className="block text-sm font-bold text-gray-700">Post</label><input type="text" value={editData.addressPost || ''} onChange={e => setEditData({...editData, addressPost: e.target.value})} className="w-full p-2 border rounded" /></div>
+                        <div>
+                          <label className="block text-sm font-bold text-gray-700">District</label>
+                          <select value={editData.addressDistrict || ''} onChange={e => setEditData({...editData, addressDistrict: e.target.value, addressBlock: ''})} className="w-full p-2 border rounded">
+                            <option value="">Select</option>
+                            {Object.keys(odishaDistrictsAndBlocks).sort().map(d => <option key={d} value={d}>{d}</option>)}
+                          </select>
+                        </div>
+                        <div>
+                          <label className="block text-sm font-bold text-gray-700">Block</label>
+                          <select value={editData.addressBlock || ''} onChange={e => setEditData({...editData, addressBlock: e.target.value})} className="w-full p-2 border rounded" disabled={!editData.addressDistrict}>
+                            <option value="">Select</option>
+                            {editData.addressDistrict && odishaDistrictsAndBlocks[editData.addressDistrict].map(b => <option key={b} value={b}>{b}</option>)}
+                          </select>
+                        </div>
+                        <div><label className="block text-sm font-bold text-gray-700">PIN Code</label><input type="text" value={editData.addressPin || ''} onChange={e => setEditData({...editData, addressPin: e.target.value})} className="w-full p-2 border rounded" /></div>
+                        <div><label className="block text-sm font-bold text-gray-700">Phone</label><input type="text" value={editData.phoneNumber || ''} onChange={e => setEditData({...editData, phoneNumber: e.target.value})} className="w-full p-2 border rounded" /></div>
+                      </div>
+                    </div>
                   </div>
-                </div>
+                ) : (
+                  <>
+                    <div>
+                      <h4 className="font-bold text-indigo-800 text-lg border-b pb-2 mb-4">Author Details (ଲେଖକ/ଲେଖିକାଙ୍କ ବିବରଣୀ)</h4>
+                      <div className="grid grid-cols-2 gap-4 text-sm">
+                        <p><span className="font-semibold text-gray-500 block">Name:</span> {selectedNom.nomineeName}</p>
+                        <p><span className="font-semibold text-gray-500 block">Date of Birth:</span> {selectedNom.dateOfBirth}</p>
+                        <p><span className="font-semibold text-gray-500 block">Main Category:</span> {selectedNom.mainCategory}</p>
+                        <p><span className="font-semibold text-gray-500 block">Other Categories:</span> {selectedNom.otherCategories.filter(Boolean).join(', ') || 'None'}</p>
+                      </div>
+                      <div className="mt-4 p-4 bg-gray-50 rounded-lg border border-gray-100">
+                        <span className="font-bold text-gray-700 block mb-2 border-b pb-1">Postal Address (ସଂପୂର୍ଣ୍ଣ ଡାକ ଠିକଣା ସହିତ ଫୋନ୍‌ ନମ୍ବର)</span>
+                        {selectedNom.addressAndPhone && (
+                          <div className="mb-3 text-sm text-amber-700 bg-amber-50 p-2 rounded">
+                            <span className="font-semibold">Old Format:</span> {selectedNom.addressAndPhone}
+                          </div>
+                        )}
+                        <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
+                          <p><span className="font-semibold text-gray-500">Village:</span> {selectedNom.addressVillage || '-'}</p>
+                          <p><span className="font-semibold text-gray-500">Post:</span> {selectedNom.addressPost || '-'}</p>
+                          <p><span className="font-semibold text-gray-500">Block:</span> {selectedNom.addressBlock || '-'}</p>
+                          <p><span className="font-semibold text-gray-500">District:</span> {selectedNom.addressDistrict || '-'}</p>
+                          <p><span className="font-semibold text-gray-500">PIN Code:</span> {selectedNom.addressPin || '-'}</p>
+                          <p><span className="font-semibold text-gray-500">Phone:</span> {selectedNom.phoneNumber || '-'}</p>
+                        </div>
+                      </div>
+                    </div>
 
                 <div>
-                  <h4 className="font-bold text-indigo-800 text-lg border-b pb-2 mb-4">Honours & Publications</h4>
+                  <h4 className="font-bold text-indigo-800 text-lg border-b pb-2 mb-4">Honours & Publications (ପୂର୍ବ ସମ୍ମାନ ଓ ପ୍ରକାଶନ)</h4>
                   <div className="space-y-4 text-sm">
-                    <p><span className="font-semibold text-gray-500">Prior Honours:</span> {selectedNom.hasPriorHonour === 'yes' ? selectedNom.priorHonours.filter(Boolean).join(', ') : 'None'}</p>
+                    <p><span className="font-semibold text-gray-500">Prior Honours (ପୂର୍ବ ସମ୍ମାନ):</span> {selectedNom.hasPriorHonour === 'yes' ? selectedNom.priorHonours.filter(Boolean).join(', ') : 'None'}</p>
                     <div>
-                      <span className="font-semibold text-gray-500 block mb-1">Top Books:</span>
+                      <span className="font-semibold text-gray-500 block mb-1">Top Books (୫ଟି ପୁସ୍ତକର ନାମ):</span>
                       <ul className="list-disc pl-5">{selectedNom.topBooks.filter(Boolean).map((book, i) => <li key={i}>{book}</li>)}</ul>
                     </div>
-                    <p><span className="font-semibold text-gray-500">Translated Books:</span> {selectedNom.hasTranslatedBooks === 'yes' ? selectedNom.translatedLanguages.filter(Boolean).join(', ') : 'None'}</p>
+                    <p><span className="font-semibold text-gray-500">Translated Books (ଅନୂଦିତ ପୁସ୍ତକ):</span> {selectedNom.hasTranslatedBooks === 'yes' ? selectedNom.translatedLanguages.filter(Boolean).join(', ') : 'None'}</p>
                   </div>
                 </div>
 
                 <div>
-                  <h4 className="font-bold text-indigo-800 text-lg border-b pb-2 mb-4">Recommendations</h4>
+                  <h4 className="font-bold text-indigo-800 text-lg border-b pb-2 mb-4">Recommendations (ସୁପାରିଶ)</h4>
                   <div className="space-y-4 text-sm">
-                    <p><span className="font-semibold text-gray-500 block">Reason for Recommendation:</span> {selectedNom.recommendationReason}</p>
-                    {selectedNom.secondRecommendation && <p><span className="font-semibold text-gray-500 block">2nd Recommendation:</span> {selectedNom.secondRecommendation}</p>}
-                    {selectedNom.briefOnFirstNominee && <p><span className="font-semibold text-gray-500 block">Brief on 1st Nominee:</span> {selectedNom.briefOnFirstNominee}</p>}
+                    <p><span className="font-semibold text-gray-500 block">Reason for Recommendation (କାହିଁକି ଯୋଗ୍ୟ):</span> {selectedNom.recommendationReason}</p>
+                    {selectedNom.secondRecommendation && <p><span className="font-semibold text-gray-500 block">2nd Recommendation (ଦ୍ବିତୀୟ ସୁପାରିଶ):</span> {selectedNom.secondRecommendation}</p>}
+                    {selectedNom.briefOnFirstNominee && <p><span className="font-semibold text-gray-500 block">Brief on 1st Nominee (ପ୍ରଥମ ଲେଖକ/ଲେଖିକାଙ୍କ ସଂପର୍କରେ):</span> {selectedNom.briefOnFirstNominee}</p>}
                   </div>
                 </div>
 
                 <div>
-                  <h4 className="font-bold text-indigo-800 text-lg border-b pb-2 mb-4">Panel Members</h4>
+                  <h4 className="font-bold text-indigo-800 text-lg border-b pb-2 mb-4">Panel Members (୪ଜଣ ସମଧର୍ମା)</h4>
                   <ul className="space-y-2 text-sm">
                     {selectedNom.panelMembers.filter(p => p.name || p.phone).map((p, i) => (
                       <li key={i}><span className="font-medium">{p.name || 'Unnamed'}</span> - {p.phone || 'No phone'}</li>
                     ))}
                   </ul>
                 </div>
+                  </>
+                )}
               </div>
             </motion.div>
           </div>

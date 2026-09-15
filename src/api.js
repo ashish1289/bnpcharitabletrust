@@ -82,6 +82,8 @@ const api = {
   },
   getManojDasStats: () => request('/manoj-das/stats'),
   updateManojDasStatus: (id, body) => request(`/manoj-das/${id}/status`, { method: 'PATCH', body }),
+  updateManojDasNomination: (id, body) => request(`/manoj-das/${id}`, { method: 'PUT', body }),
+  deleteManojDasNomination: (id) => request(`/manoj-das/${id}`, { method: 'DELETE' }),
 
   // Admin Agents
   createAgent: (body) => request('/admin/agents', { method: 'POST', body }),
