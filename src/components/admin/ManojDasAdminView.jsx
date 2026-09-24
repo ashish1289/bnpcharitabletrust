@@ -123,35 +123,115 @@ const ManojDasAdminView = () => {
     }
   };
 
-  const handleExportExcel = () => {
-    // Basic CSV export for Manoj Das nominations
-    if (!nominations.length) {
-      setMessage('No data to export');
-      return;
-    }
-    
-    const headers = ['Nominee Name', 'DOB', 'Main Category', 'Coordinator Name', 'District', 'Status', 'Date Applied'];
-    const csvContent = [
-      headers.join(','),
-      ...nominations.map(n => [
-        `"${n.nomineeName}"`,
-        `"${n.dateOfBirth}"`,
-        `"${n.mainCategory}"`,
-        `"${n.coordinatorName}"`,
-        `"${n.district}"`,
-        n.status,
-        new Date(n.createdAt).toLocaleDateString()
-      ].join(','))
-    ].join('\n');
+  const handleExportExcel = async () => {
+    try {
+      const data = await api.getManojDasNominations({
+        page: 1,
+        limit: 10000,
+        status: statusFilter,
+        district: districtFilter,
+        search: debouncedSearch
+      });
 
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.setAttribute('download', `Manoj_Das_Nominations_${new Date().toISOString().split('T')[0]}.csv`);
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+      const exportRows = Array.isArray(data?.nominations) ? data.nominations : [];
+      if (!exportRows.length) {
+        setMessage('No data to export');
+        return;
+      }
+
+      const flattenNominationForCsv = (nomination) => {
+        const safeString = (value) => {
+          if (value === null || value === undefined) return '';
+          if (Array.isArray(value)) {
+            return value
+              .map(item => safeString(item))
+              .filter(Boolean)
+              .join(' | ');
+          }
+          if (typeof value === 'object') {
+            if ('name' in value || 'phone' in value) {
+              return `${value.name || ''}${value.phone ? ` (${value.phone})` : ''}`.trim();
+            }
+            return Object.entries(value)
+              .map(([key, nestedValue]) => `${key}: ${safeString(nestedValue)}`)
+              .join(' | ');
+          }
+          return String(value);
+        };
+
+        const panelMembers = Array.isArray(nomination.panelMembers) ? nomination.panelMembers : [];
+
+        return {
+          _id: nomination._id || '',
+          nomineeName: nomination.nomineeName || '',
+          dateOfBirth: nomination.dateOfBirth || '',
+          mainCategory: nomination.mainCategory || '',
+          otherCategories: safeString(nomination.otherCategories),
+          addressAndPhone: nomination.addressAndPhone || '',
+          addressVillage: nomination.addressVillage || '',
+          addressPost: nomination.addressPost || '',
+          addressBlock: nomination.addressBlock || '',
+          addressDistrict: nomination.addressDistrict || '',
+          addressPin: nomination.addressPin || '',
+          phoneNumber: nomination.phoneNumber || '',
+          hasPriorHonour: nomination.hasPriorHonour || '',
+          priorHonours: safeString(nomination.priorHonours),
+          topBooks: safeString(nomination.topBooks),
+          hasTranslatedBooks: nomination.hasTranslatedBooks || '',
+          translatedLanguages: safeString(nomination.translatedLanguages),
+          recommendationReason: nomination.recommendationReason || '',
+          secondRecommendation: nomination.secondRecommendation || '',
+          briefOnFirstNominee: nomination.briefOnFirstNominee || '',
+          coordinatorName: nomination.coordinatorName || '',
+          coordinatorDate: nomination.coordinatorDate || '',
+          district: nomination.district || '',
+          panelMembers: panelMembers
+            .map((member) => `${member.name || ''}${member.phone ? ` (${member.phone})` : ''}`.trim())
+            .filter(Boolean)
+            .join(' ; '),
+          panelMember_1_name: panelMembers[0]?.name || '',
+          panelMember_1_phone: panelMembers[0]?.phone || '',
+          panelMember_2_name: panelMembers[1]?.name || '',
+          panelMember_2_phone: panelMembers[1]?.phone || '',
+          panelMember_3_name: panelMembers[2]?.name || '',
+          panelMember_3_phone: panelMembers[2]?.phone || '',
+          panelMember_4_name: panelMembers[3]?.name || '',
+          panelMember_4_phone: panelMembers[3]?.phone || '',
+          status: nomination.status || '',
+          adminNotes: nomination.adminNotes || '',
+          createdAt: nomination.createdAt || '',
+          updatedAt: nomination.updatedAt || ''
+        };
+      };
+
+      const flattenedRows = exportRows.map(flattenNominationForCsv);
+      const headers = Object.keys(flattenedRows[0]);
+
+      const csvContent = [
+        headers.join(','),
+        ...flattenedRows.map(row =>
+          headers.map(header => {
+            const rawValue = row[header] ?? '';
+            const escapedValue = String(rawValue).replace(/"/g, '""');
+            return `"${escapedValue}"`;
+          }).join(',')
+        )
+      ].join('\n');
+
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', `Manoj_Das_Nominations_${new Date().toISOString().split('T')[0]}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+      setMessage('CSV export completed successfully');
+      setTimeout(() => setMessage(''), 3000);
+    } catch (error) {
+      setMessage(error.message || 'Failed to export nominations');
+    }
   };
 
   if (isPrintMode && selectedNom) {
